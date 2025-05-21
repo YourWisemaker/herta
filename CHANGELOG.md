@@ -2,6 +2,21 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.3.2] - 2025-05-21
+
+### Fixed
+- Completely rewrote the project creation command in erudition make.js to correctly:
+  - Copy all existing files and directories to new projects
+  - Preserve original package.json structure including scripts
+  - Maintain server.js references in npm scripts
+  - Handle empty directories appropriately during copying
+  - Improve error handling during project creation
+
+### Enhanced
+- Streamlined project creation workflow with proper file copying
+- Improved dependency installation process
+- Added better console output during project creation
+
 ## [1.3.1] - 2025-05-21
 
 ### Fixed
