@@ -16,7 +16,7 @@ const swaggerDefinition = require('../swaggerDef');
 
 // Create Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3456;
 
 // Middleware
 app.use(cors());

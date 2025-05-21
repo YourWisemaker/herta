@@ -871,55 +871,123 @@ module.exports = ${name}Resolvers;
 }
 
 /**
- * Create a new Herta.js project
+ * Create a new Herta.js project by copying existing files
  * @param {string} name - Project name in PascalCase
- * @param {string} path - Project path
+ * @param {string} targetPath - Project path
  */
-function createProject(name, path) {
+function createProject(name, targetPath) {
   const { execSync } = require('child_process');
   const kebabName = toKebabCase(name);
-  const projectPath = path ? `${path}/${kebabName}` : path.join(process.cwd(), kebabName);
+  const projectPath = targetPath ? `${targetPath}/${kebabName}` : path.join(process.cwd(), kebabName);
+  const currentPath = process.cwd();
   
   if (fs.existsSync(projectPath)) {
     console.log(chalk.red(`Error: Directory ${kebabName} already exists`));
     return;
   }
   
-  console.log(chalk.cyan(`Creating project structure: ${chalk.bold(kebabName)}...`));
+  console.log(chalk.cyan(`Creating project by copying existing files: ${chalk.bold(kebabName)}...`));
   
   // Create project directory
-  fs.mkdirSync(projectPath, { recursive: true });
+  fs.mkdirSync(projectPath, { recursive: true});
   
-  console.log(chalk.cyan('Setting up directory structure...'));
+  console.log(chalk.cyan('Copying existing project structure...'));
   
-  // Create basic application structure
-  const directories = [
-    'public',
-    'public/css',
-    'public/js',
-    'public/assets',
-    'database',
+  // Create and copy necessary directories
+  const dirs = [
+    'src',
     'test',
-    'test/unit',
-    'test/integration',
     'docs',
-    'scripts'
+    'bin',
+    'commands',
+    'examples',
+    'scripts',
+    'templates',
+    'public'
   ];
   
-  // Create all directories
-  directories.forEach(dir => {
-    fs.mkdirSync(path.join(projectPath, dir), { recursive: true });
+  dirs.forEach(dir => {
+    const sourcePath = path.join(currentPath, dir);
+    const targetPath = path.join(projectPath, dir);
+    
+    if (fs.existsSync(sourcePath)) {
+      fs.mkdirSync(targetPath, { recursive: true });
+      
+      // Copy directory contents
+      try {
+        execSync(`cp -r "${sourcePath}"/* "${targetPath}"/`, { stdio: 'inherit' });
+      } catch (error) {
+        console.log(chalk.yellow(`Note: Some files in ${dir} may not have been copied.`));
+      }
+    }
   });
   
   console.log(chalk.cyan('Copying all modules and files from core Herta.js package...'));
   
-  // Get the path to the main Herta.js directory
-  const hertaRootPath = path.join(__dirname, '..', '..');
+  // Determine the path to the main Herta.js directory
+  let hertaRootPath;
+  let packagePath;
   
+  try {
+    // First attempt: try to find using npm's package.json location
+    let npmRoot = path.resolve(__dirname, '..', '..');
+    const npmPackageJsonPath = path.join(npmRoot, 'package.json');
+    
+    if (fs.existsSync(npmPackageJsonPath)) {
+      try {
+        const packageJson = JSON.parse(fs.readFileSync(npmPackageJsonPath, 'utf8'));
+        if (packageJson.name === 'herta') {
+          console.log(chalk.cyan(`Found Herta.js package at: ${npmRoot}`));
+          hertaRootPath = npmRoot;
+        }
+      } catch (err) {
+        console.log(chalk.yellow(`Warning: Error reading package.json: ${err.message}`));
+      }
+    }
+    
+    // Second attempt: if running from npx or installed package
+    if (!hertaRootPath) {
+      try {
+        packagePath = require.resolve('herta/package.json');
+        hertaRootPath = path.dirname(packagePath);
+        console.log(chalk.cyan(`Found Herta.js package using require.resolve at: ${hertaRootPath}`));
+      } catch (err) {
+        console.log(chalk.yellow(`Warning: Could not resolve herta/package.json: ${err.message}`));
+      }
+    }
+    
+    // Third attempt: try going up from current file location
+    if (!hertaRootPath) {
+      hertaRootPath = path.join(__dirname, '..', '..');
+      console.log(chalk.cyan(`Using relative path for Herta.js package: ${hertaRootPath}`));
+    }
+  } catch (error) {
+    console.log(chalk.yellow(`Warning during path resolution: ${error.message}`));
+    // Last resort fallback
+    hertaRootPath = path.join(__dirname, '..', '..');
+  }
+  
+  // Verify the path exists and contains expected files
   if (!fs.existsSync(hertaRootPath)) {
     console.log(chalk.red(`Error: Could not find Herta.js root directory at ${hertaRootPath}`));
     return;
   }
+  
+  // Check if this is a valid Herta.js package by looking for key directories
+  const srcPath = path.join(hertaRootPath, 'src');
+  if (!fs.existsSync(srcPath)) {
+    console.log(chalk.red(`Error: Found Herta.js directory at ${hertaRootPath}, but it doesn't contain the expected 'src' folder.`));
+    console.log(chalk.red(`This might be due to an npm installation structure difference.`));
+    
+    // In this case, we'll manually create basic files instead of copying
+    console.log(chalk.yellow(`Falling back to creating basic project files instead of copying...`));
+    
+    // Create a flag so we don't try copying later
+    const invalidHertaPath = true;
+    return invalidHertaPath;
+  }
+  
+  console.log(chalk.green(`✓ Successfully located Herta.js package at: ${hertaRootPath}`));
   
   // Directories to copy from Herta.js
   const dirsToCopy = [
@@ -964,36 +1032,59 @@ function createProject(name, path) {
     });
   }
   
-  // Copy package.json and update it for the new project
-  const packageJsonPath = path.join(hertaRootPath, 'package.json');
+  // Create the src directory and copy modules
+  const projectSrcPath = path.join(projectPath, 'src');
+  fs.mkdirSync(projectSrcPath, { recursive: true });
+
+  // Copy specific files that aren't in directories
+  const filesToCopy = [
+    'package.json',
+    'README.md',
+    'LICENSE',
+    'webpack.config.js',
+    '.gitignore',
+    '.npmrc',
+    '.eslintrc.js',
+    'swaggerDef.js'
+  ];
+
+  console.log(chalk.cyan('Copying configuration files...'));
+  filesToCopy.forEach(file => {
+    const sourceFile = path.join(currentPath, file);
+    const targetFile = path.join(projectPath, file);
+    
+    if (fs.existsSync(sourceFile)) {
+      try {
+        fs.copyFileSync(sourceFile, targetFile);
+        console.log(chalk.green(`Copied: ${file}`));
+      } catch (error) {
+        console.log(chalk.yellow(`Warning: Could not copy ${file}: ${error.message}`));
+      }
+    }
+  });
+
+  // Check if package.json exists and update it with the new project name
+  const packageJsonPath = path.join(projectPath, 'package.json');
   if (fs.existsSync(packageJsonPath)) {
+    console.log(chalk.yellow(`Updating package.json with project-specific information...`));
+    
     try {
-      // Read the original package.json
-      const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8');
-      const packageJson = JSON.parse(packageJsonContent);
+      // Read the copied package.json
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
       
-      // Modify it for the new project
+      // Update with project-specific information
       packageJson.name = kebabName;
-      packageJson.version = '1.0.0';
-      packageJson.description = `${name} - Project built with Herta.js framework`;
+      packageJson.version = '0.1.0';
+      packageJson.description = `${name} application built with Herta.js`;
       
-      // Add scripts for the new project
-      packageJson.scripts = {
-        ...packageJson.scripts,
-        start: 'node app.js',
-        dev: 'nodemon app.js',
-        test: 'jest'
-      };
-      
-      // Write the modified package.json to the new project
+      // Write the updated package.json
       fs.writeFileSync(
-        path.join(projectPath, 'package.json'),
+        packageJsonPath,
         JSON.stringify(packageJson, null, 2)
       );
-      
-      console.log(chalk.green(`✓ Successfully created package.json for ${name}`));
+      console.log(chalk.green('Updated package.json with new project name'));
     } catch (error) {
-      console.log(chalk.yellow(`Warning: Error modifying package.json: ${error.message}`));
+      console.log(chalk.yellow(`Warning: Could not update package.json: ${error.message}`));
       // If we can't modify package.json, create a new one
       fs.writeFileSync(
         path.join(projectPath, 'package.json'),
@@ -1001,103 +1092,12 @@ function createProject(name, path) {
       );
     }
   } else {
-    // If package.json doesn't exist, create a new one
+    console.log(chalk.yellow(`Warning: No package.json found. Creating a new one...`));
     fs.writeFileSync(
       path.join(projectPath, 'package.json'),
       generatePackageJsonContent(name, kebabName)
     );
   }
-  
-  console.log(chalk.cyan('Creating configuration files...'));
-  
-  // Create application configuration files
-  fs.writeFileSync(
-    path.join(projectPath, 'config.js'),
-    generateProjectConfigContent(name)
-  );
-  
-  fs.writeFileSync(
-    path.join(projectPath, 'herta.config.js'),
-    generateHertaConfigContent(name)
-  );
-  
-  // Create app.js - the main application entry point
-  fs.writeFileSync(
-    path.join(projectPath, 'app.js'),
-    generateAppJsContent(name)
-  );
-  
-  // Create package.json
-  fs.writeFileSync(
-    path.join(projectPath, 'package.json'),
-    generatePackageJsonContent(name, kebabName)
-  );
-  
-  // Create additional support files
-  fs.writeFileSync(
-    path.join(projectPath, '.gitignore'),
-    generateGitignoreContent()
-  );
-  
-  fs.writeFileSync(
-    path.join(projectPath, '.npmrc'),
-    generateNpmrcContent()
-  );
-  
-  fs.writeFileSync(
-    path.join(projectPath, 'README.md'),
-    generateReadmeContent(name, kebabName)
-  );
-  
-  // Create MVC application components in src, but use the existing math modules
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'models', 'User.js'),
-    generateModelContent(name)
-  );
-  
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'controllers', 'MathController.js'),
-    generateMathControllerContent(name)
-  );
-  
-  // Create route handlers
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'routes', 'web.js'),
-    generateWebRouteContent(name)
-  );
-  
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'routes', 'api.js'),
-    generateApiRouteContent(name)
-  );
-  
-  // Create other essential components
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'middleware', 'validation.js'),
-    generateValidationMiddlewareContent(name)
-  );
-  
-  fs.writeFileSync(
-    path.join(projectSrcPath, 'views', 'renderer.js'),
-    generateViewContent(name)
-  );
-  
-  // Create frontend assets
-  fs.writeFileSync(
-    path.join(projectPath, 'public', 'js', 'app.js'),
-    generatePublicJsContent(name)
-  );
-  
-  fs.writeFileSync(
-    path.join(projectPath, 'public', 'css', 'style.css'),
-    generateStyleContent(name)
-  );
-  
-  // Create documentation
-  fs.writeFileSync(
-    path.join(projectPath, 'docs', 'getting-started.md'),
-    generateDocContent(name)
-  );
   
   console.log(chalk.yellow(`\nInstalling dependencies...`));
   try {
