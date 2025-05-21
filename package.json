@@ -1,6 +1,6 @@
 {
   "name": "herta",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Advanced mathematics framework for scientific, engineering, and financial applications",
   "main": "dist/herta.js",
   "module": "src/index.js",
