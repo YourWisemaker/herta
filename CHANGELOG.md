@@ -2,6 +2,30 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.2.7] - 2025-05-21
+
+### Enhanced
+- Added sample advanced math modules to project templates
+- Included sample graph utility showcasing the graph module functionality
+- Updated installation instructions to always run npm install before npm start
+- Created comprehensive project structure with math extensions
+- Improved folder structure to include src/math and src/advanced directories
+
+## [1.2.6] - 2025-05-21
+
+### Enhanced
+- Improved project creation workflow to automatically install dependencies
+- Updated project template to use the latest Herta.js version (1.2.5+)
+- Changed project instructions to use `npm start` instead of `node app.js`
+- Better developer experience with simpler setup process
+
+## [1.2.5] - 2025-05-21
+
+### Fixed
+- Fixed project creation template with correct string escaping in app.js
+- Resolved issues with empty source directories in new projects
+- Improved project scaffolding to ensure all necessary files are created
+
 ## [1.2.4] - 2025-05-21
 
 ### Fixed
