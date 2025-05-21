@@ -29,6 +29,9 @@ function make(args) {
 
   try {
     switch (type.toLowerCase()) {
+      case 'project':
+        createProject(pascalName);
+        break;
       case 'module':
         createModule(pascalName);
         break;
@@ -264,6 +267,7 @@ function displayMakeHelp() {
     herta erudition make <type> <n>
   
   ${chalk.bold('Types:')}
+    ${chalk.yellow('project')}          Create a new Herta.js project
     ${chalk.yellow('module')}           Create a new module
     ${chalk.yellow('controller')}       Create a new controller
     ${chalk.yellow('service')}          Create a new service
@@ -273,6 +277,7 @@ function displayMakeHelp() {
     ${chalk.yellow('graphql')}          Create a GraphQL schema and resolver
   
   ${chalk.bold('Examples:')}
+    ${chalk.cyan('herta erudition make project MyMathApp')}   ${chalk.dim('# Create a new Herta.js project')}
     herta erudition make module QuantumPhysics
     herta erudition make controller DataController
     herta erudition make service AnalysisService
@@ -862,6 +867,527 @@ const ${name}Resolvers = {
 };
 
 module.exports = ${name}Resolvers;
+`;
+}
+
+/**
+ * Create a new Herta.js project
+ * @param {string} name - Project name in PascalCase
+ */
+function createProject(name) {
+  const kebabName = toKebabCase(name);
+  const projectPath = path.join(process.cwd(), kebabName);
+  
+  if (fs.existsSync(projectPath)) {
+    console.log(chalk.red(`Error: Directory ${kebabName} already exists`));
+    return;
+  }
+  
+  console.log(chalk.cyan(`Creating project structure: ${chalk.bold(kebabName)}...`));
+  
+  // Create project directory
+  fs.mkdirSync(projectPath);
+  
+  // Create source structure
+  fs.mkdirSync(path.join(projectPath, 'src'));
+  fs.mkdirSync(path.join(projectPath, 'src', 'models'));
+  fs.mkdirSync(path.join(projectPath, 'src', 'services'));
+  fs.mkdirSync(path.join(projectPath, 'src', 'controllers'));
+  fs.mkdirSync(path.join(projectPath, 'src', 'utils'));
+  fs.mkdirSync(path.join(projectPath, 'test'));
+  
+  // Create configuration files
+  fs.writeFileSync(
+    path.join(projectPath, 'config.js'),
+    generateProjectConfigContent(name)
+  );
+  
+  fs.writeFileSync(
+    path.join(projectPath, 'herta.config.js'),
+    generateHertaConfigContent(name)
+  );
+  
+  // Create package.json
+  fs.writeFileSync(
+    path.join(projectPath, 'package.json'),
+    generatePackageJsonContent(name, kebabName)
+  );
+  
+  // Create app.js
+  fs.writeFileSync(
+    path.join(projectPath, 'app.js'),
+    generateAppJsContent(name)
+  );
+  
+  // Create README.md
+  fs.writeFileSync(
+    path.join(projectPath, 'README.md'),
+    generateReadmeContent(name, kebabName)
+  );
+  
+  // Create a sample model
+  fs.writeFileSync(
+    path.join(projectPath, 'src', 'models', 'sample.js'),
+    generateSampleModelContent(name)
+  );
+  
+  // Create a sample service
+  fs.writeFileSync(
+    path.join(projectPath, 'src', 'services', 'calculator.js'),
+    generateSampleServiceContent(name)
+  );
+  
+  // Create a sample test
+  fs.writeFileSync(
+    path.join(projectPath, 'test', 'calculator.test.js'),
+    generateSampleTestContent(name)
+  );
+  
+  console.log(chalk.green(`✓ Project created successfully!`));
+  console.log(`  Location: ${chalk.yellow(projectPath)}`);
+  console.log(`\nNext steps:`);
+  console.log(`  1. ${chalk.yellow(`cd ${kebabName}`)}`);
+  console.log(`  2. ${chalk.yellow('npm install')}`);
+  console.log(`  3. ${chalk.yellow('node app.js')}`);
+}
+
+/**
+ * Convert string to kebab-case
+ * @param {string} str - Input string
+ * @returns {string} - Kebab-case string
+ */
+function toKebabCase(str) {
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase();
+}
+
+/**
+ * Generate project configuration content
+ * @param {string} name - Project name
+ * @returns {string} - Configuration file content
+ */
+function generateProjectConfigContent(name) {
+  return `/**
+ * ${name} Configuration
+ * Main application configuration
+ */
+
+module.exports = {
+  // Application settings
+  appName: '${name}',
+  version: '1.0.0',
+  environment: process.env.NODE_ENV || 'development',
+  debug: process.env.NODE_ENV !== 'production',
+  
+  // Math engine configuration
+  math: {
+    precision: 64,
+    roundingMode: 'HALF_UP',
+    useSymbolic: true
+  },
+  
+  // Performance settings
+  performance: {
+    cacheResults: true,
+    maxCacheSize: 1000,
+    useWorkers: true,
+    maxWorkers: 4
+  }
+};
+`;
+}
+
+/**
+ * Generate Herta.js framework configuration content
+ * @param {string} name - Project name
+ * @returns {string} - Herta configuration file content
+ */
+function generateHertaConfigContent(name) {
+  return `/**
+ * Herta.js Framework Configuration
+ * ${name} project
+ */
+
+module.exports = {
+  // Modules to load
+  modules: [
+    'core',
+    'algebra',
+    'calculus',
+    'statistics',
+    'discrete',
+    'utils'
+  ],
+  
+  // Module-specific configuration
+  moduleConfig: {
+    core: {
+      // Core module settings
+      extendPrototypes: false,
+      matrixDefaultSize: 4
+    },
+    statistics: {
+      // Statistics module settings
+      defaultDistribution: 'normal',
+      randomSeed: null // Set to number for deterministic randomness
+    }
+  },
+  
+  // Plugin configuration
+  plugins: [
+    // Add any Herta.js plugins here
+  ]
+};
+`;
+}
+
+/**
+ * Generate package.json content
+ * @param {string} name - Project name
+ * @param {string} kebabName - Project name in kebab-case
+ * @returns {string} - package.json content
+ */
+function generatePackageJsonContent(name, kebabName) {
+  return `{
+  "name": "${kebabName}",
+  "version": "1.0.0",
+  "description": "${name} - Built with Herta.js Mathematical Framework",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "herta": "^1.2.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "eslint": "^8.38.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT"
+}
+`;
+}
+
+/**
+ * Generate app.js content
+ * @param {string} name - Project name
+ * @returns {string} - app.js content
+ */
+function generateAppJsContent(name) {
+  return `/**
+ * ${name}
+ * Main application entry point
+ */
+
+const herta = require('herta');
+const config = require('./config');
+
+// Load app-specific modules
+const calculatorService = require('./src/services/calculator');
+
+// Initialize the Herta.js framework
+const app = herta.createApplication({
+  debug: config.debug,
+  modules: require('./herta.config').modules
+});
+
+// Quick demo
+console.log('\n' + '='.repeat(50));
+console.log(\`${name} Application\`);
+console.log('='.repeat(50));
+
+// Matrix example
+const matrix = app.core.matrix.create([[1, 2], [3, 4]]);
+console.log('\nMatrix operations:');
+console.log('Matrix:', matrix.toString());
+console.log('Determinant:', matrix.determinant());
+console.log('Inverse:', matrix.inverse().toString());
+
+// Calculator service example
+console.log('\nCalculator service:');
+const result = calculatorService.calculate({
+  operation: 'quadratic',
+  a: 1,
+  b: -3,
+  c: 2
+});
+console.log('Quadratic equation solution:', result);
+
+console.log('\n' + '='.repeat(50));
+console.log('Application running successfully!');
+console.log('='.repeat(50) + '\n');
+
+// In real applications, you might want to expose HTTP endpoints
+// or start other services here
+
+module.exports = app;
+`;
+}
+
+/**
+ * Generate README.md content
+ * @param {string} name - Project name
+ * @param {string} kebabName - Project name in kebab-case
+ * @returns {string} - README.md content
+ */
+function generateReadmeContent(name, kebabName) {
+  return `# ${name}
+
+${name} is a mathematical application built using the Herta.js framework.
+
+## Installation
+
+\`\`\`bash
+npm install
+\`\`\`
+
+## Usage
+
+\`\`\`bash
+npm start
+\`\`\`
+
+For development with auto-reload:
+
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Testing
+
+\`\`\`bash
+npm test
+\`\`\`
+
+## Project Structure
+
+\`\`\`
+${kebabName}/
+├── src/
+│   ├── models/        # Data models
+│   ├── services/      # Business logic
+│   ├── controllers/   # Route handlers
+│   └── utils/         # Helper functions
+├── test/              # Test files
+├── config.js          # Application configuration
+├── herta.config.js    # Herta.js framework configuration
+├── app.js             # Main entry point
+└── package.json
+\`\`\`
+`;
+}
+
+/**
+ * Generate sample model content
+ * @param {string} name - Project name
+ * @returns {string} - Sample model content
+ */
+function generateSampleModelContent(name) {
+  return `/**
+ * Sample Model
+ * ${name} Project
+ */
+
+class SampleModel {
+  constructor(data = {}) {
+    this.id = data.id || Math.floor(Math.random() * 10000);
+    this.name = data.name || 'Sample';
+    this.value = data.value || 0;
+    this.createdAt = data.createdAt || new Date();
+  }
+  
+  // Serialize to JSON
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      value: this.value,
+      createdAt: this.createdAt
+    };
+  }
+  
+  // Create from JSON
+  static fromJSON(json) {
+    return new SampleModel(json);
+  }
+}
+
+module.exports = SampleModel;
+`;
+}
+
+/**
+ * Generate sample service content
+ * @param {string} name - Project name
+ * @returns {string} - Sample service content
+ */
+function generateSampleServiceContent(name) {
+  return `/**
+ * Calculator Service
+ * ${name} Project
+ */
+
+const herta = require('herta');
+
+const calculatorService = {
+  /**
+   * Perform mathematical operations
+   * @param {Object} params - Operation parameters
+   * @returns {*} - Result of the operation
+   */
+  calculate(params) {
+    const { operation } = params;
+    
+    switch (operation) {
+      case 'add':
+        return params.a + params.b;
+        
+      case 'subtract':
+        return params.a - params.b;
+        
+      case 'multiply':
+        return params.a * params.b;
+        
+      case 'divide':
+        if (params.b === 0) throw new Error('Division by zero');
+        return params.a / params.b;
+        
+      case 'quadratic':
+        return this.solveQuadratic(params.a, params.b, params.c);
+        
+      default:
+        throw new Error(\`Unknown operation: ${operation}\`);
+    }
+  },
+  
+  /**
+   * Solve quadratic equation ax² + bx + c = 0
+   * @param {number} a - Coefficient of x²
+   * @param {number} b - Coefficient of x
+   * @param {number} c - Constant term
+   * @returns {Object} - Solutions of the equation
+   */
+  solveQuadratic(a, b, c) {
+    if (a === 0) throw new Error('Not a quadratic equation');
+    
+    const discriminant = b * b - 4 * a * c;
+    
+    if (discriminant < 0) {
+      // Complex solutions
+      const realPart = -b / (2 * a);
+      const imagPart = Math.sqrt(Math.abs(discriminant)) / (2 * a);
+      
+      return {
+        x1: \`${realPart} + ${imagPart}i\`,
+        x2: \`${realPart} - ${imagPart}i\`,
+        discriminant
+      };
+    } else {
+      // Real solutions
+      const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+      const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+      
+      return { x1, x2, discriminant };
+    }
+  }
+};
+
+module.exports = calculatorService;
+`;
+}
+
+/**
+ * Generate sample test content
+ * @param {string} name - Project name
+ * @returns {string} - Sample test content
+ */
+function generateSampleTestContent(name) {
+  return `/**
+ * Calculator Service Tests
+ * ${name} Project
+ */
+
+const calculatorService = require('../src/services/calculator');
+
+describe('Calculator Service', () => {
+  describe('Basic operations', () => {
+    test('should add two numbers', () => {
+      const result = calculatorService.calculate({ operation: 'add', a: 2, b: 3 });
+      expect(result).toBe(5);
+    });
+    
+    test('should subtract two numbers', () => {
+      const result = calculatorService.calculate({ operation: 'subtract', a: 5, b: 3 });
+      expect(result).toBe(2);
+    });
+    
+    test('should multiply two numbers', () => {
+      const result = calculatorService.calculate({ operation: 'multiply', a: 2, b: 3 });
+      expect(result).toBe(6);
+    });
+    
+    test('should divide two numbers', () => {
+      const result = calculatorService.calculate({ operation: 'divide', a: 6, b: 3 });
+      expect(result).toBe(2);
+    });
+    
+    test('should throw an error when dividing by zero', () => {
+      expect(() => {
+        calculatorService.calculate({ operation: 'divide', a: 6, b: 0 });
+      }).toThrow('Division by zero');
+    });
+  });
+  
+  describe('Quadratic equation solver', () => {
+    test('should solve quadratic equation with two real roots', () => {
+      const result = calculatorService.calculate({ 
+        operation: 'quadratic', 
+        a: 1, 
+        b: -3, 
+        c: 2 
+      });
+      
+      expect(result.x1).toBe(2);
+      expect(result.x2).toBe(1);
+      expect(result.discriminant).toBe(1);
+    });
+    
+    test('should solve quadratic equation with one real root', () => {
+      const result = calculatorService.calculate({ 
+        operation: 'quadratic', 
+        a: 1, 
+        b: -2, 
+        c: 1 
+      });
+      
+      expect(result.x1).toBe(1);
+      expect(result.x2).toBe(1);
+      expect(result.discriminant).toBe(0);
+    });
+    
+    test('should solve quadratic equation with complex roots', () => {
+      const result = calculatorService.calculate({ 
+        operation: 'quadratic', 
+        a: 1, 
+        b: 0, 
+        c: 1 
+      });
+      
+      expect(result.discriminant).toBe(-4);
+      expect(result.x1).toContain('i');
+      expect(result.x2).toContain('i');
+    });
+  });
+});
 `;
 }
 
