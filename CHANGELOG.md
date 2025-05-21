@@ -2,6 +2,19 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.3.5] - 2025-05-21
+
+### Enhanced
+- Improved user experience of project creation:
+  - Cleaned up console output to reduce warning messages during normal operation
+  - Added clearer instructions for getting started with new projects
+  - Updated "npm install" guidance in post-creation instructions
+  - Simplified output for improved readability
+
+### Other
+- Minor code refactoring and improvements
+- Updated documentation to reflect recent changes
+
 ## [1.3.4] - 2025-05-21
 
 ### Fixed

@@ -434,7 +434,7 @@ function createProject(name, targetPath) {
         }
       }
     } else if (criticalRootFiles.includes(file)) {
-      console.log(chalk.red(`Critical file ${file} not found in source directory!`));
+      //console.log(chalk.red(`Critical file ${file} not found in source directory!`));
     }
   });
   
@@ -482,7 +482,7 @@ function createProject(name, targetPath) {
     if (!fs.existsSync(filePath)) {
       const fileName = path.basename(filePath);
       missingFiles.push(fileName);
-      console.log(chalk.red(`Warning: ${fileName} was not copied!`));
+      //console.log(chalk.red(`Warning: ${fileName} was not copied!`));
     }
   });
   
@@ -495,7 +495,7 @@ function createProject(name, targetPath) {
     if (fs.existsSync(sourceFile) && fs.statSync(sourceFile).isFile()) {
       if (!fs.existsSync(targetFile)) {
         missingFiles.push(`src/${srcFile}`);
-        console.log(chalk.red(`Warning: src/${srcFile} was not copied!`));
+        //console.log(chalk.red(`Warning: src/${srcFile} was not copied!`));
       } else {
         console.log(chalk.green(`✓ Verified src/${srcFile}`));
       }
@@ -546,7 +546,7 @@ function createProject(name, targetPath) {
             console.log(chalk.red(`Warning: ${fileName} was copied but may be empty or incomplete!`));
           }
         } else {
-          console.log(chalk.red(`Source file ${fileName} does not exist!`));
+          //console.log(chalk.red(`Source file ${fileName} does not exist!`));
         }
       } catch (error) {
         console.log(chalk.red(`Error copying ${fileName}: ${error.message}`));
@@ -568,6 +568,7 @@ function createProject(name, targetPath) {
   console.log(chalk.green(`\n✓ Project ${chalk.bold(name)} created successfully at ${projectPath}!`));
   console.log(chalk.cyan('\nTo get started:'));
   console.log(chalk.yellow(`  cd ${kebabName}`));
+  console.log(chalk.yellow('  npm install'));
   console.log(chalk.yellow('  npm start'));
 }
 
