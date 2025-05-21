@@ -39,22 +39,6 @@ function assertMatrixApproxEqual(actual, expected, message, epsilon = 1e-10) {
   }
 }
 
-// Custom assertion for matrix approximate equality
-function assertMatrixApproxEqual(actual, expected, message, epsilon = 1e-10) {
-  assert.strictEqual(actual.length, expected.length, 
-    message || `Matrices have different row counts: ${actual.length} vs ${expected.length}`);
-  
-  for (let i = 0; i < actual.length; i++) {
-    assert.strictEqual(actual[i].length, expected[i].length, 
-      message || `Matrices have different column counts at row ${i}: ${actual[i].length} vs ${expected[i].length}`);
-    
-    for (let j = 0; j < actual[i].length; j++) {
-      assertApproxEqual(actual[i][j], expected[i][j], 
-        message || `Matrices differ at [${i}][${j}]: ${actual[i][j]} vs ${expected[i][j]}`, epsilon);
-    }
-  }
-}
-
 // Export testing utilities
 module.exports = {
   assert,

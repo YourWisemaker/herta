@@ -1526,8 +1526,19 @@ const advanced = {
   }
 };
 
+// Functions for test compatibility
+function createUndirectedGraph() {
+  return create({ directed: false });
+}
+
+function createDirectedGraph() {
+  return create({ directed: true });
+}
+
 module.exports = {
   create,
   algorithms,
-  advanced
+  advanced,
+  createUndirectedGraph,
+  createDirectedGraph
 };

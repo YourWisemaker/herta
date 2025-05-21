@@ -91,7 +91,6 @@
     "string-similarity": "^4.0.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "tensor-contraction": "^1.0.4",
     "typed-function": "^4.1.0"
   },
   "devDependencies": {
