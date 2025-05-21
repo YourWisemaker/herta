@@ -2,6 +2,31 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.3.1] - 2025-05-21
+
+### Fixed
+- Completely rewrote the graph module in the Herta.js framework to fix multiple issues:
+  - Corrected graph creation and properties (directed/undirected, weighted edges, metadata)
+  - Fixed Dijkstra's algorithm implementation for shortest path finding
+  - Improved Minimum Spanning Tree algorithms (both Prim's and Kruskal's implementations)
+  - Enhanced Floyd-Warshall algorithm for all-pairs shortest paths
+  - Optimized Community detection using the Louvain method
+  - Fixed network analysis functions including centrality measures
+  - Corrected articulation points and bridge detection
+
+### Enhanced
+- Updated the project creation functionality in the erudition make command to better preserve existing files
+- Improved package structure with more intuitive organization
+- Enhanced server.js example for better API demonstration
+
+## [1.3.0] - 2025-05-21
+
+### Added
+- Expanded physics modules with additional quantum mechanics functionality
+- Enhanced cryptoeconomics modules for blockchain analysis
+- Added tensor contraction operations for advanced matrix calculations
+- Improved documentation for all core modules
+
 ## [1.2.7] - 2025-05-21
 
 ### Enhanced
