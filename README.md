@@ -15,59 +15,41 @@ An advanced mathematics framework for Node.js providing powerful tools for mathe
 
 ## Features
 
-- **Core Mathematics**: Arithmetic operations, algebra, calculus, and complex numbers
-- **Advanced Symbolic Integration**: Solve complex integrals like ∫ sin(x²) dx
-- **Differential Equation Solving**: Analytical and numerical solutions for ODEs and PDEs
-- **Large-Scale Numerical Linear Algebra**: Efficient implementations for large matrix operations
-- **Symbolic Tensor Calculus**: Support for tensor operations used in physics and engineering
-- **Automatic Differentiation**: Compute gradients of arbitrary functions for machine learning
-- **Optimization**: Linear programming, gradient descent, and metaheuristics algorithms
-- **Geometry**: Computational geometry, coordinate transforms, and vector operations
-- **Signal Processing**: FFT, filter design, convolution, and wavelet transforms
-- **Machine Learning Primitives**: Activation functions, loss functions, PCA, and clustering
-- **Topology**: Topological space analysis, homology, and simplicial complexes
-- **Financial Mathematics**: Option pricing, portfolio optimization, and risk metrics
-- **Discrete Mathematics**: Combinatorics, set theory, and recurrence relation solvers
-- **Dynamical Systems**: Analysis of chaotic systems, bifurcations, and phase portraits
-- **Group Theory**: Algebraic structures, symmetry groups, and group operations
-- **Information Theory**: Entropy, mutual information, and coding theory algorithms
-- **Game Theory**: Nash equilibria, evolutionary games, and cooperative game solutions
-- **Algebraic Geometry**: Varieties, polynomials, and computational algebraic methods
-- **Differential Geometry**: Riemannian metrics, curvature calculations, geodesics, Lie derivatives, and parallel transport
-- **Category Theory**: Categories, functors, natural transformations, universal constructions, and adjunctions
-- **Complex Analysis**: Conformal mappings, contour integrals, Laurent series, and residue theory
-- **Group Theory**: Group representations, crystallographic groups, automorphisms, and quaternions
+### Core Mathematical Foundations
+- **Pure Mathematics**: Arithmetic, algebra, calculus, and complex analysis
+- **Symbolic Mathematics**: Integration, differentiation, and tensor calculus
+- **Number Theory**: Prime factorization, modular arithmetic, Diophantine equations, and quadratic residues
+- **Abstract Algebra**: Group theory, ring theory, field theory, and Galois theory
+
+### Advanced Mathematics
+- **Differential Geometry**: Riemannian metrics, curvature, geodesics, Lie derivatives, and parallel transport
+- **Category Theory**: Categories, functors, natural transformations, and universal constructions
 - **Algebraic Geometry**: Elliptic curves, toric varieties, blowups, and sheaf cohomology
-- **Numerical Methods**: Advanced integration, PDE solvers, spectral methods, and stochastic differential equations
-- **Number Theory**: Prime factorization, modular arithmetic, Diophantine equations, continued fractions, and quadratic residues
-- **Graph Theory**: Network analysis, community detection, flow algorithms, centrality measures, and graph coloring
 - **Topology**: Persistent homology, manifold operations, Betti numbers, and simplicial complexes
-- **Group Theory**: Crystallographic wallpaper groups, quaternion groups, matrix representations, and automorphisms
-- **Optimization**: Genetic algorithms, simulated annealing, differential evolution, and constrained optimization
-- **Chaos Theory**: Lyapunov exponents, fractal dimensions, bifurcation diagrams, and strange attractors
-- **Quantum Mechanics**: Quantum state representation, density matrices, quantum gates, quantum algorithms, and quantum measurements
-- **Fluid Dynamics**: Reynolds number calculations, pressure drop, head loss, Navier-Stokes solver, and advection-diffusion equations
-- **String Algorithms**: Advanced pattern matching (KMP, Boyer-Moore, Rabin-Karp), Levenshtein distance, suffix arrays, and sequence alignment
-- **Probability Theory**: Statistical distributions, stochastic processes, hypothesis testing, regression analysis, and Monte Carlo methods
-- **Computer Vision**: Image processing, edge detection, feature detection, segmentation algorithms, and feature matching
-- **Robotics**: Forward and inverse kinematics, Jacobian calculations, path planning, and trajectory generation
-- **Newtonian Physics**: Classical mechanics, projectile motion, orbital mechanics, and collision dynamics
-- **Advanced Algebra**: Group theory, ring theory, field theory, Galois theory, and polynomial operations
-- **Reinforcement Learning**: Q-learning, SARSA, multi-armed bandits, and policy evaluation methods
-- **Text Analysis**: NLP processing, TF-IDF, sentiment analysis, text classification, and entity recognition
-- **Tabular Analysis**: Data summarization, correlation analysis, outlier detection, and data transformation
-- **Technical Analysis**: Technical indicators, chart patterns, and market analysis tools for trading
-- **Trading Strategies**: Algorithmic trading strategies, position sizing, and performance evaluation
-- **Risk Management**: Financial risk metrics, portfolio analysis, and stress testing
-- **Quantum Computing**: Comprehensive quantum circuit simulation and quantum algorithm implementation
-- **Cryptography**: Secure encryption, hashing, and cryptographic primitives
-- **Advanced Algebra**: Group theory, ring theory, field theory, Galois theory, and polynomial operations
-- **Reinforcement Learning**: Q-learning, SARSA, multi-armed bandits, and policy evaluation methods
-- **Cryptoeconomics**: Merkle trees, tokenomics models, bonding curves, and staking calculations
-- **Zero Knowledge Proofs**: zk-SNARKs, Bulletproofs, range proofs, and verifiable computations
-- **Language Model Math**: Transformer attention mechanisms, positional encodings, and sampling algorithms
-- **Neural Networks**: Modern architectures, training algorithms, and layer implementations
-- **Relativistic Astrophysics**: Black hole physics, gravitational waves, and spacetime mathematics
+
+### Scientific Computing
+- **Numerical Methods**: ODEs, PDEs, spectral methods, and stochastic differential equations
+- **Linear Algebra**: Large-scale matrix operations and eigenvalue computations
+- **Optimization**: Gradient descent, genetic algorithms, simulated annealing, and constrained optimization
+- **Signal Processing**: FFT, filter design, convolution, and wavelet transforms
+
+### Physics and Dynamics
+- **Quantum Mechanics**: State vectors, density matrices, quantum gates, and measurements
+- **Chaos Theory**: Lyapunov exponents, fractals, bifurcation diagrams, and strange attractors
+- **Fluid Dynamics**: Reynolds numbers, Navier-Stokes solvers, and flow analysis
+- **Relativistic Physics**: Black hole physics, gravitational waves, and spacetime mathematics
+
+### Computer Science
+- **Graph Theory**: Network analysis, community detection, flow algorithms, and graph coloring
+- **String Algorithms**: Pattern matching (KMP, Boyer-Moore), suffix arrays, and sequence alignment
+- **Computer Vision**: Image processing, edge detection, feature matching, and segmentation
+- **Machine Learning**: Neural networks, reinforcement learning, and deep learning primitives
+
+### Applied Mathematics
+- **Probability & Statistics**: Distributions, hypothesis testing, and Monte Carlo methods
+- **Financial Mathematics**: Risk metrics, portfolio optimization, and trading strategies
+- **Cryptography**: Encryption, zero-knowledge proofs, and cryptoeconomic models
+- **Information Theory**: Entropy, coding theory, and data compression
 
 ## Installation
 
@@ -1725,94 +1707,6 @@ console.log(`Detected ${keypoints.length} keypoints`);
 const segmentation = herta.computerVision.segmentImage(rgbImage, 5);
 console.log(`Image segmented into 5 color clusters`);
 ```
-
-## Publishing to npm
-
-To publish the Herta.js framework to npm, follow these steps:
-
-### Preparing for Publication
-
-1. Ensure all tests pass:
-   ```bash
-   npm test
-   ```
-
-2. Build the distribution files:
-   ```bash
-   npm run build
-   ```
-
-3. Update the version in package.json according to [Semantic Versioning](https://semver.org/):
-   ```bash
-   # For patch releases (bug fixes)
-   npm version patch
-   
-   # For minor releases (new features, backwards compatible)
-   npm version minor
-   
-   # For major releases (breaking changes)
-   npm version major
-   ```
-
-### Publishing
-
-1. Log in to your npm account:
-   ```bash
-   npm login
-   ```
-
-2. Publish the package:
-   ```bash
-   npm publish
-   ```
-
-3. Verify the publication:
-   ```bash
-   npm view herta
-   ```
-
-### Using the Published Package
-
-Once published, users can install Herta.js with:
-
-```bash
-npm install herta
-```
-
-The Erudition CLI will be automatically available as described in the CLI section.
-
-## License
-
-MIT## Publishing to npm
-
-This package is ready for npm publication. Follow these steps to publish:
-
-1. **Verify Package Content**:
-   ```bash
-   npm pack
-   ```
-   This will create a `.tgz` file containing what would be published to npm. Inspect it to ensure it contains the correct files.
-
-2. **Run Tests**:
-   ```bash
-   npm test
-   npm run test:mocha  # Run Mocha tests for specialized modules
-   ```
-   
-3. **Build Documentation**:
-   ```bash
-   npm run docs
-   ```
-
-4. **Publish to npm**:
-   ```bash
-   # For a first-time publication
-   npm publish
-   
-   # For a new version
-   npm version [patch|minor|major]
-   npm publish
-   ```
 
 ## Specialized Modules
 
