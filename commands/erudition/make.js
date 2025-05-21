@@ -397,17 +397,44 @@ function createProject(name, targetPath) {
     '.editorconfig'   // Editor configuration
   ];
   
+  // First, display which files we're going to copy
+  console.log(chalk.cyan('\nCopying root files...'));
+  
+  // Critical files that MUST be copied
+  const criticalRootFiles = ['server.js', 'index.js', 'setup.js', 'package.json'];
+  
+  // Copy each file, with special handling for critical files
   rootFiles.forEach(file => {
     const sourceFile = path.join(currentPath, file);
     const targetFile = path.join(projectPath, file);
     
     if (fs.existsSync(sourceFile)) {
       try {
-        fs.copyFileSync(sourceFile, targetFile);
-        console.log(chalk.green(`Copied file: ${file}`));
+        // Make a direct bit-by-bit copy of the file
+        const fileContent = fs.readFileSync(sourceFile);
+        fs.writeFileSync(targetFile, fileContent);
+        
+        if (criticalRootFiles.includes(file)) {
+          console.log(chalk.green(`✓ Successfully copied critical file: ${file}`));
+        } else {
+          console.log(chalk.green(`Copied file: ${file}`));
+        }
       } catch (error) {
-        console.log(chalk.yellow(`Warning: Could not copy ${file}: ${error.message}`));
+        console.log(chalk.red(`Error copying ${file}: ${error.message}`));
+        
+        // For critical files, attempt an additional copy method
+        if (criticalRootFiles.includes(file)) {
+          try {
+            console.log(chalk.yellow(`Attempting alternative copy method for ${file}...`));
+            execSync(`cp "${sourceFile}" "${targetFile}"`, { stdio: 'pipe' });
+            console.log(chalk.green(`✓ Successfully copied ${file} using cp command`));
+          } catch (altError) {
+            console.log(chalk.red(`Failed to copy critical file ${file} using alternative method: ${altError.message}`));
+          }
+        }
       }
+    } else if (criticalRootFiles.includes(file)) {
+      console.log(chalk.red(`Critical file ${file} not found in source directory!`));
     }
   });
   
@@ -475,7 +502,7 @@ function createProject(name, targetPath) {
     }
   });
   
-  // If we're missing important files, attempt to copy them manually
+  // If we're missing important files, attempt to copy them manually using multiple methods
   if (missingFiles.length > 0) {
     console.log(chalk.yellow('\nAttempting to manually copy missing files...'));
     missingFiles.forEach(fileName => {
@@ -490,8 +517,36 @@ function createProject(name, targetPath) {
         }
         
         if (fs.existsSync(sourceFile)) {
-          fs.copyFileSync(sourceFile, targetFile);
-          console.log(chalk.green(`✓ Successfully copied ${fileName}`));
+          // Try multiple copy methods for maximum reliability
+          try {
+            // Method 1: Direct read/write
+            const content = fs.readFileSync(sourceFile);
+            fs.writeFileSync(targetFile, content);
+            console.log(chalk.green(`✓ Successfully copied ${fileName} using read/write method`));
+          } catch (copyError) {
+            // Method 2: Use copyFileSync
+            try {
+              fs.copyFileSync(sourceFile, targetFile);
+              console.log(chalk.green(`✓ Successfully copied ${fileName} using copyFile method`));
+            } catch (copyError2) {
+              // Method 3: Use shell cp command
+              try {
+                execSync(`cp "${sourceFile}" "${targetFile}"`, { stdio: 'pipe' });
+                console.log(chalk.green(`✓ Successfully copied ${fileName} using cp command`));
+              } catch (cpError) {
+                throw new Error(`All copy methods failed for ${fileName}`); 
+              }
+            }
+          }
+          
+          // Verify the file was actually copied and has content
+          if (fs.existsSync(targetFile) && fs.statSync(targetFile).size > 0) {
+            console.log(chalk.green(`✓ Verified ${fileName} was successfully copied`));
+          } else {
+            console.log(chalk.red(`Warning: ${fileName} was copied but may be empty or incomplete!`));
+          }
+        } else {
+          console.log(chalk.red(`Source file ${fileName} does not exist!`));
         }
       } catch (error) {
         console.log(chalk.red(`Error copying ${fileName}: ${error.message}`));
