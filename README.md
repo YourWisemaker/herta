@@ -34,19 +34,162 @@ Herta.js is now organized in a more intuitive folder structure for better code o
 └── advanced/    # Advanced specialized modules
 ```
 
-### New Features from TheoremJS
-- **Units Conversion System** - Complete system for converting between various units (length, mass, time, etc.)
-- **Advanced Fraction Operations** - Full-featured fraction class with arithmetic and comparison methods
-- **Random Number Generation** - Enhanced RNG with multiple probability distributions
-- **Mathematical Sequence Generators** - Functions for generating mathematical sequences like Fibonacci, primes, etc.
+### New Features in Version 1.1.0
 
-### Fixed Graph Module
-The graph module has been completely rewritten with improved implementations of:
-- Dijkstra's algorithm for path finding
-- Minimum Spanning Tree algorithms (Prim's and Kruskal's)
-- Community detection using Louvain method
-- Network analysis with centrality measures
-- Articulation points and bridge detection
+#### Units Conversion System
+Complete system for converting between various units of measurement:
+
+```javascript
+// Convert between different length units
+const meters = herta.utils.units.length(5, 'feet', 'meter');  // 1.524 meters
+const miles = herta.utils.units.length(10, 'kilometer', 'mile');  // 6.21371 miles
+
+// Temperature conversion
+const fahrenheit = herta.utils.units.temperature(100, 'celsius', 'fahrenheit');  // 212°F
+
+// Other unit types
+const kilograms = herta.utils.units.mass(16, 'ounce', 'kilogram');  // 0.45359 kg
+const seconds = herta.utils.units.time(2, 'hour', 'second');  // 7200 seconds
+const sqMeters = herta.utils.units.area(1, 'acre', 'squareMeter');  // 4046.86 m²
+const joules = herta.utils.units.energy(100, 'calorie', 'joule');  // 418.4 joules
+```
+
+#### Advanced Fraction Operations
+Full-featured fraction class with arithmetic and comparison methods:
+
+```javascript
+const { Fraction } = herta.core.fraction;
+
+// Create fractions
+const frac1 = new Fraction(3, 4);  // 3/4
+const frac2 = new Fraction(2, 5);  // 2/5
+
+// Arithmetic operations
+const sum = frac1.add(frac2);              // 23/20
+const difference = frac1.subtract(frac2);  // 7/20
+const product = frac1.multiply(frac2);     // 6/20 (simplified to 3/10)
+const quotient = frac1.divide(frac2);      // 15/8
+
+// Comparison methods
+frac1.equals(new Fraction(6, 8));         // true (both simplify to 3/4)
+frac1.greaterThan(frac2);                 // true
+frac2.lessThan(frac1);                    // true
+
+// Conversions
+frac1.toDecimal();                        // 0.75
+frac1.toString();                         // "3/4"
+
+// Create fractions from decimals
+const frac3 = Fraction.fromDecimal(0.333333);  // Approximates to 1/3
+```
+
+#### Random Number Generation
+Enhanced random number generation with multiple probability distributions:
+
+```javascript
+// Basic random generation
+const randomInteger = herta.utils.random.randomInt(1, 100);       // Random integer between 1-100
+const randomDecimal = herta.utils.random.randomFloat(0, 1);       // Random float between 0-1
+const randomTrueOrFalse = herta.utils.random.randomBoolean(0.7);  // 70% chance of true
+
+// Random selections
+const array = [10, 20, 30, 40, 50];
+const randomElement = herta.utils.random.randomItem(array);       // Random item from array
+const shuffledArray = herta.utils.random.shuffle(array);          // Randomly shuffled array
+
+// Advanced distributions
+const normalRandom = herta.utils.random.randomNormal(50, 10);      // Normal distribution (μ=50, σ=10)
+const exponentialRandom = herta.utils.random.randomExponential(2); // Exponential distribution (λ=2)
+const poissonRandom = herta.utils.random.randomPoisson(5);         // Poisson distribution (λ=5)
+
+// Other utilities
+const uuid = herta.utils.random.uuid();                           // Generate UUID v4
+const randomHexColor = herta.utils.random.randomColor();           // Random hex color like #FF5733
+```
+
+#### Mathematical Sequence Generators
+Functions for generating mathematical sequences:
+
+```javascript
+// Common number sequences
+const fibSeq = herta.utils.generators.fibonacci(10);          // [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+const primeSeq = herta.utils.generators.primes(20);           // [2, 3, 5, 7, 11, 13, 17, 19]
+const triangular = herta.utils.generators.triangularNumbers(7); // [1, 3, 6, 10, 15, 21, 28]
+const squares = herta.utils.generators.squareNumbers(5);      // [1, 4, 9, 16, 25]
+
+// Pattern-based sequences
+const arithmetic = herta.utils.generators.arithmeticSequence(2, 3, 5);  // [2, 5, 8, 11, 14]
+const geometric = herta.utils.generators.geometricSequence(1, 2, 6);    // [1, 2, 4, 8, 16, 32]
+
+// Advanced mathematical sequences
+const pascalTri = herta.utils.generators.pascalsTriangle(4);          // Triangle with 4 rows
+const catalan = herta.utils.generators.catalanNumbers(6);             // [1, 1, 2, 5, 14, 42]
+const collatz = herta.utils.generators.collatzSequence(12);           // [12, 6, 3, 10, 5, 16, 8, 4, 2, 1]
+```
+
+### Improved Graph Module
+The graph module has been completely rewritten with enhanced functionality and performance:
+
+```javascript
+// Create a new graph (directed or undirected)
+const graph = new herta.discrete.graph.Graph(true);  // directed graph
+
+// Add vertices and weighted edges
+graph.addVertex('A', { label: 'Start' });
+graph.addVertex('B', { label: 'Checkpoint' });
+graph.addVertex('C', { label: 'Junction' });
+graph.addVertex('D', { label: 'Station' });
+graph.addVertex('E', { label: 'End' });
+
+graph.addEdge('A', 'B', { weight: 2 });
+graph.addEdge('B', 'C', { weight: 1 });
+graph.addEdge('C', 'D', { weight: 3 });
+graph.addEdge('D', 'E', { weight: 1 });
+graph.addEdge('A', 'E', { weight: 5 });
+
+// Find shortest path using Dijkstra's algorithm
+const shortestPath = graph.findShortestPath('A', 'E');
+// Returns { path: ['A', 'B', 'C', 'D', 'E'], distance: 7 }
+
+// Generate minimum spanning tree using Kruskal's algorithm
+const mst = graph.minimumSpanningTreeKruskal();
+// Returns a new Graph representing the MST
+
+// Alternative: use Prim's algorithm
+const mstPrim = graph.minimumSpanningTreePrim();
+
+// Find all-pairs shortest paths using Floyd-Warshall algorithm
+const distances = graph.floydWarshall();
+// Returns distance matrix between all pairs of vertices
+
+// Community detection using Louvain method
+const communities = graph.detectCommunities();
+// Returns array of communities (groups of vertices)
+
+// Network analysis
+const degreeCentrality = graph.degreeCentrality('C');
+const betweennessCentrality = graph.betweennessCentrality();
+const closenessCentrality = graph.closenessCentrality('A');
+
+// Detect critical points in the network
+const articulationPoints = graph.findArticulationPoints();
+const bridges = graph.findBridges();
+
+// For directed acyclic graphs (DAGs)
+const sorted = graph.topologicalSort();
+```
+
+The graph module integrates seamlessly with other Herta.js features:
+
+```javascript
+// Analyze network data using the graph module and statistics
+const networkDiameter = graph.diameter();
+const avgPathLength = graph.averagePathLength();
+const densityValue = graph.density();
+
+// Generate graph visualizations (returns data for plotting)
+const layout = graph.forceDirectedLayout();
+```
 
 ## Features
 
