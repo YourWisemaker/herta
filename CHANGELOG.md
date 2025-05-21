@@ -2,6 +2,36 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.2.3] - 2025-05-21
+
+### Changed
+- Updated documentation to improve clarity and organization
+- Moved all changelog information to CHANGELOG.md for better maintainability
+- Improved README structure for better readability
+
+## [1.2.2] - 2025-05-21
+
+### Added
+- Completely rewrote the graph module with enhanced functionality:
+  - Improved implementation of Dijkstra's algorithm for shortest paths
+  - Added Minimum Spanning Tree algorithms (Prim's and Kruskal's)
+  - Implemented Floyd-Warshall algorithm for all-pairs shortest paths
+  - Added community detection using the Louvain method
+  - Incorporated network analysis functions including centrality measures
+  - Added articulation points and bridge detection
+
+### Fixed
+- Enhanced package.json exports configuration to explicitly expose all directories (src, bin, commands, dist, examples)
+- Improved import capabilities for consumers of the library
+- Better support for direct imports from all package directories
+
+## [1.2.1] - 2025-05-21
+
+### Fixed
+- Fixed npm installation issue by properly exposing source files
+- Added proper module field and exports configuration to package.json
+- Improved compatibility for projects importing the library
+
 ## [1.2.0] - 2025-05-21
 
 ### Added

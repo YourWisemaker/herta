@@ -1,6 +1,6 @@
 # Herta.js
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://www.npmjs.com/package/herta)
+[![NPM](https://img.shields.io/npm/v/herta.svg)](https://www.npmjs.com/package/herta)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green.svg)]()
@@ -13,10 +13,9 @@
 
 An advanced mathematics framework for Node.js providing powerful tools for mathematical computation, symbolic mathematics, and scientific computing. Designed specifically for scientists, researchers, and advanced mathematical applications.
 
-## New in Version 1.1.0
+## Framework Architecture
 
-### Enhanced Folder Structure
-Herta.js is now organized in a more intuitive folder structure for better code organization and easier navigation:
+Herta.js is organized in a modular, intuitive folder structure for better organization and easier navigation:
 
 ```
 /src
@@ -34,9 +33,9 @@ Herta.js is now organized in a more intuitive folder structure for better code o
 └── advanced/    # Advanced specialized modules
 ```
 
-### New Features in Version 1.1.0
+## Feature Highlights
 
-#### Units Conversion System
+### Units Conversion System
 Complete system for converting between various units of measurement:
 
 ```javascript
@@ -54,7 +53,7 @@ const sqMeters = herta.utils.units.area(1, 'acre', 'squareMeter');  // 4046.86 m
 const joules = herta.utils.units.energy(100, 'calorie', 'joule');  // 418.4 joules
 ```
 
-#### Advanced Fraction Operations
+### Advanced Fraction Operations
 Full-featured fraction class with arithmetic and comparison methods:
 
 ```javascript
@@ -83,7 +82,7 @@ frac1.toString();                         // "3/4"
 const frac3 = Fraction.fromDecimal(0.333333);  // Approximates to 1/3
 ```
 
-#### Random Number Generation
+### Random Number Generation
 Enhanced random number generation with multiple probability distributions:
 
 ```javascript
@@ -107,7 +106,7 @@ const uuid = herta.utils.random.uuid();                           // Generate UU
 const randomHexColor = herta.utils.random.randomColor();           // Random hex color like #FF5733
 ```
 
-#### Mathematical Sequence Generators
+### Mathematical Sequence Generators
 Functions for generating mathematical sequences:
 
 ```javascript
@@ -127,7 +126,7 @@ const catalan = herta.utils.generators.catalanNumbers(6);             // [1, 1, 
 const collatz = herta.utils.generators.collatzSequence(12);           // [12, 6, 3, 10, 5, 16, 8, 4, 2, 1]
 ```
 
-### Improved Graph Module
+### Graph Theory Module
 The graph module has been completely rewritten with enhanced functionality and performance:
 
 ```javascript
@@ -231,15 +230,80 @@ const layout = graph.forceDirectedLayout();
 
 ## Installation
 
+## Getting Started
+
+### Installation
+
+**Create a new Herta.js project (recommended):**
+
 ```bash
+# Using npm
+npm install -g herta
+herta erudition make project MyMathApp
+cd my-math-app
+
+# Or directly with npx
+npx herta erudition make project MyMathApp
+cd my-math-app
+```
+
+**Add to an existing project:**
+
+```bash
+# Using npm
 npm install herta
+
+# Using yarn
+yarn add herta
+```
+
+### Project Structure
+
+A typical Herta.js project has the following structure:
+
+```
+my-math-app/
+├── node_modules/
+├── src/
+│   ├── models/           # Data models
+│   ├── services/         # Business logic
+│   ├── controllers/      # Route handlers
+│   └── utils/            # Helper functions
+├── test/                 # Test files
+├── config.js             # Application configuration
+├── herta.config.js       # Herta.js framework configuration
+├── package.json
+└── README.md
+```
+
+### Quick Start
+
+```javascript
+// app.js
+const herta = require('herta');
+
+// Initialize the framework
+const app = herta.createApplication({
+  // Configuration options
+  debug: process.env.NODE_ENV !== 'production',
+  modules: ['algebra', 'calculus', 'statistics']
+});
+
+// Use framework components
+const matrix = app.core.matrix.create([[1, 2], [3, 4]]);
+const determinant = matrix.determinant();
+
+console.log(`Matrix determinant: ${determinant}`);
+
+// Start the application
+app.start();
 ```
 
 ## Herta Erudition CLI
 
 Herta.js comes with a powerful command-line interface called "Erudition" that helps you scaffold, analyze, test, document, and understand the framework.
 
-### Installation
+### CLI Usage
 
 The CLI is automatically available when you install Herta.js globally:
 
