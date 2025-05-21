@@ -104,7 +104,7 @@ describe('Graph Theory Module', () => {
       
       // Calculate total weight of MST
       let totalWeight = 0;
-      mst.edges().forEach(e => totalWeight += e.weight);
+      mst.getEdges().forEach(e => totalWeight += e.weight);
       
       assert.strictEqual(totalWeight, 8, 'MST total weight incorrect');
     });
@@ -117,7 +117,7 @@ describe('Graph Theory Module', () => {
       
       // Calculate total weight of MST
       let totalWeight = 0;
-      mst.edges().forEach(e => totalWeight += e.weight);
+      mst.getEdges().forEach(e => totalWeight += e.weight);
       
       assert.strictEqual(totalWeight, 8, 'MST total weight incorrect');
     });

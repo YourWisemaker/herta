@@ -30,18 +30,17 @@ class ADVariable {
   add(other) {
     const otherValue = other instanceof ADVariable ? other.value : other;
     const otherGradient = other instanceof ADVariable ? other.gradient : 0;
-    
+
     if (Array.isArray(this.gradient) && Array.isArray(otherGradient)) {
       return new ADVariable(
         this.value + otherValue,
         this.gradient.map((g, i) => g + otherGradient[i])
       );
-    } else {
-      return new ADVariable(
-        this.value + otherValue,
-        this.gradient + otherGradient
-      );
     }
+    return new ADVariable(
+      this.value + otherValue,
+      this.gradient + otherGradient
+    );
   }
 
   /**
@@ -52,18 +51,17 @@ class ADVariable {
   subtract(other) {
     const otherValue = other instanceof ADVariable ? other.value : other;
     const otherGradient = other instanceof ADVariable ? other.gradient : 0;
-    
+
     if (Array.isArray(this.gradient) && Array.isArray(otherGradient)) {
       return new ADVariable(
         this.value - otherValue,
         this.gradient.map((g, i) => g - otherGradient[i])
       );
-    } else {
-      return new ADVariable(
-        this.value - otherValue,
-        this.gradient - otherGradient
-      );
     }
+    return new ADVariable(
+      this.value - otherValue,
+      this.gradient - otherGradient
+    );
   }
 
   /**
@@ -74,18 +72,17 @@ class ADVariable {
   multiply(other) {
     const otherValue = other instanceof ADVariable ? other.value : other;
     const otherGradient = other instanceof ADVariable ? other.gradient : 0;
-    
+
     if (Array.isArray(this.gradient) && Array.isArray(otherGradient)) {
       return new ADVariable(
         this.value * otherValue,
         this.gradient.map((g, i) => g * otherValue + this.value * otherGradient[i])
       );
-    } else {
-      return new ADVariable(
-        this.value * otherValue,
-        this.gradient * otherValue + this.value * otherGradient
-      );
     }
+    return new ADVariable(
+      this.value * otherValue,
+      this.gradient * otherValue + this.value * otherGradient
+    );
   }
 
   /**
@@ -96,11 +93,11 @@ class ADVariable {
   divide(other) {
     const otherValue = other instanceof ADVariable ? other.value : other;
     const otherGradient = other instanceof ADVariable ? other.gradient : 0;
-    
+
     if (otherValue === 0) {
       throw new Error('Division by zero');
     }
-    
+
     if (Array.isArray(this.gradient) && Array.isArray(otherGradient)) {
       return new ADVariable(
         this.value / otherValue,
@@ -108,12 +105,11 @@ class ADVariable {
           (g * otherValue - this.value * otherGradient[i]) / (otherValue * otherValue)
         ))
       );
-    } else {
-      return new ADVariable(
-        this.value / otherValue,
-        (this.gradient * otherValue - this.value * otherGradient) / (otherValue * otherValue)
-      );
     }
+    return new ADVariable(
+      this.value / otherValue,
+      (this.gradient * otherValue - this.value * otherGradient) / (otherValue * otherValue)
+    );
   }
 
   /**
@@ -124,9 +120,9 @@ class ADVariable {
   pow(other) {
     const otherValue = other instanceof ADVariable ? other.value : other;
     const otherGradient = other instanceof ADVariable ? other.gradient : 0;
-    
-    const result = Math.pow(this.value, otherValue);
-    
+
+    const result = this.value ** otherValue;
+
     if (Array.isArray(this.gradient) && Array.isArray(otherGradient)) {
       return new ADVariable(
         result,
@@ -134,12 +130,11 @@ class ADVariable {
           result * (otherValue * g / this.value + otherGradient[i] * Math.log(this.value))
         ))
       );
-    } else {
-      return new ADVariable(
-        result,
-        result * (otherValue * this.gradient / this.value + otherGradient * Math.log(this.value))
-      );
     }
+    return new ADVariable(
+      result,
+      result * (otherValue * this.gradient / this.value + otherGradient * Math.log(this.value))
+    );
   }
 
   /**
@@ -150,14 +145,13 @@ class ADVariable {
     if (Array.isArray(this.gradient)) {
       return new ADVariable(
         Math.sin(this.value),
-        this.gradient.map(g => g * Math.cos(this.value))
-      );
-    } else {
-      return new ADVariable(
-        Math.sin(this.value),
-        this.gradient * Math.cos(this.value)
+        this.gradient.map((g) => g * Math.cos(this.value))
       );
     }
+    return new ADVariable(
+      Math.sin(this.value),
+      this.gradient * Math.cos(this.value)
+    );
   }
 
   /**
@@ -168,14 +162,13 @@ class ADVariable {
     if (Array.isArray(this.gradient)) {
       return new ADVariable(
         Math.cos(this.value),
-        this.gradient.map(g => -g * Math.sin(this.value))
-      );
-    } else {
-      return new ADVariable(
-        Math.cos(this.value),
-        -this.gradient * Math.sin(this.value)
+        this.gradient.map((g) => -g * Math.sin(this.value))
       );
     }
+    return new ADVariable(
+      Math.cos(this.value),
+      -this.gradient * Math.sin(this.value)
+    );
   }
 
   /**
@@ -184,18 +177,17 @@ class ADVariable {
    */
   exp() {
     const result = Math.exp(this.value);
-    
+
     if (Array.isArray(this.gradient)) {
       return new ADVariable(
         result,
-        this.gradient.map(g => g * result)
-      );
-    } else {
-      return new ADVariable(
-        result,
-        this.gradient * result
+        this.gradient.map((g) => g * result)
       );
     }
+    return new ADVariable(
+      result,
+      this.gradient * result
+    );
   }
 
   /**
@@ -206,18 +198,17 @@ class ADVariable {
     if (this.value <= 0) {
       throw new Error('Logarithm of non-positive number');
     }
-    
+
     if (Array.isArray(this.gradient)) {
       return new ADVariable(
         Math.log(this.value),
-        this.gradient.map(g => g / this.value)
-      );
-    } else {
-      return new ADVariable(
-        Math.log(this.value),
-        this.gradient / this.value
+        this.gradient.map((g) => g / this.value)
       );
     }
+    return new ADVariable(
+      Math.log(this.value),
+      this.gradient / this.value
+    );
   }
 }
 
@@ -245,24 +236,23 @@ class ADFunction {
   _parseExpression(expr) {
     if (typeof expr === 'function') {
       return expr;
-    } else if (typeof expr === 'string') {
+    } if (typeof expr === 'string') {
       // Simple expression parser (would be more complex in production)
       // Replace common operations with their JavaScript equivalents
       const jsExpr = expr
-        .replace(/\^/g, '**')                // Replace ^ with **
-        .replace(/sin\(/g, 'Math.sin(')      // Replace sin with Math.sin
-        .replace(/cos\(/g, 'Math.cos(')      // Replace cos with Math.cos
-        .replace(/tan\(/g, 'Math.tan(')      // Replace tan with Math.tan
-        .replace(/exp\(/g, 'Math.exp(')      // Replace exp with Math.exp
-        .replace(/log\(/g, 'Math.log(')      // Replace log with Math.log
-        .replace(/sqrt\(/g, 'Math.sqrt(')    // Replace sqrt with Math.sqrt
-        .replace(/pi/g, 'Math.PI')           // Replace pi with Math.PI
+        .replace(/\^/g, '**') // Replace ^ with **
+        .replace(/sin\(/g, 'Math.sin(') // Replace sin with Math.sin
+        .replace(/cos\(/g, 'Math.cos(') // Replace cos with Math.cos
+        .replace(/tan\(/g, 'Math.tan(') // Replace tan with Math.tan
+        .replace(/exp\(/g, 'Math.exp(') // Replace exp with Math.exp
+        .replace(/log\(/g, 'Math.log(') // Replace log with Math.log
+        .replace(/sqrt\(/g, 'Math.sqrt(') // Replace sqrt with Math.sqrt
+        .replace(/pi/g, 'Math.PI') // Replace pi with Math.PI
         .replace(/e(?![a-zA-Z])/g, 'Math.E'); // Replace e with Math.E (but not in variable names)
-      
+
       return new Function(...this.variables, `return ${jsExpr};`);
-    } else {
-      throw new Error('Expression must be a string or function');
     }
+    throw new Error('Expression must be a string or function');
   }
 
   /**
@@ -274,7 +264,7 @@ class ADFunction {
     if (point.length !== this.variables.length) {
       throw new Error('Point dimension must match number of variables');
     }
-    
+
     return this.func(...point);
   }
 
@@ -287,23 +277,22 @@ class ADFunction {
     if (point.length !== this.variables.length) {
       throw new Error('Point dimension must match number of variables');
     }
-    
+
     const gradient = [];
-    
+
     for (let i = 0; i < this.variables.length; i++) {
       // Create AD variables for each input
-      const adInputs = point.map((val, j) => {
+      const adInputs = point.map((val, j) =>
         // Set gradient to 1 for the variable we're differentiating with respect to
-        return new ADVariable(val, i === j ? 1 : 0);
-      });
-      
+        new ADVariable(val, i === j ? 1 : 0));
+
       // Evaluate the function with AD variables
       const result = this._evaluateWithAD(adInputs);
-      
+
       // Extract the gradient
       gradient.push(result.gradient);
     }
-    
+
     return gradient;
   }
 
@@ -316,28 +305,28 @@ class ADFunction {
     if (point.length !== this.variables.length) {
       throw new Error('Point dimension must match number of variables');
     }
-    
+
     const n = this.variables.length;
     const hessian = Array(n).fill().map(() => Array(n).fill(0));
-    
+
     // Compute the Hessian using finite differences on the gradient
     // This is a simple approximation; a full implementation would use
     // second-order automatic differentiation
-    
+
     const h = 1e-6; // Small step for numerical differentiation
     const baseGradient = this.gradient(point);
-    
+
     for (let i = 0; i < n; i++) {
       const forwardPoint = [...point];
       forwardPoint[i] += h;
-      
+
       const forwardGradient = this.gradient(forwardPoint);
-      
+
       for (let j = 0; j < n; j++) {
         hessian[i][j] = (forwardGradient[j] - baseGradient[j]) / h;
       }
     }
-    
+
     // Make the Hessian symmetric (it should be theoretically, but numerical errors can occur)
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
@@ -345,7 +334,7 @@ class ADFunction {
         hessian[i][j] = hessian[j][i] = avg;
       }
     }
-    
+
     return hessian;
   }
 
@@ -359,23 +348,23 @@ class ADFunction {
     // This is a simplified implementation
     // In a full implementation, we would need to overload all operations
     // to work with AD variables
-    
+
     // For demonstration, we'll use a simple approach with finite differences
-    const point = adInputs.map(v => v.value);
+    const point = adInputs.map((v) => v.value);
     const f0 = this.evaluate(point);
-    
+
     const gradient = adInputs.map((v, i) => {
       if (v.gradient === 1) {
         const h = 1e-6; // Small step for numerical differentiation
         const forwardPoint = [...point];
         forwardPoint[i] += h;
-        
+
         const f1 = this.evaluate(forwardPoint);
         return (f1 - f0) / h;
       }
       return 0;
     });
-    
+
     return new ADVariable(f0, gradient.reduce((sum, g) => sum + g, 0));
   }
 }
@@ -386,7 +375,7 @@ class ADFunction {
  * @param {Array<string>} variables - The variable names
  * @returns {ADFunction} - The AD function
  */
-autodiff.createFunction = function(expr, variables) {
+autodiff.createFunction = function (expr, variables) {
   return new ADFunction(expr, variables);
 };
 
@@ -397,7 +386,7 @@ autodiff.createFunction = function(expr, variables) {
  * @param {Array<number>} point - The point at which to compute the gradient
  * @returns {Array<number>} - The gradient vector
  */
-autodiff.gradient = function(expr, variables, point) {
+autodiff.gradient = function (expr, variables, point) {
   const func = autodiff.createFunction(expr, variables);
   return func.gradient(point);
 };
@@ -409,7 +398,7 @@ autodiff.gradient = function(expr, variables, point) {
  * @param {Array<number>} point - The point at which to compute the Hessian
  * @returns {Array<Array<number>>} - The Hessian matrix
  */
-autodiff.hessian = function(expr, variables, point) {
+autodiff.hessian = function (expr, variables, point) {
   const func = autodiff.createFunction(expr, variables);
   return func.hessian(point);
 };
@@ -421,14 +410,14 @@ autodiff.hessian = function(expr, variables, point) {
  * @param {Array<number>} point - The point at which to compute the Jacobian
  * @returns {Array<Array<number>>} - The Jacobian matrix
  */
-autodiff.jacobian = function(exprs, variables, point) {
+autodiff.jacobian = function (exprs, variables, point) {
   const jacobian = [];
-  
+
   for (const expr of exprs) {
     const func = autodiff.createFunction(expr, variables);
     jacobian.push(func.gradient(point));
   }
-  
+
   return jacobian;
 };
 
@@ -440,44 +429,44 @@ autodiff.jacobian = function(exprs, variables, point) {
  * @param {Object} options - Optimization options
  * @returns {Object} - The optimization result
  */
-autodiff.gradientDescent = function(expr, variables, initialPoint, options = {}) {
+autodiff.gradientDescent = function (expr, variables, initialPoint, options = {}) {
   const func = autodiff.createFunction(expr, variables);
-  
+
   const {
     maxIterations = 1000,
     learningRate = 0.01,
     tolerance = 1e-6
   } = options;
-  
+
   let point = [...initialPoint];
   let value = func.evaluate(point);
   let iteration = 0;
-  
+
   while (iteration < maxIterations) {
     // Compute gradient
     const gradient = func.gradient(point);
-    
+
     // Check convergence
     const gradientNorm = Math.sqrt(gradient.reduce((sum, g) => sum + g * g, 0));
     if (gradientNorm < tolerance) {
       break;
     }
-    
+
     // Update point
     point = point.map((p, i) => p - learningRate * gradient[i]);
-    
+
     // Evaluate function at new point
     const newValue = func.evaluate(point);
-    
+
     // Check if function value decreased
     if (Math.abs(newValue - value) < tolerance) {
       break;
     }
-    
+
     value = newValue;
     iteration++;
   }
-  
+
   return {
     point,
     value,

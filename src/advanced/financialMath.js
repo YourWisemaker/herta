@@ -4,7 +4,7 @@
  */
 
 const arithmetic = require('../core/arithmetic');
-const statistics = require('../advanced/statistics');
+const statistics = require('./statistics');
 
 const financialMath = {};
 
@@ -16,8 +16,8 @@ const financialMath = {};
  * @param {number} [frequency=1] - Compounding frequency per year
  * @returns {number} - Future value
  */
-financialMath.futureValue = function(principal, rate, time, frequency = 1) {
-  return principal * Math.pow(1 + rate / frequency, frequency * time);
+financialMath.futureValue = function (principal, rate, time, frequency = 1) {
+  return principal * (1 + rate / frequency) ** (frequency * time);
 };
 
 /**
@@ -28,8 +28,8 @@ financialMath.futureValue = function(principal, rate, time, frequency = 1) {
  * @param {number} [frequency=1] - Compounding frequency per year
  * @returns {number} - Present value
  */
-financialMath.presentValue = function(futureValue, rate, time, frequency = 1) {
-  return futureValue / Math.pow(1 + rate / frequency, frequency * time);
+financialMath.presentValue = function (futureValue, rate, time, frequency = 1) {
+  return futureValue / (1 + rate / frequency) ** (frequency * time);
 };
 
 /**
@@ -39,7 +39,7 @@ financialMath.presentValue = function(futureValue, rate, time, frequency = 1) {
  * @param {number} time - Time period in years
  * @returns {number} - Future value
  */
-financialMath.continuousCompounding = function(principal, rate, time) {
+financialMath.continuousCompounding = function (principal, rate, time) {
   return principal * Math.exp(rate * time);
 };
 
@@ -51,12 +51,12 @@ financialMath.continuousCompounding = function(principal, rate, time) {
  * @param {boolean} [dueAtBeginning=false] - Whether payments are made at the beginning of periods
  * @returns {number} - Present value of the annuity
  */
-financialMath.annuityPresentValue = function(payment, rate, periods, dueAtBeginning = false) {
+financialMath.annuityPresentValue = function (payment, rate, periods, dueAtBeginning = false) {
   if (Math.abs(rate) < 1e-10) {
     return payment * periods;
   }
-  
-  const pvifa = (1 - 1 / Math.pow(1 + rate, periods)) / rate;
+
+  const pvifa = (1 - 1 / (1 + rate) ** periods) / rate;
   return payment * pvifa * (dueAtBeginning ? (1 + rate) : 1);
 };
 
@@ -68,12 +68,12 @@ financialMath.annuityPresentValue = function(payment, rate, periods, dueAtBeginn
  * @param {boolean} [dueAtBeginning=false] - Whether payments are made at the beginning of periods
  * @returns {number} - Future value of the annuity
  */
-financialMath.annuityFutureValue = function(payment, rate, periods, dueAtBeginning = false) {
+financialMath.annuityFutureValue = function (payment, rate, periods, dueAtBeginning = false) {
   if (Math.abs(rate) < 1e-10) {
     return payment * periods;
   }
-  
-  const fvifa = (Math.pow(1 + rate, periods) - 1) / rate;
+
+  const fvifa = ((1 + rate) ** periods - 1) / rate;
   return payment * fvifa * (dueAtBeginning ? (1 + rate) : 1);
 };
 
@@ -86,17 +86,17 @@ financialMath.annuityFutureValue = function(payment, rate, periods, dueAtBeginni
  * @param {boolean} [dueAtBeginning=false] - Whether payments are made at the beginning of periods
  * @returns {number} - Periodic payment amount
  */
-financialMath.annuityPayment = function(presentValue, futureValue, rate, periods, dueAtBeginning = false) {
+financialMath.annuityPayment = function (presentValue, futureValue, rate, periods, dueAtBeginning = false) {
   if (Math.abs(rate) < 1e-10) {
     return (presentValue + futureValue) / periods;
   }
-  
-  const pvifa = (1 - 1 / Math.pow(1 + rate, periods)) / rate;
-  const fvifa = (Math.pow(1 + rate, periods) - 1) / rate;
-  
-  const payment = (presentValue + futureValue / Math.pow(1 + rate, periods)) / 
-                 (pvifa * (dueAtBeginning ? (1 + rate) : 1));
-  
+
+  const pvifa = (1 - 1 / (1 + rate) ** periods) / rate;
+  const fvifa = ((1 + rate) ** periods - 1) / rate;
+
+  const payment = (presentValue + futureValue / (1 + rate) ** periods)
+                 / (pvifa * (dueAtBeginning ? (1 + rate) : 1));
+
   return payment;
 };
 
@@ -106,13 +106,13 @@ financialMath.annuityPayment = function(presentValue, futureValue, rate, periods
  * @param {Array} cashFlows - Series of cash flows (negative for outflows, positive for inflows)
  * @returns {number} - Net Present Value
  */
-financialMath.npv = function(rate, cashFlows) {
+financialMath.npv = function (rate, cashFlows) {
   let npv = 0;
-  
+
   for (let i = 0; i < cashFlows.length; i++) {
-    npv += cashFlows[i] / Math.pow(1 + rate, i);
+    npv += cashFlows[i] / (1 + rate) ** i;
   }
-  
+
   return npv;
 };
 
@@ -123,75 +123,75 @@ financialMath.npv = function(rate, cashFlows) {
  * @param {Object} [options] - Calculation options
  * @returns {number} - Internal Rate of Return
  */
-financialMath.irr = function(cashFlows, options = {}) {
+financialMath.irr = function (cashFlows, options = {}) {
   const maxIterations = options.maxIterations || 100;
   const tolerance = options.tolerance || 1e-10;
   let guess = options.guess || 0.1;
-  
+
   // Function to calculate NPV
-  const calculateNPV = rate => {
+  const calculateNPV = (rate) => {
     let npv = 0;
     for (let i = 0; i < cashFlows.length; i++) {
-      npv += cashFlows[i] / Math.pow(1 + rate, i);
+      npv += cashFlows[i] / (1 + rate) ** i;
     }
     return npv;
   };
-  
+
   // Function to calculate derivative of NPV
-  const calculateNPVDerivative = rate => {
+  const calculateNPVDerivative = (rate) => {
     let derivative = 0;
     for (let i = 1; i < cashFlows.length; i++) {
-      derivative -= i * cashFlows[i] / Math.pow(1 + rate, i + 1);
+      derivative -= i * cashFlows[i] / (1 + rate) ** (i + 1);
     }
     return derivative;
   };
-  
+
   // Newton-Raphson method
   for (let i = 0; i < maxIterations; i++) {
     const npv = calculateNPV(guess);
     if (Math.abs(npv) < tolerance) {
       return guess;
     }
-    
+
     const derivative = calculateNPVDerivative(guess);
     if (Math.abs(derivative) < 1e-10) {
       break; // Avoid division by near-zero
     }
-    
-    guess = guess - npv / derivative;
-    
+
+    guess -= npv / derivative;
+
     // Bounds check
     if (guess <= -1) {
       guess = -0.9999;
     }
   }
-  
+
   // If no convergence, try bisection method as fallback
   let low = -0.999;
   let high = 1;
   const lowNPV = calculateNPV(low);
   const highNPV = calculateNPV(high);
-  
+
   if (lowNPV * highNPV > 0) {
     // No solution in the range
     return NaN;
   }
-  
+
   for (let i = 0; i < maxIterations; i++) {
     const mid = (low + high) / 2;
     const midNPV = calculateNPV(mid);
-    
+
     if (Math.abs(midNPV) < tolerance) {
       return mid;
     }
-    
+
     if (midNPV * lowNPV < 0) {
       high = mid;
     } else {
       low = mid;
     }
   }
-  
+
   return (low + high) / 2;
 };
 
@@ -202,27 +202,27 @@ financialMath.irr = function(cashFlows, options = {}) {
  * @param {number} reinvestRate - Rate for positive cash flows
  * @returns {number} - Modified Internal Rate of Return
  */
-financialMath.mirr = function(cashFlows, financeRate, reinvestRate) {
+financialMath.mirr = function (cashFlows, financeRate, reinvestRate) {
   let negativeFlows = 0;
   let positiveFlows = 0;
   const n = cashFlows.length - 1;
-  
+
   for (let i = 0; i <= n; i++) {
     if (cashFlows[i] < 0) {
-      negativeFlows += cashFlows[i] * Math.pow(1 + financeRate, -i);
+      negativeFlows += cashFlows[i] * (1 + financeRate) ** -i;
     } else {
-      positiveFlows += cashFlows[i] * Math.pow(1 + reinvestRate, n - i);
+      positiveFlows += cashFlows[i] * (1 + reinvestRate) ** (n - i);
     }
   }
-  
+
   // Convert negative flows to positive for calculation
   negativeFlows = -negativeFlows;
-  
+
   if (negativeFlows <= 0 || positiveFlows <= 0) {
     return NaN; // MIRR not defined
   }
-  
-  return Math.pow(positiveFlows / negativeFlows, 1 / n) - 1;
+
+  return (positiveFlows / negativeFlows) ** (1 / n) - 1;
 };
 
 /**
@@ -233,38 +233,38 @@ financialMath.mirr = function(cashFlows, financeRate, reinvestRate) {
  * @param {number} [frequency=12] - Payment frequency per year
  * @returns {Object} - Amortization schedule and summary
  */
-financialMath.amortizationSchedule = function(principal, rate, periods, frequency = 12) {
+financialMath.amortizationSchedule = function (principal, rate, periods, frequency = 12) {
   const periodicRate = rate / frequency;
-  const payment = principal * periodicRate / (1 - Math.pow(1 + periodicRate, -periods));
-  
+  const payment = principal * periodicRate / (1 - (1 + periodicRate) ** -periods);
+
   const schedule = [];
   let remainingBalance = principal;
   let totalInterest = 0;
-  
+
   for (let i = 1; i <= periods; i++) {
     const interest = remainingBalance * periodicRate;
     const principalPaid = payment - interest;
-    
+
     remainingBalance -= principalPaid;
     totalInterest += interest;
-    
+
     schedule.push({
       period: i,
-      payment: payment,
+      payment,
       principal: principalPaid,
-      interest: interest,
-      totalInterest: totalInterest,
+      interest,
+      totalInterest,
       balance: Math.max(0, remainingBalance)
     });
   }
-  
+
   return {
-    schedule: schedule,
+    schedule,
     summary: {
       loanAmount: principal,
-      payment: payment,
+      payment,
       totalPayments: payment * periods,
-      totalInterest: totalInterest
+      totalInterest
     }
   };
 };
@@ -279,7 +279,7 @@ financialMath.amortizationSchedule = function(principal, rate, periods, frequenc
  * @param {number} T - Time to expiration (in years)
  * @returns {Object} - Option price and Greeks
  */
-financialMath.blackScholes = function(type, S, K, r, v, T) {
+financialMath.blackScholes = function (type, S, K, r, v, T) {
   // Standard normal CDF
   function normCDF(x) {
     const a1 = 0.254829592;
@@ -288,52 +288,53 @@ financialMath.blackScholes = function(type, S, K, r, v, T) {
     const a4 = -1.453152027;
     const a5 = 1.061405429;
     const p = 0.3275911;
-    
+
     const sign = x < 0 ? -1 : 1;
     x = Math.abs(x) / Math.sqrt(2.0);
-    
+
     const t = 1.0 / (1.0 + p * x);
     const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
-    
+
     return 0.5 * (1.0 + sign * y);
   }
-  
+
   // Standard normal PDF
   function normPDF(x) {
     return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
   }
-  
+
   const d1 = (Math.log(S / K) + (r + v * v / 2) * T) / (v * Math.sqrt(T));
   const d2 = d1 - v * Math.sqrt(T);
-  
-  let price, delta, gamma, theta, vega, rho;
-  
+
+  let price; let delta; let gamma; let theta; let vega; let
+    rho;
+
   if (type.toLowerCase() === 'call') {
     price = S * normCDF(d1) - K * Math.exp(-r * T) * normCDF(d2);
     delta = normCDF(d1);
     rho = K * T * Math.exp(-r * T) * normCDF(d2) / 100;
-    theta = (-S * v * normPDF(d1) / (2 * Math.sqrt(T)) - 
-             r * K * Math.exp(-r * T) * normCDF(d2)) / 365;
+    theta = (-S * v * normPDF(d1) / (2 * Math.sqrt(T))
+             - r * K * Math.exp(-r * T) * normCDF(d2)) / 365;
   } else if (type.toLowerCase() === 'put') {
     price = K * Math.exp(-r * T) * normCDF(-d2) - S * normCDF(-d1);
     delta = normCDF(d1) - 1;
     rho = -K * T * Math.exp(-r * T) * normCDF(-d2) / 100;
-    theta = (-S * v * normPDF(d1) / (2 * Math.sqrt(T)) + 
-             r * K * Math.exp(-r * T) * normCDF(-d2)) / 365;
+    theta = (-S * v * normPDF(d1) / (2 * Math.sqrt(T))
+             + r * K * Math.exp(-r * T) * normCDF(-d2)) / 365;
   } else {
     throw new Error('Option type must be "call" or "put"');
   }
-  
+
   gamma = normPDF(d1) / (S * v * Math.sqrt(T));
   vega = S * Math.sqrt(T) * normPDF(d1) / 100;
-  
+
   return {
-    price: price,
-    delta: delta,
-    gamma: gamma,
-    theta: theta,
-    vega: vega,
-    rho: rho
+    price,
+    delta,
+    gamma,
+    theta,
+    vega,
+    rho
   };
 };
 
@@ -348,20 +349,20 @@ financialMath.blackScholes = function(type, S, K, r, v, T) {
  * @param {number} [steps=50] - Number of time steps
  * @returns {number} - Option price
  */
-financialMath.binomialOptionPricing = function(type, S, K, r, v, T, steps = 50) {
+financialMath.binomialOptionPricing = function (type, S, K, r, v, T, steps = 50) {
   const dt = T / steps;
   const u = Math.exp(v * Math.sqrt(dt));
   const d = 1 / u;
   const p = (Math.exp(r * dt) - d) / (u - d);
-  
+
   // Create price tree
   const prices = new Array(steps + 1);
   for (let i = 0; i <= steps; i++) {
-    prices[i] = S * Math.pow(u, i) * Math.pow(d, steps - i);
+    prices[i] = S * u ** i * d ** (steps - i);
   }
-  
+
   // Calculate option values at expiration
-  let optionValues = new Array(steps + 1);
+  const optionValues = new Array(steps + 1);
   if (type.toLowerCase() === 'call') {
     for (let i = 0; i <= steps; i++) {
       optionValues[i] = Math.max(0, prices[i] - K);
@@ -373,14 +374,14 @@ financialMath.binomialOptionPricing = function(type, S, K, r, v, T, steps = 50) 
   } else {
     throw new Error('Option type must be "call" or "put"');
   }
-  
+
   // Work backwards through the tree
   for (let j = steps - 1; j >= 0; j--) {
     for (let i = 0; i <= j; i++) {
       optionValues[i] = Math.exp(-r * dt) * (p * optionValues[i + 1] + (1 - p) * optionValues[i]);
     }
   }
-  
+
   return optionValues[0];
 };
 
@@ -391,7 +392,7 @@ financialMath.binomialOptionPricing = function(type, S, K, r, v, T, steps = 50) 
  * @param {number} portfolioStdDev - Annualized standard deviation of portfolio returns
  * @returns {number} - Sharpe Ratio
  */
-financialMath.sharpeRatio = function(portfolioReturn, riskFreeRate, portfolioStdDev) {
+financialMath.sharpeRatio = function (portfolioReturn, riskFreeRate, portfolioStdDev) {
   return (portfolioReturn - riskFreeRate) / portfolioStdDev;
 };
 
@@ -401,31 +402,31 @@ financialMath.sharpeRatio = function(portfolioReturn, riskFreeRate, portfolioStd
  * @param {Array} benchmarkReturns - Array of benchmark returns
  * @returns {number} - Beta value
  */
-financialMath.beta = function(assetReturns, benchmarkReturns) {
+financialMath.beta = function (assetReturns, benchmarkReturns) {
   if (assetReturns.length !== benchmarkReturns.length) {
     throw new Error('Asset and benchmark return series must have the same length');
   }
-  
+
   const n = assetReturns.length;
-  
+
   // Calculate means
   let assetMean = 0;
   let benchmarkMean = 0;
-  
+
   for (let i = 0; i < n; i++) {
     assetMean += assetReturns[i] / n;
     benchmarkMean += benchmarkReturns[i] / n;
   }
-  
+
   // Calculate covariance and benchmark variance
   let covariance = 0;
   let benchmarkVariance = 0;
-  
+
   for (let i = 0; i < n; i++) {
     covariance += (assetReturns[i] - assetMean) * (benchmarkReturns[i] - benchmarkMean) / n;
-    benchmarkVariance += Math.pow(benchmarkReturns[i] - benchmarkMean, 2) / n;
+    benchmarkVariance += (benchmarkReturns[i] - benchmarkMean) ** 2 / n;
   }
-  
+
   return covariance / benchmarkVariance;
 };
 
@@ -437,17 +438,17 @@ financialMath.beta = function(assetReturns, benchmarkReturns) {
  * @param {number} [timePeriod=1] - Time period (in days)
  * @returns {number} - Value at Risk
  */
-financialMath.valueAtRisk = function(returns, confidenceLevel, portfolioValue, timePeriod = 1) {
+financialMath.valueAtRisk = function (returns, confidenceLevel, portfolioValue, timePeriod = 1) {
   // Sort returns in ascending order
   const sortedReturns = [...returns].sort((a, b) => a - b);
-  
+
   // Find the return at the specified confidence level
   const index = Math.floor((1 - confidenceLevel) * sortedReturns.length);
   const valueAtRiskPercent = -sortedReturns[index];
-  
+
   // Scale to the specified time period
   const scaledVaR = valueAtRiskPercent * Math.sqrt(timePeriod);
-  
+
   return portfolioValue * scaledVaR;
 };
 
@@ -460,34 +461,34 @@ financialMath.valueAtRisk = function(returns, confidenceLevel, portfolioValue, t
  * @param {number} [frequency=2] - Coupon payment frequency per year
  * @returns {Object} - Duration and modified duration
  */
-financialMath.bondDuration = function(couponRate, marketRate, faceValue, timeToMaturity, frequency = 2) {
+financialMath.bondDuration = function (couponRate, marketRate, faceValue, timeToMaturity, frequency = 2) {
   const periodicRate = marketRate / frequency;
   const periodicCoupon = (couponRate * faceValue) / frequency;
   const periods = timeToMaturity * frequency;
-  
+
   let presentValue = 0;
   let weightedTime = 0;
-  
+
   for (let i = 1; i <= periods; i++) {
     const t = i / frequency;
-    const discountFactor = Math.pow(1 + periodicRate, -i);
+    const discountFactor = (1 + periodicRate) ** -i;
     const cashFlow = periodicCoupon;
-    
+
     presentValue += cashFlow * discountFactor;
     weightedTime += t * cashFlow * discountFactor;
   }
-  
+
   // Add face value at maturity
-  presentValue += faceValue * Math.pow(1 + periodicRate, -periods);
-  weightedTime += timeToMaturity * faceValue * Math.pow(1 + periodicRate, -periods);
-  
+  presentValue += faceValue * (1 + periodicRate) ** -periods;
+  weightedTime += timeToMaturity * faceValue * (1 + periodicRate) ** -periods;
+
   const macaulayDuration = weightedTime / presentValue;
   const modifiedDuration = macaulayDuration / (1 + periodicRate);
-  
+
   return {
-    macaulayDuration: macaulayDuration,
-    modifiedDuration: modifiedDuration,
-    presentValue: presentValue
+    macaulayDuration,
+    modifiedDuration,
+    presentValue
   };
 };
 
@@ -500,29 +501,29 @@ financialMath.bondDuration = function(couponRate, marketRate, faceValue, timeToM
  * @param {number} [frequency=2] - Coupon payment frequency per year
  * @returns {number} - Bond convexity
  */
-financialMath.bondConvexity = function(couponRate, marketRate, faceValue, timeToMaturity, frequency = 2) {
+financialMath.bondConvexity = function (couponRate, marketRate, faceValue, timeToMaturity, frequency = 2) {
   const periodicRate = marketRate / frequency;
   const periodicCoupon = (couponRate * faceValue) / frequency;
   const periods = timeToMaturity * frequency;
-  
+
   let presentValue = 0;
   let convexitySum = 0;
-  
+
   for (let i = 1; i <= periods; i++) {
     const t = i / frequency;
-    const discountFactor = Math.pow(1 + periodicRate, -i);
+    const discountFactor = (1 + periodicRate) ** -i;
     const cashFlow = periodicCoupon;
-    
+
     presentValue += cashFlow * discountFactor;
     convexitySum += t * (t + 1) * cashFlow * discountFactor;
   }
-  
+
   // Add face value at maturity
-  presentValue += faceValue * Math.pow(1 + periodicRate, -periods);
-  convexitySum += timeToMaturity * (timeToMaturity + 1) * faceValue * Math.pow(1 + periodicRate, -periods);
-  
-  const convexity = convexitySum / (presentValue * Math.pow(1 + periodicRate, 2));
-  
+  presentValue += faceValue * (1 + periodicRate) ** -periods;
+  convexitySum += timeToMaturity * (timeToMaturity + 1) * faceValue * (1 + periodicRate) ** -periods;
+
+  const convexity = convexitySum / (presentValue * (1 + periodicRate) ** 2);
+
   return convexity;
 };
 

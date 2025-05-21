@@ -13,7 +13,7 @@ const complex = {};
  * @param {number} [imag=0] - The imaginary part
  * @returns {Complex} - The complex number
  */
-complex.complex = function(real, imag = 0) {
+complex.complex = function (real, imag = 0) {
   return new Complex(real, imag);
 };
 
@@ -23,7 +23,7 @@ complex.complex = function(real, imag = 0) {
  * @param {number} phi - The phase angle in radians
  * @returns {Complex} - The complex number
  */
-complex.fromPolar = function(r, phi) {
+complex.fromPolar = function (r, phi) {
   return Complex.fromPolar(r, phi);
 };
 
@@ -32,7 +32,7 @@ complex.fromPolar = function(r, phi) {
  * @param {Complex|number} a - The complex number
  * @returns {number} - The real part
  */
-complex.re = function(a) {
+complex.re = function (a) {
   return a instanceof Complex ? a.re : a;
 };
 
@@ -41,7 +41,7 @@ complex.re = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {number} - The imaginary part
  */
-complex.im = function(a) {
+complex.im = function (a) {
   return a instanceof Complex ? a.im : 0;
 };
 
@@ -50,7 +50,7 @@ complex.im = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {number} - The magnitude
  */
-complex.abs = function(a) {
+complex.abs = function (a) {
   return a instanceof Complex ? a.abs() : Math.abs(a);
 };
 
@@ -59,14 +59,13 @@ complex.abs = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {number} - The argument in radians
  */
-complex.arg = function(a) {
+complex.arg = function (a) {
   if (a instanceof Complex) {
     return a.arg();
-  } else if (a >= 0) {
+  } if (a >= 0) {
     return 0;
-  } else {
-    return Math.PI;
   }
+  return Math.PI;
 };
 
 /**
@@ -74,7 +73,7 @@ complex.arg = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The conjugate
  */
-complex.conj = function(a) {
+complex.conj = function (a) {
   return a instanceof Complex ? a.conjugate() : a;
 };
 
@@ -84,14 +83,13 @@ complex.conj = function(a) {
  * @param {Complex|number} b - Second complex number
  * @returns {Complex|number} - Sum of the complex numbers
  */
-complex.add = function(a, b) {
+complex.add = function (a, b) {
   if (a instanceof Complex || b instanceof Complex) {
     const aComplex = a instanceof Complex ? a : new Complex(a);
     const bComplex = b instanceof Complex ? b : new Complex(b);
     return aComplex.add(bComplex);
-  } else {
-    return a + b;
   }
+  return a + b;
 };
 
 /**
@@ -100,14 +98,13 @@ complex.add = function(a, b) {
  * @param {Complex|number} b - Second complex number
  * @returns {Complex|number} - Difference of the complex numbers
  */
-complex.subtract = function(a, b) {
+complex.subtract = function (a, b) {
   if (a instanceof Complex || b instanceof Complex) {
     const aComplex = a instanceof Complex ? a : new Complex(a);
     const bComplex = b instanceof Complex ? b : new Complex(b);
     return aComplex.sub(bComplex);
-  } else {
-    return a - b;
   }
+  return a - b;
 };
 
 /**
@@ -116,14 +113,13 @@ complex.subtract = function(a, b) {
  * @param {Complex|number} b - Second complex number
  * @returns {Complex|number} - Product of the complex numbers
  */
-complex.multiply = function(a, b) {
+complex.multiply = function (a, b) {
   if (a instanceof Complex || b instanceof Complex) {
     const aComplex = a instanceof Complex ? a : new Complex(a);
     const bComplex = b instanceof Complex ? b : new Complex(b);
     return aComplex.mul(bComplex);
-  } else {
-    return a * b;
   }
+  return a * b;
 };
 
 /**
@@ -132,17 +128,16 @@ complex.multiply = function(a, b) {
  * @param {Complex|number} b - Second complex number (denominator)
  * @returns {Complex|number} - Quotient of the complex numbers
  */
-complex.divide = function(a, b) {
+complex.divide = function (a, b) {
   if (a instanceof Complex || b instanceof Complex) {
     const aComplex = a instanceof Complex ? a : new Complex(a);
     const bComplex = b instanceof Complex ? b : new Complex(b);
     return aComplex.div(bComplex);
-  } else {
-    if (b === 0) {
-      throw new Error('Division by zero');
-    }
-    return a / b;
   }
+  if (b === 0) {
+    throw new Error('Division by zero');
+  }
+  return a / b;
 };
 
 /**
@@ -151,14 +146,13 @@ complex.divide = function(a, b) {
  * @param {Complex|number} b - The exponent
  * @returns {Complex|number} - The result of exponentiation
  */
-complex.pow = function(a, b) {
+complex.pow = function (a, b) {
   if (a instanceof Complex || b instanceof Complex) {
     const aComplex = a instanceof Complex ? a : new Complex(a);
     const bComplex = b instanceof Complex ? b : new Complex(b);
     return aComplex.pow(bComplex);
-  } else {
-    return Math.pow(a, b);
   }
+  return a ** b;
 };
 
 /**
@@ -166,14 +160,13 @@ complex.pow = function(a, b) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The square root
  */
-complex.sqrt = function(a) {
+complex.sqrt = function (a) {
   if (a instanceof Complex) {
     return a.sqrt();
-  } else if (a >= 0) {
+  } if (a >= 0) {
     return Math.sqrt(a);
-  } else {
-    return new Complex(0, Math.sqrt(-a));
   }
+  return new Complex(0, Math.sqrt(-a));
 };
 
 /**
@@ -181,12 +174,11 @@ complex.sqrt = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The exponential
  */
-complex.exp = function(a) {
+complex.exp = function (a) {
   if (a instanceof Complex) {
     return a.exp();
-  } else {
-    return Math.exp(a);
   }
+  return Math.exp(a);
 };
 
 /**
@@ -194,12 +186,12 @@ complex.exp = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The natural logarithm
  */
-complex.log = function(a) {
+complex.log = function (a) {
   if (a instanceof Complex) {
     return a.log();
-  } else if (a > 0) {
+  } if (a > 0) {
     return Math.log(a);
-  } else if (a === 0) {
+  } if (a === 0) {
     throw new Error('Logarithm of zero');
   } else {
     return new Complex(Math.log(-a), Math.PI);
@@ -211,12 +203,11 @@ complex.log = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The sine
  */
-complex.sin = function(a) {
+complex.sin = function (a) {
   if (a instanceof Complex) {
     return a.sin();
-  } else {
-    return Math.sin(a);
   }
+  return Math.sin(a);
 };
 
 /**
@@ -224,12 +215,11 @@ complex.sin = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The cosine
  */
-complex.cos = function(a) {
+complex.cos = function (a) {
   if (a instanceof Complex) {
     return a.cos();
-  } else {
-    return Math.cos(a);
   }
+  return Math.cos(a);
 };
 
 /**
@@ -237,12 +227,11 @@ complex.cos = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The tangent
  */
-complex.tan = function(a) {
+complex.tan = function (a) {
   if (a instanceof Complex) {
     return a.tan();
-  } else {
-    return Math.tan(a);
   }
+  return Math.tan(a);
 };
 
 /**
@@ -250,12 +239,11 @@ complex.tan = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The hyperbolic sine
  */
-complex.sinh = function(a) {
+complex.sinh = function (a) {
   if (a instanceof Complex) {
     return a.sinh();
-  } else {
-    return Math.sinh(a);
   }
+  return Math.sinh(a);
 };
 
 /**
@@ -263,12 +251,11 @@ complex.sinh = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The hyperbolic cosine
  */
-complex.cosh = function(a) {
+complex.cosh = function (a) {
   if (a instanceof Complex) {
     return a.cosh();
-  } else {
-    return Math.cosh(a);
   }
+  return Math.cosh(a);
 };
 
 /**
@@ -276,12 +263,11 @@ complex.cosh = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {Complex|number} - The hyperbolic tangent
  */
-complex.tanh = function(a) {
+complex.tanh = function (a) {
   if (a instanceof Complex) {
     return a.tanh();
-  } else {
-    return Math.tanh(a);
   }
+  return Math.tanh(a);
 };
 
 /**
@@ -289,12 +275,11 @@ complex.tanh = function(a) {
  * @param {Complex|number} a - The complex number
  * @returns {string} - String representation
  */
-complex.toString = function(a) {
+complex.toString = function (a) {
   if (a instanceof Complex) {
     return a.toString();
-  } else {
-    return a.toString();
   }
+  return a.toString();
 };
 
 /**
@@ -302,7 +287,7 @@ complex.toString = function(a) {
  * @param {any} a - The value to check
  * @returns {boolean} - True if the value is a complex number
  */
-complex.isComplex = function(a) {
+complex.isComplex = function (a) {
   return a instanceof Complex;
 };
 
@@ -311,21 +296,21 @@ complex.isComplex = function(a) {
  * @param {string} str - The string representation
  * @returns {Complex} - The complex number
  */
-complex.parse = function(str) {
+complex.parse = function (str) {
   // Remove spaces
   str = str.replace(/\s/g, '');
-  
+
   // Check for simple imaginary number notation
   if (str === 'i') {
     return new Complex(0, 1);
   }
-  
+
   // Check for a+bi format
   const match = str.match(/^([-+]?\d*\.?\d*)(?:([-+])(?:(\d*\.?\d*))?i)?$/);
   if (match) {
     const real = match[1] ? parseFloat(match[1]) : 0;
     let imag = 0;
-    
+
     if (match[2]) {
       if (match[3]) {
         imag = parseFloat(match[2] + match[3]);
@@ -333,10 +318,10 @@ complex.parse = function(str) {
         imag = match[2] === '+' ? 1 : -1;
       }
     }
-    
+
     return new Complex(real, imag);
   }
-  
+
   throw new Error(`Cannot parse "${str}" as a complex number`);
 };
 

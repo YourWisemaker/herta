@@ -107,14 +107,12 @@ function createApiServer(options = {}) {
   });
 
   // Helper function to start server
-  const startServer = (customPort = port) => {
-    return new Promise((resolve) => {
-      const server = app.listen(customPort, () => {
-        console.log(`Herta.js API Server running on port ${customPort}`);
-        resolve(server);
-      });
+  const startServer = (customPort = port) => new Promise((resolve) => {
+    const server = app.listen(customPort, () => {
+      console.log(`Herta.js API Server running on port ${customPort}`);
+      resolve(server);
     });
-  };
+  });
 
   return {
     app,

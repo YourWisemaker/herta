@@ -16,14 +16,14 @@ const calculus = {};
  * @param {Object} [options] - Additional options
  * @returns {string} - The derivative expression
  */
-calculus.derivative = function(expr, variable, options = {}) {
+calculus.derivative = function (expr, variable, options = {}) {
   // Convert function to string if needed
   const expression = typeof expr === 'function' ? expr.toString() : expr;
-  
+
   // Handle special cases and basic derivatives
   const result = computeBasicDerivative(expression, variable);
   if (result) return result;
-  
+
   // Apply differentiation rules for more complex expressions
   return applyDifferentiationRules(expression, variable, options);
 };
@@ -40,7 +40,7 @@ function computeBasicDerivative(expr, variable) {
   if (!expr.includes(variable)) {
     return '0';
   }
-  
+
   // Power rule: d/dx(x^n) = n*x^(n-1)
   const powerRegex = new RegExp(`^${variable}\\^(\\d+)$`);
   const powerMatch = expr.match(powerRegex);
@@ -48,34 +48,34 @@ function computeBasicDerivative(expr, variable) {
     const power = parseInt(powerMatch[1]);
     if (power === 0) return '0';
     if (power === 1) return '1';
-    return `${power}*${variable}^${power-1}`;
+    return `${power}*${variable}^${power - 1}`;
   }
-  
+
   // Linear rule: d/dx(x) = 1
   if (expr === variable) {
     return '1';
   }
-  
+
   // Sine rule: d/dx(sin(x)) = cos(x)
   if (expr === `sin(${variable})`) {
     return `cos(${variable})`;
   }
-  
+
   // Cosine rule: d/dx(cos(x)) = -sin(x)
   if (expr === `cos(${variable})`) {
     return `-sin(${variable})`;
   }
-  
+
   // Exponential rule: d/dx(e^x) = e^x
   if (expr === `exp(${variable})` || expr === `e^${variable}`) {
     return expr;
   }
-  
+
   // Natural logarithm rule: d/dx(ln(x)) = 1/x
   if (expr === `ln(${variable})`) {
     return `1/${variable}`;
   }
-  
+
   // Not a basic case
   return null;
 }
@@ -103,16 +103,16 @@ function applyDifferentiationRules(expr, variable, options) {
  * @param {Object} [options] - Additional options
  * @returns {number} - The numerical result of the integration
  */
-calculus.integrate = function(expr, variable, lowerBound, upperBound, options = {}) {
+calculus.integrate = function (expr, variable, lowerBound, upperBound, options = {}) {
   // Default options
   const defaultOptions = {
     method: 'simpson', // 'simpson', 'trapezoidal', 'midpoint'
-    intervals: 1000,   // Number of intervals for numerical integration
-    tolerance: 1e-10   // Tolerance for adaptive methods
+    intervals: 1000, // Number of intervals for numerical integration
+    tolerance: 1e-10 // Tolerance for adaptive methods
   };
-  
+
   const config = { ...defaultOptions, ...options };
-  
+
   // Convert function to string if needed for evaluation
   const expression = typeof expr === 'function' ? expr : (x) => {
     // Create a scope with the variable value
@@ -121,7 +121,7 @@ calculus.integrate = function(expr, variable, lowerBound, upperBound, options = 
     // This would use the expression evaluation engine
     return evaluateExpression(expr, scope);
   };
-  
+
   // Perform numerical integration based on the selected method
   switch (config.method) {
     case 'simpson':
@@ -159,20 +159,20 @@ function evaluateExpression(expr, scope) {
 function simpsonIntegration(f, a, b, n) {
   // Ensure n is even
   if (n % 2 !== 0) n++;
-  
+
   const h = (b - a) / n;
   let sum = f(a) + f(b);
-  
+
   // Sum the odd-indexed terms
   for (let i = 1; i < n; i += 2) {
     sum += 4 * f(a + i * h);
   }
-  
+
   // Sum the even-indexed terms
   for (let i = 2; i < n; i += 2) {
     sum += 2 * f(a + i * h);
   }
-  
+
   return (h / 3) * sum;
 }
 
@@ -188,11 +188,11 @@ function simpsonIntegration(f, a, b, n) {
 function trapezoidalIntegration(f, a, b, n) {
   const h = (b - a) / n;
   let sum = (f(a) + f(b)) / 2;
-  
+
   for (let i = 1; i < n; i++) {
     sum += f(a + i * h);
   }
-  
+
   return h * sum;
 }
 
@@ -208,11 +208,11 @@ function trapezoidalIntegration(f, a, b, n) {
 function midpointIntegration(f, a, b, n) {
   const h = (b - a) / n;
   let sum = 0;
-  
+
   for (let i = 0; i < n; i++) {
     sum += f(a + (i + 0.5) * h);
   }
-  
+
   return h * sum;
 }
 
@@ -224,43 +224,42 @@ function midpointIntegration(f, a, b, n) {
  * @param {string} [direction] - The direction ('left', 'right', or 'both')
  * @returns {number|string} - The limit value or symbolic result
  */
-calculus.limit = function(expr, variable, point, direction = 'both') {
+calculus.limit = function (expr, variable, point, direction = 'both') {
   // Convert function to string if needed
   const expression = typeof expr === 'function' ? expr.toString() : expr;
-  
+
   // Handle special cases like infinity
   if (point === 'Infinity' || point === '+Infinity') {
     return limitToInfinity(expression, variable, '+');
-  } else if (point === '-Infinity') {
+  } if (point === '-Infinity') {
     return limitToInfinity(expression, variable, '-');
   }
-  
+
   // For numerical evaluation of limits
   const epsilon = 1e-10;
-  
+
   // Evaluate the limit based on the direction
   if (direction === 'left' || direction === 'both') {
     // Approach from the left
     const leftLimit = evaluateExpression(expression, { [variable]: point - epsilon });
-    
+
     if (direction === 'left') {
       return leftLimit;
     }
-    
+
     // If both directions, also approach from the right
     const rightLimit = evaluateExpression(expression, { [variable]: point + epsilon });
-    
+
     // Check if the limits from both sides are equal
     if (Math.abs(leftLimit - rightLimit) < epsilon) {
       return (leftLimit + rightLimit) / 2;
-    } else {
-      return 'Limit does not exist';
     }
-  } else if (direction === 'right') {
+    return 'Limit does not exist';
+  } if (direction === 'right') {
     // Approach from the right
     return evaluateExpression(expression, { [variable]: point + epsilon });
   }
-  
+
   throw new Error(`Invalid direction: ${direction}. Must be 'left', 'right', or 'both'.`);
 };
 
@@ -286,10 +285,10 @@ function limitToInfinity(expr, variable, sign) {
  * @param {number} [upperBound] - Upper bound of the search interval
  * @returns {Array} - Array of critical points
  */
-calculus.criticalPoints = function(expr, variable, lowerBound, upperBound) {
+calculus.criticalPoints = function (expr, variable, lowerBound, upperBound) {
   // Find where the derivative equals zero
   const derivative = calculus.derivative(expr, variable);
-  
+
   // This would implement numerical methods to find roots of the derivative
   // For now, return a placeholder
   return [];
@@ -303,11 +302,11 @@ calculus.criticalPoints = function(expr, variable, lowerBound, upperBound) {
  * @param {number} [upperBound] - Upper bound of the search interval
  * @returns {Array} - Array of inflection points
  */
-calculus.inflectionPoints = function(expr, variable, lowerBound, upperBound) {
+calculus.inflectionPoints = function (expr, variable, lowerBound, upperBound) {
   // Find where the second derivative equals zero
   const firstDerivative = calculus.derivative(expr, variable);
   const secondDerivative = calculus.derivative(firstDerivative, variable);
-  
+
   // This would implement numerical methods to find roots of the second derivative
   // For now, return a placeholder
   return [];

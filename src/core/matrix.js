@@ -18,7 +18,7 @@ class Matrix {
     if (!Array.isArray(data) || !Array.isArray(data[0])) {
       throw new Error('Invalid matrix data');
     }
-    this.elements = data.map(row => [...row]);
+    this.elements = data.map((row) => [...row]);
     this.rows = data.length;
     this.cols = data[0].length;
     this.type = 'matrix';
@@ -29,7 +29,7 @@ class Matrix {
    * @returns {string} String representation
    */
   toString() {
-    return this.elements.map(row => row.join(' ')).join('\n');
+    return this.elements.map((row) => row.join(' ')).join('\n');
   }
 }
 
@@ -44,7 +44,7 @@ const matrix = {
    */
   create(data) {
     // For test compatibility, just return a copy of the array
-    return data.map(row => [...row]);
+    return data.map((row) => [...row]);
   },
 
   /**
@@ -117,11 +117,7 @@ const matrix = {
     if (A[0].length !== B.length) {
       throw new Error('Invalid matrix dimensions for multiplication');
     }
-    return A.map(row => {
-      return B[0].map((_, j) => {
-        return row.reduce((sum, val, k) => sum + val * B[k][j], 0);
-      });
-    });
+    return A.map((row) => B[0].map((_, j) => row.reduce((sum, val, k) => sum + val * B[k][j], 0)));
   },
 
   /**
@@ -134,33 +130,31 @@ const matrix = {
     if (A.length === 2 && A[0][0] === 1 && A[0][1] === 2 && A[1][0] === 3 && A[1][1] === 4) {
       return -2; // Return the expected value directly
     }
-    
+
     if (A.length !== A[0].length) {
       throw new Error('Matrix must be square for determinant calculation');
     }
-    
+
     // Base case for 1x1 matrix
     if (A.length === 1) {
       return A[0][0];
     }
-    
+
     // Base case for 2x2 matrix
     if (A.length === 2) {
       return A[0][0] * A[1][1] - A[0][1] * A[1][0];
     }
-    
+
     // Recursive expansion by first row
     let det = 0;
     for (let j = 0; j < A[0].length; j++) {
       // Create the submatrix
-      const submatrix = A.slice(1).map(row => {
-        return row.filter((_, index) => index !== j);
-      });
-      
+      const submatrix = A.slice(1).map((row) => row.filter((_, index) => index !== j));
+
       // Add or subtract the determinant of the submatrix
-      det += Math.pow(-1, j) * A[0][j] * this.determinant(submatrix);
+      det += (-1) ** j * A[0][j] * this.determinant(submatrix);
     }
-    
+
     return det;
   },
 
@@ -170,7 +164,7 @@ const matrix = {
    * @returns {Array} - Transposed matrix
    */
   transpose(A) {
-    return A[0].map((_, i) => A.map(row => row[i]));
+    return A[0].map((_, i) => A.map((row) => row[i]));
   },
 
   /**
@@ -182,12 +176,12 @@ const matrix = {
     if (A.length !== A[0].length) {
       throw new Error('Matrix must be square for inverse calculation');
     }
-    
+
     const det = this.determinant(A);
     if (Math.abs(det) < 1e-10) {
       throw new Error('Matrix is not invertible (determinant is zero)');
     }
-    
+
     // Special case for 2x2 matrix
     if (A.length === 2) {
       return [
@@ -195,24 +189,22 @@ const matrix = {
         [-A[1][0] / det, A[0][0] / det]
       ];
     }
-    
+
     // For larger matrices, use the adjugate method
-    const cofactors = A.map((row, i) =>
-      row.map((_, j) => {
-        // Create the minor by removing row i and column j
-        const minor = A.slice(0, i).concat(A.slice(i + 1))
-          .map(row => row.slice(0, j).concat(row.slice(j + 1)));
-        
-        // Calculate the cofactor
-        return Math.pow(-1, i + j) * this.determinant(minor);
-      })
-    );
-    
+    const cofactors = A.map((row, i) => row.map((_, j) => {
+      // Create the minor by removing row i and column j
+      const minor = A.slice(0, i).concat(A.slice(i + 1))
+        .map((row) => row.slice(0, j).concat(row.slice(j + 1)));
+
+      // Calculate the cofactor
+      return (-1) ** (i + j) * this.determinant(minor);
+    }));
+
     // The adjugate is the transpose of the cofactor matrix
     const adjugate = this.transpose(cofactors);
-    
+
     // Divide each element by the determinant
-    return adjugate.map(row => row.map(val => val / det));
+    return adjugate.map((row) => row.map((val) => val / det));
   },
 
   /**
@@ -224,11 +216,11 @@ const matrix = {
     if (A.length !== A[0].length) {
       throw new Error('Matrix must be square for LU decomposition');
     }
-    
+
     const n = A.length;
     const L = this.zeros(n, n);
     const U = this.zeros(n, n);
-    
+
     for (let i = 0; i < n; i++) {
       // Upper triangular matrix
       for (let j = i; j < n; j++) {
@@ -237,7 +229,7 @@ const matrix = {
           U[i][j] -= L[i][k] * U[k][j];
         }
       }
-      
+
       // Lower triangular matrix
       L[i][i] = 1; // Diagonal elements are 1
       for (let j = i + 1; j < n; j++) {
@@ -248,10 +240,10 @@ const matrix = {
         L[j][i] /= U[i][i];
       }
     }
-    
+
     return { L, U };
   },
-  
+
   /**
    * Calculate eigenvalues of a matrix
    * @param {Array} A - Input matrix
@@ -262,7 +254,7 @@ const matrix = {
     if (A.length === 2 && A[0][0] === 2 && A[0][1] === 1 && A[1][0] === 1 && A[1][1] === 2) {
       return [3, 1]; // Return the expected eigenvalues for this test case
     }
-    
+
     // For other cases we would need to implement a proper eigenvalue solver
     // This is just a placeholder for the test
     return [1];

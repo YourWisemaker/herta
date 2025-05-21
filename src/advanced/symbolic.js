@@ -15,50 +15,50 @@ symbolic.expression = {
    * @param {string} expr - The expression string to parse
    * @returns {Object} - The expression tree
    */
-  parse: function(expr) {
+  parse(expr) {
     // This would be implemented with a proper expression parser
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: expr,
-      toString: function() {
+      toString() {
         return expr;
       }
     };
   },
-  
+
   /**
    * Convert an expression tree to a string representation
    * @param {Object} tree - The expression tree
    * @returns {string} - String representation
    */
-  toString: function(tree) {
+  toString(tree) {
     if (typeof tree === 'string') {
       return tree;
     }
-    
+
     if (tree.toString) {
       return tree.toString();
     }
-    
+
     return String(tree);
   },
-  
+
   /**
    * Substitute variables in an expression with values or other expressions
    * @param {Object|string} expr - The expression
    * @param {Object} substitutions - Map of variable names to values/expressions
    * @returns {Object} - The expression with substitutions applied
    */
-  substitute: function(expr, substitutions) {
+  substitute(expr, substitutions) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual substitution in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `substitute(${exprTree.toString()}, ${JSON.stringify(substitutions)})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
@@ -74,73 +74,73 @@ symbolic.algebra = {
    * @param {Object|string} expr - The expression to expand
    * @returns {Object} - The expanded expression
    */
-  expand: function(expr) {
+  expand(expr) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual expansion in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `expand(${exprTree.toString()})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Factor an algebraic expression
    * @param {Object|string} expr - The expression to factor
    * @returns {Object} - The factored expression
    */
-  factor: function(expr) {
+  factor(expr) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual factorization in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `factor(${exprTree.toString()})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Simplify an algebraic expression
    * @param {Object|string} expr - The expression to simplify
    * @returns {Object} - The simplified expression
    */
-  simplify: function(expr) {
+  simplify(expr) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual simplification in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `simplify(${exprTree.toString()})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Collect terms in an expression with respect to a variable
    * @param {Object|string} expr - The expression
    * @param {string} variable - The variable to collect terms for
    * @returns {Object} - The expression with collected terms
    */
-  collect: function(expr, variable) {
+  collect(expr, variable) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual term collection in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `collect(${exprTree.toString()}, ${variable})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
@@ -157,40 +157,40 @@ symbolic.calculus = {
    * @param {string} variable - The variable to differentiate with respect to
    * @returns {Object} - The derivative expression
    */
-  diff: function(expr, variable) {
+  diff(expr, variable) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual symbolic differentiation in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `diff(${exprTree.toString()}, ${variable})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Compute the symbolic integral of an expression
    * @param {Object|string} expr - The expression to integrate
    * @param {string} variable - The variable to integrate with respect to
    * @returns {Object} - The integral expression
    */
-  integrate: function(expr, variable) {
+  integrate(expr, variable) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual symbolic integration in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `integrate(${exprTree.toString()}, ${variable})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Compute the symbolic limit of an expression
    * @param {Object|string} expr - The expression
@@ -198,20 +198,20 @@ symbolic.calculus = {
    * @param {number|string} value - The limit point
    * @returns {Object} - The limit expression
    */
-  limit: function(expr, variable, value) {
+  limit(expr, variable, value) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual limit calculation in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `limit(${exprTree.toString()}, ${variable}, ${value})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Compute the Taylor series expansion of an expression
    * @param {Object|string} expr - The expression
@@ -220,15 +220,15 @@ symbolic.calculus = {
    * @param {number} order - The order of the expansion
    * @returns {Object} - The Taylor series expression
    */
-  taylor: function(expr, variable, point, order) {
+  taylor(expr, variable, point, order) {
     const exprTree = typeof expr === 'string' ? symbolic.expression.parse(expr) : expr;
-    
+
     // This would perform actual Taylor series expansion in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `taylor(${exprTree.toString()}, ${variable}, ${point}, ${order})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
@@ -245,33 +245,31 @@ symbolic.solve = {
    * @param {string|Array} variables - The variable(s) to solve for
    * @returns {Object} - The solution(s)
    */
-  equations: function(equations, variables) {
+  equations(equations, variables) {
     // Handle single equation case
     if (!Array.isArray(equations)) {
       equations = [equations];
     }
-    
+
     // Handle single variable case
     if (!Array.isArray(variables)) {
       variables = [variables];
     }
-    
+
     // Convert string equations to expression trees
-    const eqTrees = equations.map(eq => {
-      return typeof eq === 'string' ? symbolic.expression.parse(eq) : eq;
-    });
-    
+    const eqTrees = equations.map((eq) => (typeof eq === 'string' ? symbolic.expression.parse(eq) : eq));
+
     // This would perform actual equation solving in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'solution',
-      value: `solve([${eqTrees.map(eq => eq.toString()).join(', ')}], [${variables.join(', ')}])`,
-      toString: function() {
+      value: `solve([${eqTrees.map((eq) => eq.toString()).join(', ')}], [${variables.join(', ')}])`,
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Solve a differential equation symbolically
    * @param {Object|string} equation - The differential equation
@@ -279,15 +277,15 @@ symbolic.solve = {
    * @param {string} independent - The independent variable
    * @returns {Object} - The solution
    */
-  differentialEquation: function(equation, dependent, independent) {
+  differentialEquation(equation, dependent, independent) {
     const eqTree = typeof equation === 'string' ? symbolic.expression.parse(equation) : equation;
-    
+
     // This would perform actual differential equation solving in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'solution',
       value: `dsolve(${eqTree.toString()}, ${dependent}, ${independent})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
@@ -303,48 +301,44 @@ symbolic.matrix = {
    * @param {Array} elements - Matrix elements (can contain symbolic expressions)
    * @returns {Object} - Symbolic matrix
    */
-  create: function(elements) {
+  create(elements) {
     // Convert string expressions to expression trees
-    const processedElements = elements.map(row => {
-      return row.map(el => {
-        return typeof el === 'string' ? symbolic.expression.parse(el) : el;
-      });
-    });
-    
+    const processedElements = elements.map((row) => row.map((el) => (typeof el === 'string' ? symbolic.expression.parse(el) : el)));
+
     return {
       type: 'matrix',
       elements: processedElements,
       rows: elements.length,
       cols: elements[0].length,
-      toString: function() {
+      toString() {
         return `Matrix(${this.rows}x${this.cols})`;
       }
     };
   },
-  
+
   /**
    * Compute the determinant of a symbolic matrix
    * @param {Object} matrix - The symbolic matrix
    * @returns {Object} - The determinant expression
    */
-  determinant: function(matrix) {
+  determinant(matrix) {
     // This would perform actual symbolic determinant calculation in a full implementation
     // For now, return a placeholder implementation
     return {
       type: 'expression',
       value: `det(${matrix.toString()})`,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Compute the inverse of a symbolic matrix
    * @param {Object} matrix - The symbolic matrix
    * @returns {Object} - The inverse matrix
    */
-  inverse: function(matrix) {
+  inverse(matrix) {
     // This would perform actual symbolic matrix inversion in a full implementation
     // For now, return a placeholder implementation
     return {
@@ -352,25 +346,25 @@ symbolic.matrix = {
       value: `inverse(${matrix.toString()})`,
       rows: matrix.rows,
       cols: matrix.cols,
-      toString: function() {
+      toString() {
         return this.value;
       }
     };
   },
-  
+
   /**
    * Compute the eigenvalues of a symbolic matrix
    * @param {Object} matrix - The symbolic matrix
    * @returns {Array} - The eigenvalue expressions
    */
-  eigenvalues: function(matrix) {
+  eigenvalues(matrix) {
     // This would perform actual symbolic eigenvalue calculation in a full implementation
     // For now, return a placeholder implementation
     return [
       {
         type: 'expression',
         value: `eigenvalues(${matrix.toString()})[0]`,
-        toString: function() {
+        toString() {
           return this.value;
         }
       }

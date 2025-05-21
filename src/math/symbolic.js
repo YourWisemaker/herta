@@ -13,118 +13,118 @@ const symbolic = {};
  * @param {string} expr - The expression string
  * @returns {Object} - Symbolic expression object
  */
-symbolic.expression = function(expr) {
+symbolic.expression = function (expr) {
   if (typeof expr !== 'string') {
     throw new Error('Expression must be a string');
   }
-  
+
   return {
-    expr: expr,
-    
+    expr,
+
     /**
      * Convert the expression to a string
      * @returns {string} - String representation
      */
-    toString: function() {
+    toString() {
       return this.expr;
     },
-    
+
     /**
      * Substitute a variable with a value or another expression
      * @param {string} variable - The variable to substitute
      * @param {string|number} value - The value or expression to substitute with
      * @returns {Object} - New symbolic expression
      */
-    substitute: function(variable, value) {
+    substitute(variable, value) {
       // Simple substitution implementation
       // In a real implementation, this would use a proper parser
       const valueStr = typeof value === 'number' ? value.toString() : value;
       const pattern = new RegExp(`\\b${variable}\\b`, 'g');
       const newExpr = this.expr.replace(pattern, `(${valueStr})`);
-      
+
       return symbolic.expression(newExpr);
     },
-    
+
     /**
      * Add another expression to this one
      * @param {Object|string|number} other - The expression to add
      * @returns {Object} - New symbolic expression
      */
-    add: function(other) {
+    add(other) {
       const otherExpr = typeof other === 'object' ? other.expr : other.toString();
       return symbolic.expression(`(${this.expr}) + (${otherExpr})`);
     },
-    
+
     /**
      * Subtract another expression from this one
      * @param {Object|string|number} other - The expression to subtract
      * @returns {Object} - New symbolic expression
      */
-    subtract: function(other) {
+    subtract(other) {
       const otherExpr = typeof other === 'object' ? other.expr : other.toString();
       return symbolic.expression(`(${this.expr}) - (${otherExpr})`);
     },
-    
+
     /**
      * Multiply this expression by another
      * @param {Object|string|number} other - The expression to multiply by
      * @returns {Object} - New symbolic expression
      */
-    multiply: function(other) {
+    multiply(other) {
       const otherExpr = typeof other === 'object' ? other.expr : other.toString();
       return symbolic.expression(`(${this.expr}) * (${otherExpr})`);
     },
-    
+
     /**
      * Divide this expression by another
      * @param {Object|string|number} other - The expression to divide by
      * @returns {Object} - New symbolic expression
      */
-    divide: function(other) {
+    divide(other) {
       const otherExpr = typeof other === 'object' ? other.expr : other.toString();
       return symbolic.expression(`(${this.expr}) / (${otherExpr})`);
     },
-    
+
     /**
      * Raise this expression to a power
      * @param {Object|string|number} power - The power to raise to
      * @returns {Object} - New symbolic expression
      */
-    pow: function(power) {
+    pow(power) {
       const powerExpr = typeof power === 'object' ? power.expr : power.toString();
       return symbolic.expression(`(${this.expr}) ^ (${powerExpr})`);
     },
-    
+
     /**
      * Differentiate the expression with respect to a variable
      * @param {string} variable - The variable to differentiate with respect to
      * @returns {Object} - New symbolic expression representing the derivative
      */
-    differentiate: function(variable) {
+    differentiate(variable) {
       return symbolic.differentiate(this.expr, variable);
     },
-    
+
     /**
      * Integrate the expression with respect to a variable
      * @param {string} variable - The variable to integrate with respect to
      * @returns {Object} - New symbolic expression representing the integral
      */
-    integrate: function(variable) {
+    integrate(variable) {
       return symbolic.integrate(this.expr, variable);
     },
-    
+
     /**
      * Evaluate the expression by substituting all variables with values
      * @param {Object} scope - Object mapping variable names to values
      * @returns {number} - The evaluated result
      */
-    evaluate: function(scope = {}) {
+    evaluate(scope = {}) {
       // This would use a proper expression evaluator
       // For now, we'll use a simple approach with Function constructor
       // Note: This is not safe for untrusted input
       try {
         const variables = Object.keys(scope);
-        const values = variables.map(v => scope[v]);
+        const values = variables.map((v) => scope[v]);
         const func = new Function(...variables, `return ${this.expr};`);
         return func(...values);
       } catch (error) {
@@ -140,9 +140,9 @@ symbolic.expression = function(expr) {
  * @param {string} variable - The variable to differentiate with respect to
  * @returns {Object} - Symbolic expression representing the derivative
  */
-symbolic.differentiate = function(expr, variable) {
+symbolic.differentiate = function (expr, variable) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
-  
+
   // This would implement symbolic differentiation rules
   // For now, we'll return a placeholder
   return symbolic.expression(`d/d${variable}(${exprStr})`);
@@ -154,12 +154,12 @@ symbolic.differentiate = function(expr, variable) {
  * @param {string} variable - The variable to integrate with respect to
  * @returns {Object} - Symbolic expression representing the integral
  */
-symbolic.integrate = function(expr, variable) {
+symbolic.integrate = function (expr, variable) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
-  
+
   // Parse the expression to identify its structure
   // This is a simplified implementation that handles basic cases
-  
+
   // Check for simple power functions: x^n
   const powerMatch = exprStr.match(new RegExp(`\\b${variable}\\^(\\d+)\\b`));
   if (powerMatch) {
@@ -168,21 +168,21 @@ symbolic.integrate = function(expr, variable) {
     const coefficient = 1 / newPower;
     return symbolic.expression(`${coefficient} * ${variable}^${newPower} + C`);
   }
-  
+
   // Check for simple polynomial terms: a*x
   const linearMatch = exprStr.match(new RegExp(`(\\d*\.?\\d*)\\s*\\*?\\s*\\b${variable}\\b`));
   if (linearMatch) {
     const coefficient = linearMatch[1] ? parseFloat(linearMatch[1]) : 1;
-    return symbolic.expression(`${coefficient/2} * ${variable}^2 + C`);
+    return symbolic.expression(`${coefficient / 2} * ${variable}^2 + C`);
   }
-  
+
   // Check for constants
   const constantMatch = exprStr.match(/^\s*(\d+\.?\d*)\s*$/);
   if (constantMatch) {
     const constant = parseFloat(constantMatch[1]);
     return symbolic.expression(`${constant} * ${variable} + C`);
   }
-  
+
   // For more complex expressions, return a placeholder
   return symbolic.expression(`∫(${exprStr})d${variable}`);
 };
@@ -194,13 +194,13 @@ symbolic.integrate = function(expr, variable) {
  * @param {string} variable - The variable to solve for
  * @returns {Array<Object>} - Array of symbolic expressions representing solutions
  */
-symbolic.solve = function(lhs, rhs, variable) {
+symbolic.solve = function (lhs, rhs, variable) {
   const lhsExpr = typeof lhs === 'object' ? lhs.expr : lhs.toString();
   const rhsExpr = typeof rhs === 'object' ? rhs.expr : rhs.toString();
-  
+
   // This would implement symbolic equation solving
   // For now, we'll return a placeholder
-  return [symbolic.expression(`${variable} = solution(${lhsExpr} = ${rhsExpr})`)]; 
+  return [symbolic.expression(`${variable} = solution(${lhsExpr} = ${rhsExpr})`)];
 };
 
 /**
@@ -208,9 +208,9 @@ symbolic.solve = function(lhs, rhs, variable) {
  * @param {string|Object} expr - The expression to expand
  * @returns {Object} - Expanded symbolic expression
  */
-symbolic.expand = function(expr) {
+symbolic.expand = function (expr) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
-  
+
   // This would implement algebraic expansion
   // For now, we'll return a placeholder
   return symbolic.expression(`expand(${exprStr})`);
@@ -221,9 +221,9 @@ symbolic.expand = function(expr) {
  * @param {string|Object} expr - The expression to factor
  * @returns {Object} - Factored symbolic expression
  */
-symbolic.factor = function(expr) {
+symbolic.factor = function (expr) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
-  
+
   // This would implement algebraic factorization
   // For now, we'll return a placeholder
   return symbolic.expression(`factor(${exprStr})`);
@@ -234,9 +234,9 @@ symbolic.factor = function(expr) {
  * @param {string|Object} expr - The expression to simplify
  * @returns {Object} - Simplified symbolic expression
  */
-symbolic.simplify = function(expr) {
+symbolic.simplify = function (expr) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
-  
+
   // This would implement algebraic simplification rules
   // For now, we'll return a placeholder
   return symbolic.expression(`simplify(${exprStr})`);
@@ -249,10 +249,10 @@ symbolic.simplify = function(expr) {
  * @param {number|string} value - The value the variable approaches
  * @returns {Object} - Symbolic expression representing the limit
  */
-symbolic.limit = function(expr, variable, value) {
+symbolic.limit = function (expr, variable, value) {
   const exprStr = typeof expr === 'object' ? expr.expr : expr.toString();
   const valueStr = value.toString();
-  
+
   // This would implement limit calculation
   // For now, we'll return a placeholder
   return symbolic.expression(`limit(${exprStr}, ${variable} -> ${valueStr})`);

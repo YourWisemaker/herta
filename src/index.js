@@ -13,42 +13,66 @@ const complex = require('./core/complex');
 const expression = require('./core/expression');
 const matrix = require('./core/matrix');
 const tensor = require('./core/tensor');
+const fraction = require('./core/fraction');
 
-// Import advanced modules
-const differential = require('./advanced/differential');
-const integration = require('./advanced/integration');
-const autodiff = require('./advanced/autodiff');
-const numerical = require('./advanced/numerical');
-const statistics = require('./advanced/statistics');
-const quantum = require('./advanced/quantum');
+// Import algebra modules
+const basicAlgebra = require('./core/algebra'); // Use existing for compatibility
+const advancedAlgebra = require('./algebra/advanced');
+
+// Import calculus modules
+const differential = require('./calculus/differential');
+const integration = require('./calculus/integral');
+const numericalCalc = require('./calculus/numerical');
+const multivariateCalc = require('./calculus/multivariate');
+const autodiff = require('./advanced/autodiff'); // Keep in advanced for now
+
+// Import discrete math modules
+const graph = require('./discrete/graph'); // New location
+const numberTheory = require('./discrete/numberTheory'); // New location
+const discreteMath = require('./advanced/discreteMath'); // Keep in advanced for now
+
+// Import statistics modules
+const statistics = require('./statistics/descriptive'); // New location
+const probabilityTheory = require('./statistics/distribution'); // New location
+
+// Import geometry modules
+const geometry = require('./geometry/euclidean'); // New location
+const differentialGeometry = require('./geometry/differential'); // New location
+
+// Import optimization modules
+const optimization = require('./optimization/nonlinear'); // New location
+
+// Import physics modules
+const classicalPhysics = require('./physics/classical'); // New location
+const quantum = require('./physics/quantum'); // New location
+const relativity = require('./physics/relativity'); // New location
+
+// Import cryptography modules
+const cryptography = require('./crypto/hash'); // New location
+const zeroKnowledgeProofs = require('./advanced/zeroKnowledgeProofs'); // Keep in advanced for now
+
+// Import utility modules
+const random = require('./utils/random'); // New module
+const generators = require('./utils/generators'); // New module
+const units = require('./utils/units'); // New module
+
+// Import applied math modules
+const financialMath = require('./applied/finance'); // New location
+const machineLearning = require('./applied/machinelearning'); // New location
+const signalProcessing = require('./applied/signalprocessing'); // New location
+const gameTheory = require('./applied/gametheory'); // New location
+
+// Keep remaining advanced modules in their original location for backward compatibility
 const symbolic = require('./advanced/symbolic');
-const numberTheory = require('./advanced/numberTheory');
-const graph = require('./advanced/graph');
-const cryptography = require('./advanced/cryptography');
-
-// Import new advanced modules
-const optimization = require('./advanced/optimization');
-const geometry = require('./advanced/geometry');
-const signalProcessing = require('./advanced/signalProcessing');
-const machineLearning = require('./advanced/machineLearning');
 const topology = require('./advanced/topology');
-const financialMath = require('./advanced/financialMath');
-const discreteMath = require('./advanced/discreteMath');
 const dynamicalSystems = require('./advanced/dynamicalSystems');
 const groupTheory = require('./advanced/groupTheory');
 const informationTheory = require('./advanced/informationTheory');
-const gameTheory = require('./advanced/gameTheory');
 const algebraicGeometry = require('./advanced/algebraicGeometry');
-const differentialGeometry = require('./advanced/differentialGeometry');
 const categoryTheory = require('./advanced/categoryTheory');
-const complexAnalysis = require('./advanced/complexAnalysis');
-
-// Import modules added in the recent update
-const advancedAlgebra = require('./advanced/advancedAlgebra');
 const reinforcementLearning = require('./advanced/reinforcementLearning');
 const textAnalysis = require('./advanced/textAnalysis');
 const cryptoeconomics = require('./advanced/cryptoeconomics');
-const zeroKnowledgeProofs = require('./advanced/zeroKnowledgeProofs');
 const languageModelMath = require('./advanced/languageModelMath');
 const neuralNetworks = require('./advanced/neuralNetworks');
 const relativisticAstrophysics = require('./advanced/relativisticAstrophysics');
@@ -61,8 +85,9 @@ const tabularAnalysis = require('./advanced/tabularAnalysis');
 const fluidDynamics = require('./advanced/fluidDynamics');
 const computerVision = require('./advanced/computerVision');
 const stringAlgorithms = require('./advanced/stringAlgorithms');
-const probabilityTheory = require('./advanced/probabilityTheory');
 const quantumMechanics = require('./advanced/quantumMechanics');
+
+// ProbabilityTheory is already imported earlier as statistics/distribution
 
 // Import utility modules
 const utils = require('./utils/utils');
@@ -84,17 +109,24 @@ Object.assign(herta,
   expression,
   matrix,
   tensor,
+  fraction,         // New fraction module
   differential,
   integration,
   autodiff,
-  numerical,
+  numericalCalc,    // Renamed from numerical
   statistics,
   quantum,
   symbolic,
   utils
 );
 
-// Attach advanced modules
+// Attach utility modules
+herta.utils = herta.utils || {};
+herta.utils.random = random;
+herta.utils.generators = generators;
+herta.utils.units = units;
+
+// Attach modules at their original locations for backward compatibility
 herta.numberTheory = numberTheory;
 herta.quantum = quantum;
 herta.graph = graph;
@@ -115,28 +147,64 @@ herta.gameTheory = gameTheory;
 herta.algebraicGeometry = algebraicGeometry;
 herta.differentialGeometry = differentialGeometry;
 herta.categoryTheory = categoryTheory;
-herta.complexAnalysis = complexAnalysis;
-
-// Attach recent modules
-herta.advancedAlgebra = advancedAlgebra;
+herta.complexAnalysis = multivariateCalc; // Updated reference
+herta.zeroKnowledgeProofs = zeroKnowledgeProofs;
 herta.reinforcementLearning = reinforcementLearning;
 herta.textAnalysis = textAnalysis;
 herta.cryptoeconomics = cryptoeconomics;
-herta.zeroKnowledgeProofs = zeroKnowledgeProofs;
 herta.languageModelMath = languageModelMath;
 herta.neuralNetworks = neuralNetworks;
-herta.relativisticAstrophysics = relativisticAstrophysics;
+herta.relativisticAstrophysics = relativity; // Updated reference
 herta.technicalAnalysis = technicalAnalysis;
 herta.tradingStrategies = tradingStrategies;
 herta.riskManagement = riskManagement;
 herta.tabularAnalysis = tabularAnalysis;
-
-// Attach specialized modules from memories
 herta.fluidDynamics = fluidDynamics;
 herta.computerVision = computerVision;
 herta.stringAlgorithms = stringAlgorithms;
+// Keep reference to probabilityTheory for backward compatibility 
 herta.probabilityTheory = probabilityTheory;
 herta.quantumMechanics = quantumMechanics;
+
+// Create new namespaced organization for better module organization
+herta.algebra = herta.algebra || {};
+herta.algebra.advanced = advancedAlgebra;
+
+herta.calculus = herta.calculus || {};
+herta.calculus.differential = differential;
+herta.calculus.integral = integration;
+herta.calculus.numerical = numericalCalc;
+herta.calculus.multivariate = multivariateCalc;
+
+herta.discrete = herta.discrete || {};
+herta.discrete.graph = graph;
+herta.discrete.numberTheory = numberTheory;
+
+herta.statistics = herta.statistics || {};
+herta.statistics.descriptive = statistics;
+herta.statistics.distributions = probabilityTheory;
+
+herta.geometry = herta.geometry || {};
+herta.geometry.euclidean = geometry;
+herta.geometry.differential = differentialGeometry;
+
+herta.physics = herta.physics || {};
+herta.physics.classical = classicalPhysics;
+herta.physics.quantum = quantum;
+herta.physics.relativity = relativity;
+
+herta.optimization = herta.optimization || {};
+herta.optimization.nonlinear = optimization;
+
+herta.crypto = herta.crypto || {};
+herta.crypto.hash = cryptography;
+herta.crypto.zeroKnowledge = zeroKnowledgeProofs;
+
+herta.applied = herta.applied || {};
+herta.applied.finance = financialMath;
+herta.applied.machinelearning = machineLearning;
+herta.applied.signalprocessing = signalProcessing;
+herta.applied.gametheory = gameTheory;
 
 // Attach math modules
 herta.math = mathModules;

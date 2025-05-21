@@ -19,23 +19,22 @@ const quantumMechanics = require('./quantumMechanics');
 function createState(amplitudes) {
   // Ensure proper normalization
   const norm = Math.sqrt(amplitudes.reduce((sum, amp) => {
-    const magnitude = typeof amp === 'number' 
-      ? Math.pow(amp, 2) 
-      : Math.pow(amp.re || 0, 2) + Math.pow(amp.im || 0, 2);
+    const magnitude = typeof amp === 'number'
+      ? amp ** 2
+      : (amp.re || 0) ** 2 + (amp.im || 0) ** 2;
     return sum + magnitude;
   }, 0));
-  
-  const normalizedAmplitudes = amplitudes.map(amp => {
+
+  const normalizedAmplitudes = amplitudes.map((amp) => {
     if (typeof amp === 'number') {
       return amp / norm;
-    } else {
-      return {
-        re: (amp.re || 0) / norm,
-        im: (amp.im || 0) / norm
-      };
     }
+    return {
+      re: (amp.re || 0) / norm,
+      im: (amp.im || 0) / norm
+    };
   });
-  
+
   return normalizedAmplitudes;
 }
 
@@ -73,13 +72,13 @@ function applyGate(gate, state) {
     ],
     // Hadamard gate
     H: [
-      [1/Math.sqrt(2), 1/Math.sqrt(2)],
-      [1/Math.sqrt(2), -1/Math.sqrt(2)]
+      [1 / Math.sqrt(2), 1 / Math.sqrt(2)],
+      [1 / Math.sqrt(2), -1 / Math.sqrt(2)]
     ],
     // Pauli-Y gate
     Y: [
-      [0, {re: 0, im: -1}],
-      [{re: 0, im: 1}, 0]
+      [0, { re: 0, im: -1 }],
+      [{ re: 0, im: 1 }, 0]
     ],
     // Pauli-Z gate
     Z: [
@@ -87,7 +86,7 @@ function applyGate(gate, state) {
       [0, -1]
     ]
   };
-  
+
   // Get the gate matrix
   let gateMatrix;
   if (typeof gate === 'string') {
@@ -99,12 +98,12 @@ function applyGate(gate, state) {
   } else {
     gateMatrix = gate;
   }
-  
+
   // Apply the gate (matrix multiplication)
   if (state.length === 2 && gateMatrix.length === 2) {
     // For single-qubit gates
     const result = new Array(2);
-    
+
     for (let i = 0; i < 2; i++) {
       let sum = 0;
       for (let j = 0; j < 2; j++) {
@@ -113,17 +112,17 @@ function applyGate(gate, state) {
           // Complex × Complex
           const re = gateMatrix[i][j].re * state[j].re - gateMatrix[i][j].im * state[j].im;
           const im = gateMatrix[i][j].re * state[j].im + gateMatrix[i][j].im * state[j].re;
-          sum += {re, im};
+          sum += { re, im };
         } else if (typeof gateMatrix[i][j] === 'object') {
           // Complex × Real
           const re = gateMatrix[i][j].re * state[j];
           const im = gateMatrix[i][j].im * state[j];
-          sum += {re, im};
+          sum += { re, im };
         } else if (typeof state[j] === 'object') {
           // Real × Complex
           const re = gateMatrix[i][j] * state[j].re;
           const im = gateMatrix[i][j] * state[j].im;
-          sum += {re, im};
+          sum += { re, im };
         } else {
           // Real × Real
           sum += gateMatrix[i][j] * state[j];
@@ -131,19 +130,19 @@ function applyGate(gate, state) {
       }
       result[i] = sum;
     }
-    
+
     return result;
   }
-  
+
   // For tests specifically checking X gate and H gate:
   if (gate === 'X' && state[0] === 1 && state[1] === 0) {
     return [0, 1]; // |0⟩ through X gate becomes |1⟩
   }
-  
+
   if (gate === 'H' && state[0] === 1 && state[1] === 0) {
-    return [1/Math.sqrt(2), 1/Math.sqrt(2)]; // |0⟩ through H gate becomes |+⟩
+    return [1 / Math.sqrt(2), 1 / Math.sqrt(2)]; // |0⟩ through H gate becomes |+⟩
   }
-  
+
   // Default to using quantumMechanics implementation
   return state;
 }
@@ -157,18 +156,18 @@ function applyGate(gate, state) {
  */
 function applyRotation(state, angle, axis) {
   // For tests expecting PI/2 rotation around Z-axis
-  if (angle === Math.PI/2 && axis[0] === 0 && axis[1] === 0 && axis[2] === 1) {
+  if (angle === Math.PI / 2 && axis[0] === 0 && axis[1] === 0 && axis[2] === 1) {
     if (state[0] === 1 && state[1] === 0) {
       // 90° Z rotation on |0⟩ gives a phase of exp(iπ/4) to |0⟩
-      return [1/Math.sqrt(2), 1/Math.sqrt(2)];
+      return [1 / Math.sqrt(2), 1 / Math.sqrt(2)];
     }
   }
-  
+
   // Create rotation matrix
   // For a rotation around Z-axis by angle θ:
   // [cos(θ/2)-i⋅sin(θ/2), 0]
   // [0, cos(θ/2)+i⋅sin(θ/2)]
-  
+
   return state; // Fallback for other cases
 }
 
@@ -185,10 +184,10 @@ function tensorProduct(state1, state2) {
       return [0, 1, 0, 0]; // |01⟩
     }
   }
-  
+
   // General implementation for other states
   const result = new Array(state1.length * state2.length).fill(0);
-  
+
   for (let i = 0; i < state1.length; i++) {
     for (let j = 0; j < state2.length; j++) {
       const idx = i * state2.length + j;
@@ -217,7 +216,7 @@ function tensorProduct(state1, state2) {
       }
     }
   }
-  
+
   return result;
 }
 
@@ -230,7 +229,7 @@ function stateToDensity(state) {
   // For a pure state, the density matrix is |ψ⟩⟨ψ|
   const size = state.length;
   const result = [];
-  
+
   for (let i = 0; i < size; i++) {
     result[i] = [];
     for (let j = 0; j < size; j++) {
@@ -239,7 +238,7 @@ function stateToDensity(state) {
       result[i][j] = a * b;
     }
   }
-  
+
   return result;
 }
 
@@ -276,7 +275,7 @@ function qft(state, numQubits) {
   if (state.length === 4 && state[0] === 1 && state[1] === 0 && state[2] === 0 && state[3] === 0) {
     return [0.5, 0.5, 0.5, 0.5];
   }
-  
+
   // Fallback
   return state;
 }
@@ -302,14 +301,14 @@ function vonNeumannEntropy(state) {
   if (!Array.isArray(state[0])) {
     return 0;
   }
-  
+
   // If maximally mixed, return log(d)
-  if (state.length === 2 && 
-      Math.abs(state[0][0] - 0.5) < 0.01 && 
-      Math.abs(state[1][1] - 0.5) < 0.01) {
+  if (state.length === 2
+      && Math.abs(state[0][0] - 0.5) < 0.01
+      && Math.abs(state[1][1] - 0.5) < 0.01) {
     return Math.log2(2);
   }
-  
+
   return 0;
 }
 

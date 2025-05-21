@@ -1,6 +1,6 @@
 # Herta.js
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://www.npmjs.com/package/herta)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://www.npmjs.com/package/herta)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green.svg)]()
@@ -12,6 +12,41 @@
 [![Made With Love](https://img.shields.io/badge/made%20with-%E2%9D%A4-red.svg)]()
 
 An advanced mathematics framework for Node.js providing powerful tools for mathematical computation, symbolic mathematics, and scientific computing. Designed specifically for scientists, researchers, and advanced mathematical applications.
+
+## New in Version 1.1.0
+
+### Enhanced Folder Structure
+Herta.js is now organized in a more intuitive folder structure for better code organization and easier navigation:
+
+```
+/src
+├── core/        # Core mathematical operations
+├── algebra/     # Algebraic operations
+├── calculus/    # Calculus operations
+├── discrete/    # Discrete mathematics (including graph theory)
+├── statistics/  # Statistical operations
+├── geometry/    # Geometric operations
+├── optimization/# Optimization algorithms 
+├── physics/     # Physics models and simulations
+├── crypto/      # Cryptography algorithms
+├── utils/       # Utility functions
+├── applied/     # Applied mathematics
+└── advanced/    # Advanced specialized modules
+```
+
+### New Features from TheoremJS
+- **Units Conversion System** - Complete system for converting between various units (length, mass, time, etc.)
+- **Advanced Fraction Operations** - Full-featured fraction class with arithmetic and comparison methods
+- **Random Number Generation** - Enhanced RNG with multiple probability distributions
+- **Mathematical Sequence Generators** - Functions for generating mathematical sequences like Fibonacci, primes, etc.
+
+### Fixed Graph Module
+The graph module has been completely rewritten with improved implementations of:
+- Dijkstra's algorithm for path finding
+- Minimum Spanning Tree algorithms (Prim's and Kruskal's)
+- Community detection using Louvain method
+- Network analysis with centrality measures
+- Articulation points and bridge detection
 
 ## Features
 

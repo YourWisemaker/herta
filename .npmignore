@@ -1,0 +1,53 @@
+# Development files
+.git/
+.github/
+.vscode/
+node_modules/
+coverage/
+.nyc_output/
+.DS_Store
+
+# Test files
+test/
+__tests__/
+*.spec.js
+*.test.js
+jest.config.js
+
+# CI/CD
+.travis.yml
+.gitlab-ci.yml
+.circleci/
+.github/
+
+# Configs
+.eslintrc
+.eslintignore
+.prettierrc
+.editorconfig
+tsconfig.json
+.babelrc
+babel.config.js
+
+# Documentation source (but include built docs)
+docs/source/
+jsdoc.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build process
+webpack.*.js
+rollup.config.js
+
+# Misc
+*.tgz
+.env
+.env.*
+.cache/
+tmp/
+temp/

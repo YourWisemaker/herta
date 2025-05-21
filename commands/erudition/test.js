@@ -8,6 +8,8 @@ const path = require('path');
 const chalk = require('chalk');
 const { execSync } = require('child_process');
 
+// Remove the Jest test from this file
+
 /**
  * Run tests with detailed reporting
  * @param {Array} args - Command line arguments
