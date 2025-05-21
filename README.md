@@ -228,8 +228,6 @@ const layout = graph.forceDirectedLayout();
 - **Cryptography**: Encryption, zero-knowledge proofs, and cryptoeconomic models
 - **Information Theory**: Entropy, coding theory, and data compression
 
-## Installation
-
 ## Getting Started
 
 ### Installation
@@ -305,13 +303,7 @@ Herta.js comes with a powerful command-line interface called "Erudition" that he
 
 ### CLI Usage
 
-The CLI is automatically available when you install Herta.js globally:
-
-```bash
-npm install -g herta
-```
-
-Or you can use it directly with npx from within your project:
+Once Herta.js is installed globally (see Installation section above), the CLI is automatically available. Or you can use it directly with npx from within your project:
 
 ```bash
 npx herta erudition <command>
