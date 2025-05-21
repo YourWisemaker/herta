@@ -2,6 +2,21 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.3.3] - 2025-05-21
+
+### Fixed
+- Completely rebuilt the project creation system with foolproof file copying:
+  - Added verification process to ensure all critical files are properly copied
+  - Implemented automatic recovery for any missing files
+  - Fixed issues with empty directories in new projects
+  - Added special handling for src files like autodiff
+
+### Enhanced
+- Improved root file copying with expanded list of configuration files
+- Better error reporting during project creation process
+- Added visual verification of all copied source files
+- Ensured proper handling of package.json to maintain script references
+
 ## [1.3.2] - 2025-05-21
 
 ### Fixed

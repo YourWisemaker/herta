@@ -310,7 +310,18 @@ function displayMakeHelp() {
 function createProject(name, targetPath) {
   const kebabName = toKebabCase(name);
   const projectPath = targetPath ? `${targetPath}/${kebabName}` : path.join(process.cwd(), kebabName);
-  const currentPath = process.cwd();
+  
+  // Find the project root directory (where package.json is located)
+  let currentPath = __dirname; // Start from the directory of this script
+  while (currentPath !== '/' && !fs.existsSync(path.join(currentPath, 'package.json'))) {
+    currentPath = path.dirname(currentPath);
+  }
+  
+  // If we couldn't find package.json, try the current working directory as a fallback
+  if (currentPath === '/' && !fs.existsSync(path.join(currentPath, 'package.json'))) {
+    currentPath = process.cwd();
+    console.log(chalk.yellow(`Could not find package.json in parent directories, using current directory: ${currentPath}`));
+  }
   
   if (fs.existsSync(projectPath)) {
     console.log(chalk.red(`Error: Directory ${kebabName} already exists`));
@@ -353,10 +364,13 @@ function createProject(name, targetPath) {
     if (fs.existsSync(sourceDir)) {
       try {
         console.log(chalk.green(`Copying directory: ${dir}`));
-        execSync(`cp -r "${sourceDir}"/* "${targetDir}"/`, { stdio: 'pipe' });
+        // First remove the target directory
+        execSync(`rm -rf "${targetDir}"`, { stdio: 'pipe' });
+        // Then copy the entire source directory with its contents
+        execSync(`cp -R "${sourceDir}" "${path.dirname(targetDir)}/"`, { stdio: 'pipe' });
+        console.log(chalk.green(`✓ Successfully copied all files in ${dir}`));
       } catch (error) {
-        // This often happens with empty directories and is normal
-        console.log(chalk.yellow(`Note: Directory ${dir} may be empty or some files could not be copied.`));
+        console.log(chalk.red(`Error copying directory ${dir}: ${error.message}`));
       }
     }
   });
@@ -375,7 +389,12 @@ function createProject(name, targetPath) {
     'swaggerDef.js',
     'jest.config.js',
     'server.js',
-    'index.js'
+    'index.js',
+    'setup.js',        // Ensure setup.js is copied
+    'tsconfig.json',  // For TypeScript projects
+    '.babelrc',       // Babel configuration if present
+    '.prettierrc',    // Code formatting config
+    '.editorconfig'   // Editor configuration
   ];
   
   rootFiles.forEach(file => {
@@ -419,7 +438,68 @@ function createProject(name, targetPath) {
     return;
   }
   
-  console.log(chalk.green('✓ Successfully copied all project files and directories'));
+  // Verify critical files were copied successfully
+  const criticalPaths = [
+    path.join(projectPath, 'package.json'),
+    path.join(projectPath, 'server.js'),
+    path.join(projectPath, 'index.js'),
+    path.join(projectPath, 'setup.js')
+  ];
+  
+  // Check for important src files (like autodiff)
+  const srcFiles = fs.readdirSync(path.join(currentPath, 'src'));
+  console.log(chalk.cyan('\nVerifying critical source files...'));
+  const missingFiles = [];
+  
+  criticalPaths.forEach(filePath => {
+    if (!fs.existsSync(filePath)) {
+      const fileName = path.basename(filePath);
+      missingFiles.push(fileName);
+      console.log(chalk.red(`Warning: ${fileName} was not copied!`));
+    }
+  });
+  
+  // Specifically check if src files exist in the target
+  srcFiles.forEach(srcFile => {
+    const sourceFile = path.join(currentPath, 'src', srcFile);
+    const targetFile = path.join(projectPath, 'src', srcFile);
+    
+    // Only check files, not directories
+    if (fs.existsSync(sourceFile) && fs.statSync(sourceFile).isFile()) {
+      if (!fs.existsSync(targetFile)) {
+        missingFiles.push(`src/${srcFile}`);
+        console.log(chalk.red(`Warning: src/${srcFile} was not copied!`));
+      } else {
+        console.log(chalk.green(`✓ Verified src/${srcFile}`));
+      }
+    }
+  });
+  
+  // If we're missing important files, attempt to copy them manually
+  if (missingFiles.length > 0) {
+    console.log(chalk.yellow('\nAttempting to manually copy missing files...'));
+    missingFiles.forEach(fileName => {
+      try {
+        const dirName = path.dirname(fileName);
+        const sourceFile = path.join(currentPath, fileName);
+        const targetFile = path.join(projectPath, fileName);
+        
+        // Ensure the target directory exists
+        if (dirName !== '.') {
+          fs.mkdirSync(path.join(projectPath, dirName), { recursive: true });
+        }
+        
+        if (fs.existsSync(sourceFile)) {
+          fs.copyFileSync(sourceFile, targetFile);
+          console.log(chalk.green(`✓ Successfully copied ${fileName}`));
+        }
+      } catch (error) {
+        console.log(chalk.red(`Error copying ${fileName}: ${error.message}`));
+      }
+    });
+  }
+  
+  console.log(chalk.green('\n✓ Successfully copied all project files and directories'));
   console.log(chalk.yellow(`\nInstalling dependencies...`));
   
   try {
