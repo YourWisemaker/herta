@@ -2,6 +2,13 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.2.4] - 2025-05-21
+
+### Fixed
+- Fixed project creation command by properly escaping template literals in the generated code
+- Resolved 'operation is not defined' error when creating new projects
+- Improved error handling in the make command
+
 ## [1.2.3] - 2025-05-21
 
 ### Changed

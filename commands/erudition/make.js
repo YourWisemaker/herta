@@ -1265,7 +1265,7 @@ const calculatorService = {
         return this.solveQuadratic(params.a, params.b, params.c);
         
       default:
-        throw new Error(\`Unknown operation: ${operation}\`);
+        throw new Error(\`Unknown operation: \${operation}\`);
     }
   },
   
@@ -1287,8 +1287,8 @@ const calculatorService = {
       const imagPart = Math.sqrt(Math.abs(discriminant)) / (2 * a);
       
       return {
-        x1: \`${realPart} + ${imagPart}i\`,
-        x2: \`${realPart} - ${imagPart}i\`,
+        x1: \`\${realPart} + \${imagPart}i\`,
+        x2: \`\${realPart} - \${imagPart}i\`,
         discriminant
       };
     } else {
