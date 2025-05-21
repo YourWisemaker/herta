@@ -1,6 +1,6 @@
 # Herta.js
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://www.npmjs.com/package/herta)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://www.npmjs.com/package/herta)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green.svg)]()

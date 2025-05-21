@@ -2,6 +2,17 @@
 
 All notable changes to the Herta.js framework will be documented in this file.
 
+## [1.2.0] - 2025-05-21
+
+### Added
+- Enhanced CLI with improved help command handling
+- Support for standard CLI flags (--help, -h, --version, -v)
+- Better command-line error reporting
+
+### Changed
+- Updated documentation for clearer API examples
+- Improved CLI output formatting
+
 ## [1.1.0] - 2025-05-21
 
 ### Added

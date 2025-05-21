@@ -1,6 +1,6 @@
 {
   "name": "herta",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Advanced mathematics framework for scientific, engineering, and financial applications",
   "main": "dist/herta.js",
   "bin": {
