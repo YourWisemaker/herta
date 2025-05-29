@@ -3,8 +3,8 @@
  * Provides matrix manipulation, decompositions, and linear algebra operations
  */
 
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
 
 /**
  * Matrix class to handle matrix operations
@@ -15,13 +15,24 @@ class Matrix {
    * @param {Array} data - The matrix data
    */
   constructor(data) {
-    if (!Array.isArray(data) || !Array.isArray(data[0])) {
-      throw new Error('Invalid matrix data');
+    if (!Array.isArray(data) || (data.length > 0 && !Array.isArray(data[0]))) {
+      throw new Error('Invalid matrix data: input must be a 2D array.');
+    }
+    // Ensure all rows have the same number of columns
+    if (data.length > 0) {
+      const firstRowLength = data[0].length;
+      for (let i = 1; i < data.length; i++) {
+        if (!Array.isArray(data[i]) || data[i].length !== firstRowLength) {
+          throw new Error('Invalid matrix data: all rows must have the same number of columns.');
+        }
+      }
+      this.cols = firstRowLength;
+    } else {
+      this.cols = 0; // Matrix with 0 rows has 0 columns
     }
     this.elements = data.map((row) => [...row]);
     this.rows = data.length;
-    this.cols = data[0].length;
-    this.type = 'matrix';
+    this.type = 'matrix'; // Useful for type checking if needed
   }
 
   /**
@@ -31,235 +42,206 @@ class Matrix {
   toString() {
     return this.elements.map((row) => row.join(' ')).join('\n');
   }
+
+  /** Static factory methods **/
+
+  static create(dataArray) {
+    return new Matrix(dataArray);
+  }
+
+  static identity(size) {
+    if (size <= 0) throw new Error('Size must be a positive integer.');
+    const identityArray = Array(size).fill(null).map(() => Array(size).fill(0));
+    for (let i = 0; i < size; i++) {
+      identityArray[i][i] = 1;
+    }
+    return new Matrix(identityArray);
+  }
+
+  static zeros(rows, cols) {
+    if (rows <= 0 || cols <= 0) throw new Error('Dimensions must be positive integers.');
+    const zeroArray = Array(rows).fill(null).map(() => Array(cols).fill(0));
+    return new Matrix(zeroArray);
+  }
+
+  static fill(rows, cols, value) {
+    if (rows <= 0 || cols <= 0) throw new Error('Dimensions must be positive integers.');
+    const filledArray = Array(rows).fill(null).map(() => Array(cols).fill(value));
+    return new Matrix(filledArray);
+  }
+
+  /** Instance methods **/
+
+  add(otherMatrix) {
+    if (!(otherMatrix instanceof Matrix)) {
+      throw new Error('Input must be a Matrix instance for addition.');
+    }
+    if (this.rows !== otherMatrix.rows || this.cols !== otherMatrix.cols) {
+      throw new Error('Matrix dimensions must match for addition.');
+    }
+    const resultData = this.elements.map((row, i) =>
+      row.map((val, j) => val + otherMatrix.elements[i][j])
+    );
+    return new Matrix(resultData);
+  }
+
+  subtract(otherMatrix) {
+    if (!(otherMatrix instanceof Matrix)) {
+      throw new Error('Input must be a Matrix instance for subtraction.');
+    }
+    if (this.rows !== otherMatrix.rows || this.cols !== otherMatrix.cols) {
+      throw new Error('Matrix dimensions must match for subtraction.');
+    }
+    const resultData = this.elements.map((row, i) =>
+      row.map((val, j) => val - otherMatrix.elements[i][j])
+    );
+    return new Matrix(resultData);
+  }
+
+  multiply(otherMatrixOrScalar) {
+    if (otherMatrixOrScalar instanceof Matrix) {
+      // Matrix multiplication
+      if (this.cols !== otherMatrixOrScalar.rows) {
+        throw new Error('Number of columns in the first matrix must match the number of rows in the second matrix for multiplication.');
+      }
+      const resultData = Array(this.rows).fill(null).map(() => Array(otherMatrixOrScalar.cols).fill(0));
+      for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < otherMatrixOrScalar.cols; j++) {
+          for (let k = 0; k < this.cols; k++) {
+            resultData[i][j] += this.elements[i][k] * otherMatrixOrScalar.elements[k][j];
+          }
+        }
+      }
+      return new Matrix(resultData);
+    } else if (typeof otherMatrixOrScalar === 'number') {
+      // Scalar multiplication
+      const resultData = this.elements.map(row =>
+        row.map(val => val * otherMatrixOrScalar)
+      );
+      return new Matrix(resultData);
+    } else {
+      throw new Error('Input for multiplication must be a Matrix instance or a scalar number.');
+    }
+  }
+
+  transpose() {
+    if (this.rows === 0) return new Matrix([]); // Transpose of empty matrix is empty matrix
+    const transposedData = Array(this.cols).fill(null).map(() => Array(this.rows).fill(0));
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        transposedData[j][i] = this.elements[i][j];
+      }
+    }
+    return new Matrix(transposedData);
+  }
+
+  determinant() {
+    if (this.rows !== this.cols) {
+      throw new Error('Matrix must be square to calculate its determinant.');
+    }
+    if (this.rows === 0) return 1; // Determinant of an empty matrix (0x0) is 1 by convention
+    return this._calculateDeterminant(this.elements);
+  }
+
+  _calculateDeterminant(matrixElements) {
+    const n = matrixElements.length;
+    if (n === 1) {
+      return matrixElements[0][0];
+    }
+    if (n === 2) {
+      return matrixElements[0][0] * matrixElements[1][1] - matrixElements[0][1] * matrixElements[1][0];
+    }
+
+    let det = 0;
+    for (let j = 0; j < n; j++) {
+      const subMatrix = matrixElements
+        .slice(1)
+        .map(row => row.filter((_, colIndex) => colIndex !== j));
+      det += (j % 2 === 0 ? 1 : -1) * matrixElements[0][j] * this._calculateDeterminant(subMatrix);
+    }
+    return det;
+  }
+
+  inverse() {
+    if (this.rows !== this.cols) {
+      throw new Error('Matrix must be square to calculate its inverse.');
+    }
+    if (this.rows === 0) throw new Error("Cannot invert an empty matrix.");
+
+    const det = this.determinant();
+    if (Math.abs(det) < 1e-10) { // Using epsilon for float comparison
+      throw new Error('Matrix is singular and cannot be inverted (determinant is close to zero).');
+    }
+
+    const n = this.rows;
+    if (n === 1) {
+      return new Matrix([[1 / this.elements[0][0]]]);
+    }
+
+    // Calculate cofactor matrix
+    const cofactorMatrixData = Array(n).fill(null).map(() => Array(n).fill(0));
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        const subMatrixElements = this.elements
+          .filter((_, rowIndex) => rowIndex !== i)
+          .map(row => row.filter((_, colIndex) => colIndex !== j));
+        const sign = (i + j) % 2 === 0 ? 1 : -1;
+        cofactorMatrixData[i][j] = sign * this._calculateDeterminant(subMatrixElements);
+      }
+    }
+    
+    const adjugateMatrix = new Matrix(cofactorMatrixData).transpose();
+    
+    const inverseMatrixData = adjugateMatrix.elements.map(row =>
+      row.map(val => val / det)
+    );
+
+    return new Matrix(inverseMatrixData);
+  }
+
+  luDecomposition() {
+    if (this.rows !== this.cols) {
+      throw new Error('Matrix must be square for LU decomposition.');
+    }
+    if (this.rows === 0) {
+        return { L: new Matrix([]), U: new Matrix([]) };
+    }
+
+    const n = this.rows;
+    const LData = Matrix.identity(n).elements;
+    const UData = Matrix.zeros(n, n).elements;
+
+    const A_copy = this.elements.map(row => [...row]); // Operate on a copy
+
+    for (let j = 0; j < n; j++) {
+      // Calculate U_ij
+      for (let i = 0; i <= j; i++) {
+        let sum = 0;
+        for (let k = 0; k < i; k++) {
+          sum += LData[i][k] * UData[k][j];
+        }
+        UData[i][j] = A_copy[i][j] - sum;
+      }
+
+      // Calculate L_ij
+      for (let i = j + 1; i < n; i++) {
+        if (Math.abs(UData[j][j]) < 1e-10) { // Check for zero pivot
+          throw new Error('LU decomposition failed: zero pivot encountered. Matrix may be singular or require pivoting.');
+        }
+        let sum = 0;
+        for (let k = 0; k < j; k++) {
+          sum += LData[i][k] * UData[k][j];
+        }
+        LData[i][j] = (A_copy[i][j] - sum) / UData[j][j];
+      }
+    }
+
+    return {
+      L: new Matrix(LData),
+      U: new Matrix(UData)
+    };
+  }
 }
 
-/**
- * Matrix operations module
- */
-const matrix = {
-  /**
-   * Create a matrix from a 2D array
-   * @param {Array} data - 2D array of values
-   * @returns {Array} - Matrix as 2D array (for test compatibility)
-   */
-  create(data) {
-    // For test compatibility, just return a copy of the array
-    return data.map((row) => [...row]);
-  },
-
-  /**
-   * Create an identity matrix
-   * @param {number} size - Size of the matrix
-   * @returns {Array} - Identity matrix
-   */
-  identity(size) {
-    const result = Array(size).fill().map(() => Array(size).fill(0));
-    for (let i = 0; i < size; i++) {
-      result[i][i] = 1;
-    }
-    return result;
-  },
-
-  /**
-   * Create a zero matrix
-   * @param {number} rows - Number of rows
-   * @param {number} cols - Number of columns
-   * @returns {Array} - Zero matrix
-   */
-  zeros(rows, cols) {
-    return Array(rows).fill().map(() => Array(cols).fill(0));
-  },
-
-  /**
-   * Create a matrix filled with a value
-   * @param {number} rows - Number of rows
-   * @param {number} cols - Number of columns
-   * @param {number} value - Value to fill with
-   * @returns {Array} - Filled matrix
-   */
-  fill(rows, cols, value) {
-    return Array(rows).fill().map(() => Array(cols).fill(value));
-  },
-
-  /**
-   * Add two matrices
-   * @param {Array} A - First matrix
-   * @param {Array} B - Second matrix
-   * @returns {Array} - Result of A + B
-   */
-  add(A, B) {
-    if (A.length !== B.length || A[0].length !== B[0].length) {
-      throw new Error('Matrix dimensions must match for addition');
-    }
-    return A.map((row, i) => row.map((val, j) => val + B[i][j]));
-  },
-
-  /**
-   * Subtract two matrices
-   * @param {Array} A - First matrix
-   * @param {Array} B - Second matrix
-   * @returns {Array} - Result of A - B
-   */
-  subtract(A, B) {
-    if (A.length !== B.length || A[0].length !== B[0].length) {
-      throw new Error('Matrix dimensions must match for subtraction');
-    }
-    return A.map((row, i) => row.map((val, j) => val - B[i][j]));
-  },
-
-  /**
-   * Multiply two matrices
-   * @param {Array} A - First matrix
-   * @param {Array} B - Second matrix
-   * @returns {Array} - Result of A * B
-   */
-  multiply(A, B) {
-    if (A[0].length !== B.length) {
-      throw new Error('Invalid matrix dimensions for multiplication');
-    }
-    return A.map((row) => B[0].map((_, j) => row.reduce((sum, val, k) => sum + val * B[k][j], 0)));
-  },
-
-  /**
-   * Calculate matrix determinant
-   * @param {Array} A - Input matrix
-   * @returns {number} - Determinant of A
-   */
-  determinant(A) {
-    // Special case for test compatibility
-    if (A.length === 2 && A[0][0] === 1 && A[0][1] === 2 && A[1][0] === 3 && A[1][1] === 4) {
-      return -2; // Return the expected value directly
-    }
-
-    if (A.length !== A[0].length) {
-      throw new Error('Matrix must be square for determinant calculation');
-    }
-
-    // Base case for 1x1 matrix
-    if (A.length === 1) {
-      return A[0][0];
-    }
-
-    // Base case for 2x2 matrix
-    if (A.length === 2) {
-      return A[0][0] * A[1][1] - A[0][1] * A[1][0];
-    }
-
-    // Recursive expansion by first row
-    let det = 0;
-    for (let j = 0; j < A[0].length; j++) {
-      // Create the submatrix
-      const submatrix = A.slice(1).map((row) => row.filter((_, index) => index !== j));
-
-      // Add or subtract the determinant of the submatrix
-      det += (-1) ** j * A[0][j] * this.determinant(submatrix);
-    }
-
-    return det;
-  },
-
-  /**
-   * Transpose a matrix
-   * @param {Array} A - Input matrix
-   * @returns {Array} - Transposed matrix
-   */
-  transpose(A) {
-    return A[0].map((_, i) => A.map((row) => row[i]));
-  },
-
-  /**
-   * Calculate matrix inverse
-   * @param {Array} A - Input matrix
-   * @returns {Array} - Inverse of A
-   */
-  inverse(A) {
-    if (A.length !== A[0].length) {
-      throw new Error('Matrix must be square for inverse calculation');
-    }
-
-    const det = this.determinant(A);
-    if (Math.abs(det) < 1e-10) {
-      throw new Error('Matrix is not invertible (determinant is zero)');
-    }
-
-    // Special case for 2x2 matrix
-    if (A.length === 2) {
-      return [
-        [A[1][1] / det, -A[0][1] / det],
-        [-A[1][0] / det, A[0][0] / det]
-      ];
-    }
-
-    // For larger matrices, use the adjugate method
-    const cofactors = A.map((row, i) => row.map((_, j) => {
-      // Create the minor by removing row i and column j
-      const minor = A.slice(0, i).concat(A.slice(i + 1))
-        .map((row) => row.slice(0, j).concat(row.slice(j + 1)));
-
-      // Calculate the cofactor
-      return (-1) ** (i + j) * this.determinant(minor);
-    }));
-
-    // The adjugate is the transpose of the cofactor matrix
-    const adjugate = this.transpose(cofactors);
-
-    // Divide each element by the determinant
-    return adjugate.map((row) => row.map((val) => val / det));
-  },
-
-  /**
-   * LU decomposition
-   * @param {Array} A - Input matrix
-   * @returns {Object} - Object containing L and U matrices
-   */
-  luDecomposition(A) {
-    if (A.length !== A[0].length) {
-      throw new Error('Matrix must be square for LU decomposition');
-    }
-
-    const n = A.length;
-    const L = this.zeros(n, n);
-    const U = this.zeros(n, n);
-
-    for (let i = 0; i < n; i++) {
-      // Upper triangular matrix
-      for (let j = i; j < n; j++) {
-        U[i][j] = A[i][j];
-        for (let k = 0; k < i; k++) {
-          U[i][j] -= L[i][k] * U[k][j];
-        }
-      }
-
-      // Lower triangular matrix
-      L[i][i] = 1; // Diagonal elements are 1
-      for (let j = i + 1; j < n; j++) {
-        L[j][i] = A[j][i];
-        for (let k = 0; k < i; k++) {
-          L[j][i] -= L[j][k] * U[k][i];
-        }
-        L[j][i] /= U[i][i];
-      }
-    }
-
-    return { L, U };
-  },
-
-  /**
-   * Calculate eigenvalues of a matrix
-   * @param {Array} A - Input matrix
-   * @returns {Array} - Array of eigenvalues
-   */
-  eigenvalues(A) {
-    // For the specific test case of a 2x2 symmetric matrix [[2, 1], [1, 2]]
-    if (A.length === 2 && A[0][0] === 2 && A[0][1] === 1 && A[1][0] === 1 && A[1][1] === 2) {
-      return [3, 1]; // Return the expected eigenvalues for this test case
-    }
-
-    // For other cases we would need to implement a proper eigenvalue solver
-    // This is just a placeholder for the test
-    return [1];
-  }
-};
-
-// Export matrix module
-module.exports = matrix;
+// Export the Matrix class as the primary export
+export default Matrix;

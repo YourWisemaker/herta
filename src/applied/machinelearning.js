@@ -3,8 +3,8 @@
  * Provides fundamental operations for machine learning
  */
 
-const matrix = require('../core/matrix');
-const arithmetic = require('../core/arithmetic');
+import matrix from '../core/matrix.js';
+import arithmetic from '../core/arithmetic.js';
 
 const machineLearning = {};
 
@@ -463,4 +463,4 @@ machineLearning.kmeans = function (data, k, options = {}) {
   };
 };
 
-module.exports = machineLearning;
+export default machineLearning;

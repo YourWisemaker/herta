@@ -8,7 +8,7 @@
  * @param {Number} limit - Upper limit for prime generation
  * @returns {Array} - Array of prime numbers
  */
-function generatePrimes(limit) {
+export function generatePrimes(limit) {
   const sieve = Array(limit + 1).fill(true);
   sieve[0] = sieve[1] = false;
 
@@ -33,7 +33,7 @@ function generatePrimes(limit) {
  * @param {Number} n - Number to factorize
  * @returns {Array} - Array of prime factors
  */
-function factorize(n) {
+export function factorize(n) {
   const factors = [];
   let divisor = 2;
 
@@ -60,7 +60,7 @@ function factorize(n) {
  * @param {Number} b - Second number
  * @returns {Number} - Greatest common divisor
  */
-function gcd(a, b) {
+export function gcd(a, b) {
   if (b === 0) return Math.abs(a);
   return gcd(b, a % b);
 }
@@ -71,7 +71,7 @@ function gcd(a, b) {
  * @param {Number} b - Second number
  * @returns {Number} - Least common multiple
  */
-function lcm(a, b) {
+export function lcm(a, b) {
   return Math.abs(a * b) / gcd(a, b);
 }
 
@@ -80,7 +80,7 @@ function lcm(a, b) {
  * @param {Number} n - Number to check
  * @returns {Boolean} - True if prime, false otherwise
  */
-function isPrime(n) {
+export function isPrime(n) {
   if (n <= 1) return false;
   if (n <= 3) return true;
   if (n % 2 === 0 || n % 3 === 0) return false;
@@ -99,7 +99,7 @@ function isPrime(n) {
  * @param {Number} modulus - Modulus value
  * @returns {Number} - Result of modular exponentiation
  */
-function modPow(base, exponent, modulus) {
+export function modPow(base, exponent, modulus) {
   if (modulus === 1) return 0;
 
   let result = 1;
@@ -121,7 +121,7 @@ function modPow(base, exponent, modulus) {
  * @param {Number} n - Input number
  * @returns {Number} - Value of Euler's totient function
  */
-function eulerTotient(n) {
+export function eulerTotient(n) {
   let result = n; // Initialize result as n
 
   // Consider all prime factors of n and subtract their
@@ -152,7 +152,7 @@ function eulerTotient(n) {
  * @param {Number} b - Second number
  * @returns {Array} - Array [gcd, x, y] where ax + by = gcd(a,b)
  */
-function extendedGcd(a, b) {
+export function extendedGcd(a, b) {
   if (b === 0) {
     return [a, 1, 0];
   }
@@ -167,7 +167,7 @@ function extendedGcd(a, b) {
  * @param {Number} m - Modulus
  * @returns {Array} - Array of solutions modulo m, or empty array if no solution
  */
-function solveLinearCongruence(a, b, m) {
+export function solveLinearCongruence(a, b, m) {
   // Ensure positive values
   a = ((a % m) + m) % m;
   b = ((b % m) + m) % m;
@@ -195,7 +195,7 @@ function solveLinearCongruence(a, b, m) {
  * @param {Array} moduli - Array of moduli
  * @returns {Number} - Solution x such that x ≡ remainders[i] (mod moduli[i]) for all i
  */
-function chineseRemainderTheorem(remainders, moduli) {
+export function chineseRemainderTheorem(remainders, moduli) {
   if (remainders.length !== moduli.length) {
     throw new Error('Number of remainders must equal number of moduli');
   }
@@ -219,7 +219,7 @@ function chineseRemainderTheorem(remainders, moduli) {
  * @param {Number} p - Prime modulus
  * @returns {Number} - 1 if a is a quadratic residue modulo p, -1 if not, 0 if a is divisible by p
  */
-function legendreSymbol(a, p) {
+export function legendreSymbol(a, p) {
   if (p <= 1 || p % 2 === 0) {
     throw new Error('p must be an odd prime');
   }
@@ -245,7 +245,7 @@ function legendreSymbol(a, p) {
  * @param {Number} p - Modulus
  * @returns {Array} - Array of quadratic residues
  */
-function quadraticResidues(p) {
+export function quadraticResidues(p) {
   const residues = new Set();
 
   for (let i = 1; i < p; i++) {
@@ -261,7 +261,7 @@ function quadraticResidues(p) {
  * @param {Number} den - Denominator
  * @returns {Array} - Array of coefficients in the continued fraction
  */
-function toContinuedFraction(num, den) {
+export function toContinuedFraction(num, den) {
   const result = [];
 
   while (den > 0) {
@@ -279,7 +279,7 @@ function toContinuedFraction(num, den) {
  * @param {Array} cf - Continued fraction coefficients
  * @returns {Array} - [numerator, denominator]
  */
-function fromContinuedFraction(cf) {
+export function fromContinuedFraction(cf) {
   let num = 1;
   let den = 0;
 
@@ -297,7 +297,7 @@ function fromContinuedFraction(cf) {
  * @param {Array} cf - Continued fraction coefficients
  * @returns {Array} - Array of convergents as [num, den] pairs
  */
-function continuedFractionConvergents(cf) {
+export function continuedFractionConvergents(cf) {
   const convergents = [];
   let p = [1, 0];
   let q = [0, 1];
@@ -321,7 +321,7 @@ function continuedFractionConvergents(cf) {
  * @param {Number} k - Number of iterations for accuracy (higher is more accurate)
  * @returns {Boolean} - True if probably prime, false if definitely composite
  */
-function isProbablePrime(n, k = 5) {
+export function isProbablePrime(n, k = 5) {
   if (n <= 1) return false;
   if (n <= 3) return true;
   if (n % 2 === 0) return false;
@@ -379,7 +379,7 @@ function isProbablePrime(n, k = 5) {
  * @param {Number} n - Number to factorize
  * @returns {Number} - A non-trivial factor of n, or n if none found
  */
-function pollardRho(n) {
+export function pollardRho(n) {
   if (n === 1) return 1;
   if (n % 2 === 0) return 2;
   if (isPrime(n)) return n;
@@ -404,7 +404,7 @@ function pollardRho(n) {
  * @param {Number} n - Number to factorize
  * @returns {Array} - Array of prime factors with repetition
  */
-function fastFactorize(n) {
+export function fastFactorize(n) {
   if (n <= 1) return [n];
 
   const factors = [];
@@ -455,7 +455,7 @@ function fastFactorize(n) {
  * @param {Number} c - Right-hand side constant
  * @returns {Object} - Object with solution information
  */
-function solveDiophantine(a, b, c) {
+export function solveDiophantine(a, b, c) {
   // Step 1: Find gcd(a, b) using extended Euclidean algorithm
   const [g, x0, y0] = extendedGcd(Math.abs(a), Math.abs(b));
 
@@ -486,7 +486,7 @@ function solveDiophantine(a, b, c) {
  * @param {Number} n - Number to check
  * @returns {Object} - If it's a perfect power, returns {base: a, exponent: b}, otherwise null
  */
-function isPerfectPower(n) {
+export function isPerfectPower(n) {
   if (n < 2) return null;
 
   const logn = Math.log2(n);
@@ -508,7 +508,7 @@ function isPerfectPower(n) {
  *                           -1 if n is square-free with odd number of prime factors,
  *                           0 if n has a squared prime factor
  */
-function mobiusFunction(n) {
+export function mobiusFunction(n) {
   if (n <= 0) throw new Error('Input must be a positive integer');
   if (n === 1) return 1;
 
@@ -547,7 +547,7 @@ function mobiusFunction(n) {
  * @param {Number} k - Power
  * @returns {Number} - Sum of the kth powers of divisors
  */
-function divisorSum(n, k = 1) {
+export function divisorSum(n, k = 1) {
   if (n <= 0) throw new Error('Input must be a positive integer');
 
   let sum = 0;
@@ -568,7 +568,7 @@ function divisorSum(n, k = 1) {
  * @param {Number} limit - Maximum value for the hypotenuse
  * @returns {Array} - Array of Pythagorean triples [a, b, c] where a^2 + b^2 = c^2
  */
-function primitivePythagoreanTriples(limit) {
+export function primitivePythagoreanTriples(limit) {
   const triples = [];
 
   // Euclid's formula: For coprime m, n with m > n > 0 and one even, one odd:
@@ -591,29 +591,4 @@ function primitivePythagoreanTriples(limit) {
   return triples.sort((a, b) => a[2] - b[2]);
 }
 
-// Export the number theory functions
-module.exports = {
-  generatePrimes,
-  factorize,
-  fastFactorize,
-  gcd,
-  lcm,
-  isPrime,
-  isProbablePrime,
-  modPow,
-  eulerTotient,
-  extendedGcd,
-  solveLinearCongruence,
-  chineseRemainderTheorem,
-  legendreSymbol,
-  quadraticResidues,
-  toContinuedFraction,
-  fromContinuedFraction,
-  continuedFractionConvergents,
-  pollardRho,
-  solveDiophantine,
-  isPerfectPower,
-  mobiusFunction,
-  divisorSum,
-  primitivePythagoreanTriples
-};
+// No module.exports in ESM, individual functions are already exported.

@@ -8,16 +8,16 @@
  * @param {Number} n - Number of terms to generate
  * @returns {Array} - Array of Fibonacci numbers
  */
-function fibonacci(n) {
+export function fibonacci(n) {
   const result = [0, 1];
-  
+
   if (n <= 0) return [];
   if (n === 1) return [0];
-  
+
   for (let i = 2; i < n; i++) {
     result.push(result[i - 1] + result[i - 2]);
   }
-  
+
   return result;
 }
 
@@ -26,11 +26,11 @@ function fibonacci(n) {
  * @param {Number} n - Upper limit
  * @returns {Array} - Array of prime numbers up to n
  */
-function primes(n) {
+export function primes(n) {
   // Sieve of Eratosthenes
   const sieve = Array(n + 1).fill(true);
   sieve[0] = sieve[1] = false;
-  
+
   for (let i = 2; i * i <= n; i++) {
     if (sieve[i]) {
       for (let j = i * i; j <= n; j += i) {
@@ -38,12 +38,12 @@ function primes(n) {
       }
     }
   }
-  
+
   const result = [];
   for (let i = 2; i <= n; i++) {
     if (sieve[i]) result.push(i);
   }
-  
+
   return result;
 }
 
@@ -54,13 +54,13 @@ function primes(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Arithmetic sequence
  */
-function arithmeticSequence(start, difference, n) {
+export function arithmeticSequence(start, difference, n) {
   const result = [];
-  
+
   for (let i = 0; i < n; i++) {
     result.push(start + i * difference);
   }
-  
+
   return result;
 }
 
@@ -71,13 +71,13 @@ function arithmeticSequence(start, difference, n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Geometric sequence
  */
-function geometricSequence(start, ratio, n) {
+export function geometricSequence(start, ratio, n) {
   const result = [];
-  
+
   for (let i = 0; i < n; i++) {
-    result.push(start * Math.pow(ratio, i));
+    result.push(start * ratio ** i);
   }
-  
+
   return result;
 }
 
@@ -86,13 +86,13 @@ function geometricSequence(start, ratio, n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of triangular numbers
  */
-function triangularNumbers(n) {
+export function triangularNumbers(n) {
   const result = [];
-  
+
   for (let i = 1; i <= n; i++) {
     result.push((i * (i + 1)) / 2);
   }
-  
+
   return result;
 }
 
@@ -101,13 +101,13 @@ function triangularNumbers(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of square numbers
  */
-function squareNumbers(n) {
+export function squareNumbers(n) {
   const result = [];
-  
+
   for (let i = 1; i <= n; i++) {
     result.push(i * i);
   }
-  
+
   return result;
 }
 
@@ -116,13 +116,13 @@ function squareNumbers(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of cubic numbers
  */
-function cubicNumbers(n) {
+export function cubicNumbers(n) {
   const result = [];
-  
+
   for (let i = 1; i <= n; i++) {
     result.push(i * i * i);
   }
-  
+
   return result;
 }
 
@@ -131,13 +131,13 @@ function cubicNumbers(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of tetrahedral numbers
  */
-function tetrahedralNumbers(n) {
+export function tetrahedralNumbers(n) {
   const result = [];
-  
+
   for (let i = 1; i <= n; i++) {
     result.push((i * (i + 1) * (i + 2)) / 6);
   }
-  
+
   return result;
 }
 
@@ -146,9 +146,9 @@ function tetrahedralNumbers(n) {
  * @param {Number} n - Number of rows
  * @returns {Array} - 2D array representing Pascal's triangle
  */
-function pascalsTriangle(n) {
+export function pascalsTriangle(n) {
   const result = [];
-  
+
   for (let i = 0; i < n; i++) {
     const row = [];
     for (let j = 0; j <= i; j++) {
@@ -160,7 +160,7 @@ function pascalsTriangle(n) {
     }
     result.push(row);
   }
-  
+
   return result;
 }
 
@@ -169,13 +169,13 @@ function pascalsTriangle(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of Catalan numbers
  */
-function catalanNumbers(n) {
+export function catalanNumbers(n) {
   const result = [1];
-  
+
   for (let i = 1; i < n; i++) {
     result.push(result[i - 1] * (4 * i - 2) / (i + 1));
   }
-  
+
   return result;
 }
 
@@ -184,12 +184,12 @@ function catalanNumbers(n) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of Bell numbers
  */
-function bellNumbers(n) {
+export function bellNumbers(n) {
   if (n <= 0) return [];
   if (n === 1) return [1];
-  
+
   const result = [1];
-  
+
   for (let i = 1; i < n; i++) {
     let next = 0;
     for (let j = 0; j < i; j++) {
@@ -198,7 +198,7 @@ function bellNumbers(n) {
     }
     result.push(next);
   }
-  
+
   return result;
 }
 
@@ -208,16 +208,16 @@ function bellNumbers(n) {
  * @param {Number} k - Number of items to choose
  * @returns {Number} - Binomial coefficient
  */
-function binomialCoefficient(n, k) {
+export function binomialCoefficient(n, k) {
   if (k < 0 || k > n) return 0;
   if (k === 0 || k === n) return 1;
-  
+
   let result = 1;
   for (let i = 1; i <= k; i++) {
     result *= (n - (k - i));
     result /= i;
   }
-  
+
   return result;
 }
 
@@ -226,11 +226,11 @@ function binomialCoefficient(n, k) {
  * @param {Number} n - Number of terms
  * @returns {Array} - Array of Bernoulli numbers
  */
-function bernoulliNumbers(n) {
+export function bernoulliNumbers(n) {
   if (n <= 0) return [];
-  
+
   const result = [1];
-  
+
   for (let m = 1; m < n; m++) {
     let sum = 0;
     for (let k = 0; k < m; k++) {
@@ -238,10 +238,10 @@ function bernoulliNumbers(n) {
     }
     result.push(-sum);
   }
-  
+
   // Set B1 to -0.5 (special case)
   if (n > 1) result[1] = -0.5;
-  
+
   return result;
 }
 
@@ -250,23 +250,23 @@ function bernoulliNumbers(n) {
  * @param {Number} n - Starting number
  * @returns {Array} - Collatz sequence
  */
-function collatzSequence(n) {
+export function collatzSequence(n) {
   if (n <= 0 || !Number.isInteger(n)) {
     throw new Error('Starting number must be a positive integer');
   }
-  
+
   const result = [n];
   let current = n;
-  
+
   while (current !== 1) {
     if (current % 2 === 0) {
-      current = current / 2;
+      current /= 2;
     } else {
       current = 3 * current + 1;
     }
     result.push(current);
   }
-  
+
   return result;
 }
 
@@ -278,12 +278,12 @@ function collatzSequence(n) {
  */
 function lookAndSaySequence(n, start = 1) {
   const result = [start.toString()];
-  
+
   for (let i = 1; i < n; i++) {
     const previous = result[i - 1];
     let current = '';
     let count = 1;
-    
+
     for (let j = 0; j < previous.length; j++) {
       if (j + 1 < previous.length && previous[j] === previous[j + 1]) {
         count++;
@@ -292,10 +292,10 @@ function lookAndSaySequence(n, start = 1) {
         count = 1;
       }
     }
-    
+
     result.push(current);
   }
-  
+
   return result;
 }
 

@@ -54,8 +54,8 @@ module.exports = {
   },
   externals: {
     // List external dependencies here that should not be bundled
-    'chalk': 'chalk',
-    'express': 'express',
-    'commander': 'commander'
+    chalk: 'chalk',
+    express: 'express',
+    commander: 'commander'
   }
 };

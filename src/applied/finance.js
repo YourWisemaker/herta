@@ -3,8 +3,8 @@
  * Provides models and calculations for financial applications
  */
 
-const arithmetic = require('../core/arithmetic');
-const statistics = require('../statistics/descriptive');
+import arithmetic from '../core/arithmetic.js';
+import statistics from '../statistics/descriptive.js';
 
 const financialMath = {};
 
@@ -527,4 +527,4 @@ financialMath.bondConvexity = function (couponRate, marketRate, faceValue, timeT
   return convexity;
 };
 
-module.exports = financialMath;
+export default financialMath;

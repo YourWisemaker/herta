@@ -161,4 +161,4 @@ chain.createChain = function (math) {
   };
 };
 
-module.exports = chain;
+export default chain;

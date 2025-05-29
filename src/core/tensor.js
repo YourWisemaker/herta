@@ -4,9 +4,9 @@
  */
 
 // These dependencies are used throughout tensor operations
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
-const tensorContraction = require('tensor-contraction');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
+import tensorContraction from 'tensor-contraction';
 
 // Tensor module
 const tensor = {};
@@ -736,4 +736,4 @@ tensor.product = function (a, b) {
   return a.tensorProduct(b);
 };
 
-module.exports = tensor;
+export default tensor;

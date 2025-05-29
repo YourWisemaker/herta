@@ -10,26 +10,66 @@ console.log('======================================\n');
 
 // Sample dataset: Sales data by region, product, and date
 const salesData = [
-  { date: '2023-01-01', region: 'North', product: 'Widget A', sales: 1200, units: 42, returns: 2 },
-  { date: '2023-01-01', region: 'South', product: 'Widget A', sales: 900, units: 31, returns: 1 },
-  { date: '2023-01-01', region: 'East', product: 'Widget B', sales: 1500, units: 45, returns: 3 },
-  { date: '2023-01-01', region: 'West', product: 'Widget C', sales: 800, units: 24, returns: 0 },
-  { date: '2023-01-02', region: 'North', product: 'Widget A', sales: 1100, units: 38, returns: 1 },
-  { date: '2023-01-02', region: 'South', product: 'Widget B', sales: 1350, units: 40, returns: 2 },
-  { date: '2023-01-02', region: 'East', product: 'Widget A', sales: 950, units: 33, returns: 0 },
-  { date: '2023-01-02', region: 'West', product: 'Widget C', sales: 1700, units: 52, returns: 4 },
-  { date: '2023-01-03', region: 'North', product: 'Widget B', sales: 1400, units: 42, returns: 1 },
-  { date: '2023-01-03', region: 'South', product: 'Widget C', sales: 1600, units: 48, returns: 2 },
-  { date: '2023-01-03', region: 'East', product: 'Widget A', sales: 1050, units: 36, returns: 1 },
-  { date: '2023-01-03', region: 'West', product: 'Widget B', sales: 1750, units: 53, returns: 3 },
-  { date: '2023-01-04', region: 'North', product: 'Widget C', sales: 950, units: 29, returns: 0 },
-  { date: '2023-01-04', region: 'South', product: 'Widget A', sales: 1150, units: 39, returns: 1 },
-  { date: '2023-01-04', region: 'East', product: 'Widget B', sales: 1850, units: 56, returns: 2 },
-  { date: '2023-01-04', region: 'West', product: 'Widget A', sales: 1250, units: 43, returns: 1 },
-  { date: '2023-01-05', region: 'North', product: 'Widget B', sales: 1300, units: 39, returns: 1 },
-  { date: '2023-01-05', region: 'South', product: 'Widget C', sales: 1450, units: 44, returns: 2 },
-  { date: '2023-01-05', region: 'East', product: 'Widget A', sales: 1100, units: 38, returns: 1 },
-  { date: '2023-01-05', region: 'West', product: 'Widget B', sales: 2100, units: 63, returns: 4 },
+  {
+    date: '2023-01-01', region: 'North', product: 'Widget A', sales: 1200, units: 42, returns: 2
+  },
+  {
+    date: '2023-01-01', region: 'South', product: 'Widget A', sales: 900, units: 31, returns: 1
+  },
+  {
+    date: '2023-01-01', region: 'East', product: 'Widget B', sales: 1500, units: 45, returns: 3
+  },
+  {
+    date: '2023-01-01', region: 'West', product: 'Widget C', sales: 800, units: 24, returns: 0
+  },
+  {
+    date: '2023-01-02', region: 'North', product: 'Widget A', sales: 1100, units: 38, returns: 1
+  },
+  {
+    date: '2023-01-02', region: 'South', product: 'Widget B', sales: 1350, units: 40, returns: 2
+  },
+  {
+    date: '2023-01-02', region: 'East', product: 'Widget A', sales: 950, units: 33, returns: 0
+  },
+  {
+    date: '2023-01-02', region: 'West', product: 'Widget C', sales: 1700, units: 52, returns: 4
+  },
+  {
+    date: '2023-01-03', region: 'North', product: 'Widget B', sales: 1400, units: 42, returns: 1
+  },
+  {
+    date: '2023-01-03', region: 'South', product: 'Widget C', sales: 1600, units: 48, returns: 2
+  },
+  {
+    date: '2023-01-03', region: 'East', product: 'Widget A', sales: 1050, units: 36, returns: 1
+  },
+  {
+    date: '2023-01-03', region: 'West', product: 'Widget B', sales: 1750, units: 53, returns: 3
+  },
+  {
+    date: '2023-01-04', region: 'North', product: 'Widget C', sales: 950, units: 29, returns: 0
+  },
+  {
+    date: '2023-01-04', region: 'South', product: 'Widget A', sales: 1150, units: 39, returns: 1
+  },
+  {
+    date: '2023-01-04', region: 'East', product: 'Widget B', sales: 1850, units: 56, returns: 2
+  },
+  {
+    date: '2023-01-04', region: 'West', product: 'Widget A', sales: 1250, units: 43, returns: 1
+  },
+  {
+    date: '2023-01-05', region: 'North', product: 'Widget B', sales: 1300, units: 39, returns: 1
+  },
+  {
+    date: '2023-01-05', region: 'South', product: 'Widget C', sales: 1450, units: 44, returns: 2
+  },
+  {
+    date: '2023-01-05', region: 'East', product: 'Widget A', sales: 1100, units: 38, returns: 1
+  },
+  {
+    date: '2023-01-05', region: 'West', product: 'Widget B', sales: 2100, units: 63, returns: 4
+  }
 ];
 
 // 1. Generate summary statistics
@@ -71,8 +111,8 @@ const outliers = herta.tabularAnalysis.detectOutliers(salesData, ['sales', 'unit
 console.log('Sales outliers:');
 if (outliers.sales.count > 0) {
   console.log(`Found ${outliers.sales.count} outliers (${outliers.sales.percentage.toFixed(2)}% of data)`);
-  console.log('Outlier bounds: $' + outliers.sales.bounds.lower.toFixed(2) + ' to $' + outliers.sales.bounds.upper.toFixed(2));
-  outliers.sales.items.forEach(item => {
+  console.log(`Outlier bounds: $${outliers.sales.bounds.lower.toFixed(2)} to $${outliers.sales.bounds.upper.toFixed(2)}`);
+  outliers.sales.items.forEach((item) => {
     console.log(`Row ${item.index}: $${item.value} (${item.isHigh ? 'high' : 'low'} outlier)`);
   });
 } else {
@@ -94,7 +134,7 @@ const salesByProduct = herta.tabularAnalysis.groupBy(salesData, 'product', {
 });
 
 console.log('Sales by Product:');
-salesByProduct.forEach(group => {
+salesByProduct.forEach((group) => {
   console.log(`\nProduct: ${group.product}`);
   console.log(`Total Sales: $${group.totalSales.toFixed(2)}`);
   console.log(`Average Sales: $${group.avgSales.toFixed(2)}`);
@@ -126,12 +166,12 @@ const encodedData = herta.tabularAnalysis.oneHotEncode(salesData, ['region', 'pr
 console.log('Sample of encoded data (first row):');
 const firstRow = encodedData[0];
 console.log('Original region:', salesData[0].region);
-Object.keys(firstRow).filter(k => k.startsWith('region_')).forEach(key => {
+Object.keys(firstRow).filter((k) => k.startsWith('region_')).forEach((key) => {
   console.log(`  ${key}: ${firstRow[key]}`);
 });
 
 console.log('Original product:', salesData[0].product);
-Object.keys(firstRow).filter(k => k.startsWith('product_')).forEach(key => {
+Object.keys(firstRow).filter((k) => k.startsWith('product_')).forEach((key) => {
   console.log(`  ${key}: ${firstRow[key]}`);
 });
 

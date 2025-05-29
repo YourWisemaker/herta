@@ -2,8 +2,8 @@
  * Core arithmetic operations for herta.js
  */
 
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
 
 // Configure decimal precision
 Decimal.set({ precision: 64 });
@@ -481,4 +481,4 @@ arithmetic.lcm = function (a, b) {
   return Math.abs(a * b) / arithmetic.gcd(a, b);
 };
 
-module.exports = arithmetic;
+export default arithmetic;

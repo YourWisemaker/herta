@@ -74,10 +74,10 @@ const timeUnits = {
 const temperatureConversions = {
   celsiusToKelvin: (celsius) => celsius + 273.15,
   kelvinToCelsius: (kelvin) => kelvin - 273.15,
-  celsiusToFahrenheit: (celsius) => celsius * 9/5 + 32,
-  fahrenheitToCelsius: (fahrenheit) => (fahrenheit - 32) * 5/9,
-  kelvinToFahrenheit: (kelvin) => kelvin * 9/5 - 459.67,
-  fahrenheitToKelvin: (fahrenheit) => (fahrenheit + 459.67) * 5/9
+  celsiusToFahrenheit: (celsius) => celsius * 9 / 5 + 32,
+  fahrenheitToCelsius: (fahrenheit) => (fahrenheit - 32) * 5 / 9,
+  kelvinToFahrenheit: (kelvin) => kelvin * 9 / 5 - 459.67,
+  fahrenheitToKelvin: (fahrenheit) => (fahrenheit + 459.67) * 5 / 9
 };
 
 // Area units (in square meters)
@@ -167,11 +167,11 @@ function convertUnit(value, fromUnit, toUnit, unitType) {
   if (!unitType[fromUnit]) {
     throw new Error(`Unknown source unit: ${fromUnit}`);
   }
-  
+
   if (!unitType[toUnit]) {
     throw new Error(`Unknown target unit: ${toUnit}`);
   }
-  
+
   return value * unitType[fromUnit] / unitType[toUnit];
 }
 
@@ -184,7 +184,7 @@ function convertUnit(value, fromUnit, toUnit, unitType) {
  */
 function convertTemperature(value, fromUnit, toUnit) {
   if (fromUnit === toUnit) return value;
-  
+
   // Convert to Kelvin as intermediate step
   let kelvinValue;
   if (fromUnit === 'celsius') {
@@ -196,50 +196,49 @@ function convertTemperature(value, fromUnit, toUnit) {
   } else {
     throw new Error(`Unknown temperature unit: ${fromUnit}`);
   }
-  
+
   // Convert from Kelvin to target unit
   if (toUnit === 'celsius') {
     return temperatureConversions.kelvinToCelsius(kelvinValue);
-  } else if (toUnit === 'fahrenheit') {
+  } if (toUnit === 'fahrenheit') {
     return temperatureConversions.kelvinToFahrenheit(kelvinValue);
-  } else if (toUnit === 'kelvin') {
+  } if (toUnit === 'kelvin') {
     return kelvinValue;
-  } else {
-    throw new Error(`Unknown temperature unit: ${toUnit}`);
   }
+  throw new Error(`Unknown temperature unit: ${toUnit}`);
 }
 
 // Main unit conversion function
 const units = {
   // Length conversion
   length: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, lengthUnits),
-  
+
   // Mass conversion
   mass: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, massUnits),
-  
+
   // Time conversion
   time: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, timeUnits),
-  
+
   // Temperature conversion
   temperature: (value, fromUnit, toUnit) => convertTemperature(value, fromUnit, toUnit),
-  
+
   // Area conversion
   area: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, areaUnits),
-  
+
   // Volume conversion
   volume: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, volumeUnits),
-  
+
   // Energy conversion
   energy: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, energyUnits),
-  
+
   // Power conversion
   power: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, powerUnits),
-  
+
   // Pressure conversion
   pressure: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, pressureUnits),
-  
+
   // Speed conversion
   speed: (value, fromUnit, toUnit) => convertUnit(value, fromUnit, toUnit, speedUnits)
 };
 
-module.exports = units;
+export default units;

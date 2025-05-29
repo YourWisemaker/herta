@@ -3,7 +3,7 @@
  * Provides methods for symbolic integration, differentiation, and equation solving
  */
 
-const utils = require('../utils/utils');
+import utils from '../utils/utils.js'; // Added .js extension
 
 // Symbolic mathematics module
 const symbolic = {};
@@ -258,4 +258,4 @@ symbolic.limit = function (expr, variable, value) {
   return symbolic.expression(`limit(${exprStr}, ${variable} -> ${valueStr})`);
 };
 
-module.exports = symbolic;
+export default symbolic;

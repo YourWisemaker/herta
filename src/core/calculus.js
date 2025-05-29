@@ -3,8 +3,8 @@
  * Provides differentiation, integration, and other calculus operations
  */
 
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
 
 // Calculus module
 const calculus = {};
@@ -312,4 +312,4 @@ calculus.inflectionPoints = function (expr, variable, lowerBound, upperBound) {
   return [];
 };
 
-module.exports = calculus;
+export default calculus;

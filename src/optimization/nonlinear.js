@@ -3,9 +3,9 @@
  * Provides various optimization algorithms and techniques
  */
 
-const Decimal = require('decimal.js');
-const matrix = require('../core/matrix');
-const arithmetic = require('../core/arithmetic');
+import Decimal from 'decimal.js';
+import matrix from '../core/matrix.js';
+import arithmetic from '../core/arithmetic.js';
 
 const optimization = {};
 
@@ -746,4 +746,4 @@ optimization.cobyla = function (objective, constraints, initialPoint, options = 
   };
 };
 
-module.exports = optimization;
+export default optimization;

@@ -13,15 +13,15 @@ const chalk = require('chalk');
  */
 function explain(args) {
   const topic = args[0];
-  
+
   if (!topic) {
     displayExplainHelp();
     return;
   }
-  
+
   console.log(chalk.cyan(`Herta.js Explanation: ${topic}`));
   console.log(chalk.dim('─'.repeat(40)));
-  
+
   try {
     const explanation = getExplanation(topic);
     console.log(explanation);
@@ -37,7 +37,7 @@ function explain(args) {
  */
 function getExplanation(topic) {
   const explanations = {
-    'config': `
+    config: `
 ${chalk.bold('Configuration in Herta.js')}
 
 Herta.js configurations allow you to customize the framework's behavior according to your specific needs. Configuration is handled through a 'herta.config.js' file in your project root.
@@ -75,7 +75,7 @@ ${chalk.yellow('Usage:')}
 Your configuration will be automatically loaded when Herta.js initializes. You can also modify configuration at runtime using herta.configure({...}).
 `,
 
-    'algorithms': `
+    algorithms: `
 ${chalk.bold('Algorithms in Herta.js')}
 
 Herta.js implements a wide variety of algorithms across different mathematical domains. Here's a high-level overview of how they work:
@@ -105,7 +105,7 @@ ${chalk.bold('Backpropagation:')} Algorithm for training neural networks by calc
 You can find more detailed explanations in the documentation, including pseudocode and complexity analysis.
 `,
 
-    'architecture': `
+    architecture: `
 ${chalk.bold('Herta.js Architecture')}
 
 Herta.js is designed with a modular architecture that separates concerns and promotes code reuse.
@@ -143,7 +143,7 @@ herta/
 `)}
 `,
 
-    'patterns': `
+    patterns: `
 ${chalk.bold('Design Patterns in Herta.js')}
 
 Herta.js uses several design patterns to organize code and solve common problems:
@@ -191,7 +191,7 @@ const memoized = herta.utils.memoize(expensiveFunction);
 These patterns help maintain clean, maintainable code while providing powerful abstractions.
 `,
 
-    'performance': `
+    performance: `
 ${chalk.bold('Performance Optimization in Herta.js')}
 
 Herta.js employs several strategies to optimize performance for mathematical operations:
@@ -238,19 +238,18 @@ console.log(benchmark.report());
 `)}
 `
   };
-  
+
   // Special handling for module explanations
   if (topic.startsWith('module:')) {
     return explainModule(topic.substring(7));
   }
-  
+
   // Return explanation if exists, otherwise error
   if (explanations[topic]) {
     return explanations[topic];
-  } else {
-    const availableTopics = Object.keys(explanations).join(', ');
-    throw new Error(`Unknown topic: ${topic}. Available topics: ${availableTopics}, or use 'module:<name>' for module explanations.`);
   }
+  const availableTopics = Object.keys(explanations).join(', ');
+  throw new Error(`Unknown topic: ${topic}. Available topics: ${availableTopics}, or use 'module:<name>' for module explanations.`);
 }
 
 /**
@@ -261,9 +260,9 @@ console.log(benchmark.report());
 function explainModule(moduleName) {
   // This would ideally dynamically analyze the module code
   // For demo purposes, we'll provide explanations for a few modules
-  
+
   const moduleExplanations = {
-    'matrix': `
+    matrix: `
 ${chalk.bold('Matrix Module')}
 
 The Matrix module provides operations for linear algebra calculations. It's the backbone of many other modules in Herta.js.
@@ -309,7 +308,7 @@ const { U, S, V } = herta.matrix.svd(A);
 This module is used extensively throughout the framework for any computation requiring matrix operations.
 `,
 
-    'neuralNetworks': `
+    neuralNetworks: `
 ${chalk.bold('Neural Networks Module')}
 
 The Neural Networks module provides tools to create, train, and evaluate neural network models.
@@ -367,7 +366,7 @@ const prediction = model.predict(inputData);
 The implementation focuses on clarity and flexibility while maintaining computational efficiency.
 `,
 
-    'technicalAnalysis': `
+    technicalAnalysis: `
 ${chalk.bold('Technical Analysis Module')}
 
 The Technical Analysis module provides mathematical functions for analyzing financial markets and generating trading signals.
@@ -418,7 +417,7 @@ const pivots = herta.technicalAnalysis.pivotPoints(high, low, close);
 Implementations prioritize numerical accuracy while accounting for the nuances of financial data.
 `,
 
-    'riskManagement': `
+    riskManagement: `
 ${chalk.bold('Risk Management Module')}
 
 The Risk Management module provides mathematical tools for assessing and managing financial risk.
@@ -467,12 +466,11 @@ const volatility = herta.riskManagement.portfolioVolatility(weights, covarianceM
 This module is particularly useful for portfolio managers, risk officers, and financial analysts.
 `
   };
-  
+
   if (moduleExplanations[moduleName]) {
     return moduleExplanations[moduleName];
-  } else {
-    throw new Error(`Module explanation not available for: ${moduleName}. Use 'herta erudition doc ${moduleName}' for technical documentation.`);
   }
+  throw new Error(`Module explanation not available for: ${moduleName}. Use 'herta erudition doc ${moduleName}' for technical documentation.`);
 }
 
 /**

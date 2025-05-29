@@ -3,11 +3,13 @@
     "node": true,
     "es2021": true,
     "jest": true,
-    "mocha": true
+    "mocha": true,
+    "es6": true
   },
   "extends": "airbnb-base",
   "parserOptions": {
-    "ecmaVersion": 2022
+    "ecmaVersion": 2022,
+    "sourceType": "module"
   },
   "rules": {
     "no-console": "off",
@@ -17,5 +19,16 @@
     "no-underscore-dangle": "off",
     "func-names": "off",
     "no-plusplus": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["bin/**/*.js"],
+      "env": {
+        "commonjs": true
+      },
+      "parserOptions": {
+        "sourceType": "script"
+      }
+    }
+  ]
 }

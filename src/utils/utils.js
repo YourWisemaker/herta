@@ -3,8 +3,8 @@
  * Provides common utilities used across the framework
  */
 
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
 
 // Utilities module
 const utils = {};
@@ -531,4 +531,4 @@ utils.interpolate = function (xValues, yValues) {
   };
 };
 
-module.exports = utils;
+export default utils;

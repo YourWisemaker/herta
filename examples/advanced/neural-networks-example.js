@@ -15,10 +15,10 @@ function generateData(n = 100) {
     // Create two features
     const x1 = Math.random() * 2 - 1;
     const x2 = Math.random() * 2 - 1;
-    
+
     // Label: 1 if x1^2 + x2^2 < 0.5, otherwise 0
     const label = (x1 * x1 + x2 * x2) < 0.5 ? 1 : 0;
-    
+
     data.push({ input: [x1, x2], output: [label] });
   }
   return data;
@@ -32,8 +32,8 @@ const testingData = generateData(50);
 console.log('Creating a feedforward neural network...');
 const model = herta.neuralNetworks.feedForward(
   [2, 8, 4, 1], // Layer sizes: 2 inputs, 2 hidden layers (8 and 4 neurons), 1 output
-  { 
-    activation: 'relu',      // ReLU activation for hidden layers
+  {
+    activation: 'relu', // ReLU activation for hidden layers
     outputActivation: 'sigmoid', // Sigmoid for output layer (binary classification)
     learningRate: 0.01
   }
@@ -54,11 +54,11 @@ const trainResults = model.train(trainingData, {
 // Test the model
 console.log('\nTesting the neural network...');
 let correct = 0;
-testingData.forEach(sample => {
+testingData.forEach((sample) => {
   const prediction = model.forward(sample.input);
   const predictedClass = prediction[0] > 0.5 ? 1 : 0;
   const actualClass = sample.output[0];
-  
+
   if (predictedClass === actualClass) {
     correct++;
   }
@@ -71,7 +71,7 @@ console.log('\nSample predictions:');
 for (let i = 0; i < 5; i++) {
   const sample = testingData[i];
   const prediction = model.forward(sample.input);
-  console.log(`Input: [${sample.input.map(x => x.toFixed(2)).join(', ')}]`);
+  console.log(`Input: [${sample.input.map((x) => x.toFixed(2)).join(', ')}]`);
   console.log(`Actual: ${sample.output[0]}, Predicted: ${prediction[0].toFixed(4)} (Class: ${prediction[0] > 0.5 ? 1 : 0})`);
   console.log();
 }
@@ -90,8 +90,8 @@ const convLayer = herta.neuralNetworks.convLayer2d({
 // Create a mock 8x8 grayscale image
 const mockImage = Array(8).fill().map(() => Array(8).fill().map(() => Math.random()));
 console.log('Mock image (8x8):');
-mockImage.forEach(row => {
-  console.log(row.map(x => x.toFixed(2)).join(' '));
+mockImage.forEach((row) => {
+  console.log(row.map((x) => x.toFixed(2)).join(' '));
 });
 
 // Process the image through the convolutional layer

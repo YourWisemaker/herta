@@ -3,9 +3,9 @@
  * Exports all mathematical modules for easy access
  */
 
-const differential = require('./differential');
-const symbolic = require('./symbolic');
-const probability = require('./probability');
+import differential from './differential.js';
+import symbolic from './symbolic.js';
+import probability from './probability.js';
 
 // Math module
 const math = {
@@ -14,4 +14,4 @@ const math = {
   probability
 };
 
-module.exports = math;
+export default math;

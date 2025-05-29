@@ -3,7 +3,7 @@
  * Provides methods for solving ordinary differential equations (ODEs)
  */
 
-const utils = require('../utils/utils');
+import utils from '../utils/utils.js'; // Added .js extension
 
 // Differential equations module
 const differential = {};
@@ -247,4 +247,4 @@ differential.solveBVP = function (func, a, b, ya, yb, tol = 1e-6, maxIter = 100)
   };
 };
 
-module.exports = differential;
+export default differential;

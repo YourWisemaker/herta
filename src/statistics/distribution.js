@@ -3,8 +3,8 @@
  * Provides probability distributions, stochastic processes, and statistical functions
  */
 
-const matrix = require('../core/matrix');
-const arithmetic = require('../core/arithmetic');
+import matrix from '../core/matrix.js';
+import arithmetic from '../core/arithmetic.js';
 
 const probabilityTheory = {};
 
@@ -537,4 +537,4 @@ probabilityTheory.linearRegression = function (x, y) {
   };
 };
 
-module.exports = probabilityTheory;
+export default probabilityTheory;

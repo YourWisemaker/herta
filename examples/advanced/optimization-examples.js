@@ -4,6 +4,7 @@
  */
 
 const herta = require('../../src/index.js');
+
 const { optimization } = herta;
 
 console.log('Herta.js Optimization Examples');
@@ -14,7 +15,7 @@ console.log('==============================\n');
 const objectiveFunction = (params) => {
   const x = params[0];
   const y = params[1];
-  return Math.pow(x - 2, 2) + Math.pow(y - 3, 2) + 1;
+  return (x - 2) ** 2 + (y - 3) ** 2 + 1;
 };
 
 // Gradient of the objective function: ∇f(x,y) = [2(x-2), 2(y-3)]
@@ -51,12 +52,10 @@ console.log('-----------------');
 console.log('Minimizing the same function using Newton\'s method');
 
 // Hessian matrix for the function: H(x,y) = [[2, 0], [0, 2]]
-const hessianFunction = () => {
-  return [
-    [2, 0],
-    [0, 2]
-  ];
-};
+const hessianFunction = () => [
+  [2, 0],
+  [0, 2]
+];
 
 const newtonResult = optimization.newtonsMethod({
   objective: objectiveFunction,
@@ -81,7 +80,7 @@ console.log('Solving a more complex problem with multiple local minima');
 const complexFunction = (params) => {
   const x = params[0];
   const y = params[1];
-  return Math.sin(x) * Math.cos(y) + 0.05 * (x*x + y*y);
+  return Math.sin(x) * Math.cos(y) + 0.05 * (x * x + y * y);
 };
 
 const saResult = optimization.simulatedAnnealing({
@@ -118,19 +117,19 @@ const knapsackCapacity = 15;
 const knapsackFitness = (chromosome) => {
   let totalValue = 0;
   let totalWeight = 0;
-  
+
   for (let i = 0; i < chromosome.length; i++) {
     if (chromosome[i]) {
       totalValue += items[i].value;
       totalWeight += items[i].weight;
     }
   }
-  
+
   // Penalty for exceeding weight capacity
   if (totalWeight > knapsackCapacity) {
     return 0; // Invalid solution
   }
-  
+
   return totalValue;
 };
 
@@ -147,7 +146,7 @@ console.log('Best chromosome:', gaResult.bestChromosome);
 console.log('Selected items:');
 gaResult.bestChromosome.forEach((selected, i) => {
   if (selected) {
-    console.log(`  Item ${i+1}: Value=${items[i].value}, Weight=${items[i].weight}`);
+    console.log(`  Item ${i + 1}: Value=${items[i].value}, Weight=${items[i].weight}`);
   }
 });
 
@@ -174,11 +173,11 @@ console.log('Minimizing a complex function with PSO');
 const rastriginFunction = (params) => {
   const n = params.length;
   let sum = 10 * n;
-  
+
   for (let i = 0; i < n; i++) {
     sum += params[i] * params[i] - 10 * Math.cos(2 * Math.PI * params[i]);
   }
-  
+
   return sum;
 };
 
@@ -208,9 +207,9 @@ console.log('Solving a simple linear programming problem');
 
 const objectiveCoefficients = [3, 4]; // Coefficients of objective function to maximize
 const constraintMatrix = [
-  [1, 2],   // Coefficients for first constraint: x + 2y ≤ 14
-  [3, -1],  // Coefficients for second constraint: 3x - y ≤ 0 
-  [1, -1]   // Coefficients for third constraint: x - y ≤ 2
+  [1, 2], // Coefficients for first constraint: x + 2y ≤ 14
+  [3, -1], // Coefficients for second constraint: 3x - y ≤ 0
+  [1, -1] // Coefficients for third constraint: x - y ≤ 2
 ];
 const constraintValues = [14, 0, 2]; // Right-hand side of constraints
 

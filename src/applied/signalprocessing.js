@@ -3,9 +3,9 @@
  * Provides Fourier transforms, filters, and signal processing algorithms
  */
 
-const Complex = require('complex.js');
-const complex = require('../core/complex');
-const matrix = require('../core/matrix');
+import Complex from 'complex.js';
+import complex from '../core/complex.js';
+import matrix from '../core/matrix.js';
 
 const signalProcessing = {};
 
@@ -639,4 +639,4 @@ signalProcessing.idwt = function (coeffs, wavelet = 'haar') {
   return result;
 };
 
-module.exports = signalProcessing;
+export default signalProcessing;

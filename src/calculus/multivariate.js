@@ -9,7 +9,7 @@
  * @param {number} imag - Imaginary part
  * @returns {Object} - Complex number object
  */
-function complex(real, imag = 0) {
+export function complex(real, imag = 0) {
   return {
     re: real,
     im: imag,
@@ -172,7 +172,7 @@ function complex(real, imag = 0) {
  * @param {Function} imagPart - Function computing the imaginary part
  * @returns {Function} - Complex function
  */
-function complexFunction(realPart, imagPart) {
+export function complexFunction(realPart, imagPart) {
   return function (z) {
     if (typeof z === 'number') {
       z = complex(z, 0);
@@ -188,7 +188,7 @@ function complexFunction(realPart, imagPart) {
  * @param {number} epsilon - Tolerance for derivative approximation
  * @returns {boolean} - True if function appears to be analytic at the point
  */
-function isAnalytic(f, z, epsilon = 1e-8) {
+export function isAnalytic(f, z, epsilon = 1e-8) {
   // Compute partial derivatives at point
   const h = epsilon;
 
@@ -218,7 +218,7 @@ function isAnalytic(f, z, epsilon = 1e-8) {
  * @param {number} h - Step size for approximation
  * @returns {Object} - Complex derivative f'(z)
  */
-function derivative(f, z, h = 1e-6) {
+export function derivative(f, z, h = 1e-6) {
   const f_z = f(z);
   const f_z_plus_h = f(complex(z.re + h, z.im));
 
@@ -233,7 +233,7 @@ function derivative(f, z, h = 1e-6) {
  * @param {Array<Object>} coefficients - Array of complex coefficients [a_n, a_{n-1}, ..., a_1, a_0]
  * @returns {Array<Object>} - Array of complex zeros
  */
-function findPolynomialZeros(coefficients) {
+export function findPolynomialZeros(coefficients) {
   // For now, we'll implement a simple case for linear and quadratic polynomials
   if (coefficients.length === 2) {
     // Linear case: a*z + b = 0
@@ -273,7 +273,7 @@ function findPolynomialZeros(coefficients) {
  * @param {Array<Object>} contour - Array of complex points defining the contour
  * @returns {Object} - Result of the contour integral
  */
-function contourIntegral(f, contour) {
+export function contourIntegral(f, contour) {
   let result = complex(0, 0);
 
   for (let i = 0; i < contour.length - 1; i++) {
@@ -301,7 +301,7 @@ function contourIntegral(f, contour) {
  * @param {number} order - Order of the pole
  * @returns {Object} - Complex residue
  */
-function residue(f, pole, order = 1) {
+export function residue(f, pole, order = 1) {
   if (order === 1) {
     // Simple pole: evaluate lim_{z→pole} (z-pole)*f(z)
     const h = 1e-6;
@@ -323,7 +323,7 @@ function residue(f, pole, order = 1) {
  * @param {number} nTerms - Number of terms to compute
  * @returns {Object} - Object with positive and negative index coefficients
  */
-function laurentSeries(f, center, radius, nTerms = 5) {
+export function laurentSeries(f, center, radius, nTerms = 5) {
   const coefficients = {
     // Positive indices (analytic part)
     positive: [],
@@ -370,7 +370,7 @@ function laurentSeries(f, center, radius, nTerms = 5) {
  * @param {Function} mapping - Complex function representing the mapping
  * @returns {Object} - Conformal mapping object with direct and inverse functions
  */
-function conformalMapping(mapping, inverse = null) {
+export function conformalMapping(mapping, inverse = null) {
   // Validate that mapping is analytic at a sample point
   const testPoint = complex(1, 1);
   if (!isAnalytic(mapping, testPoint)) {
@@ -407,7 +407,7 @@ function conformalMapping(mapping, inverse = null) {
 /**
  * Common conformal mappings
  */
-const conformalMappings = {
+export const conformalMappings = {
   /**
      * Möbius transformation with parameters a, b, c, d (where ad-bc ≠ 0)
      * Maps z → (az+b)/(cz+d)
@@ -504,7 +504,7 @@ const conformalMappings = {
  * @param {number} radius - Cylinder radius
  * @returns {Function} - Complex potential function
  */
-function potentialFlowAroundCylinder(velocity, radius) {
+export function potentialFlowAroundCylinder(velocity, radius) {
   return function (z) {
     const r2 = radius * radius;
     const term1 = complex(velocity * z.re, velocity * z.im);
@@ -527,7 +527,7 @@ function potentialFlowAroundCylinder(velocity, radius) {
  * @param {number} ySteps - Number of y steps
  * @returns {Object} - Grid lines in original and mapped domains
  */
-function conformalGrid(mapping, xMin, xMax, yMin, yMax, xSteps = 10, ySteps = 10) {
+export function conformalGrid(mapping, xMin, xMax, yMin, yMax, xSteps = 10, ySteps = 10) {
   const result = {
     originalHorizontal: [],
     originalVertical: [],
@@ -571,18 +571,3 @@ function conformalGrid(mapping, xMin, xMax, yMin, yMax, xSteps = 10, ySteps = 10
 
   return result;
 }
-
-module.exports = {
-  complex,
-  complexFunction,
-  isAnalytic,
-  derivative,
-  findPolynomialZeros,
-  contourIntegral,
-  residue,
-  laurentSeries,
-  conformalMapping,
-  conformalMappings,
-  potentialFlowAroundCylinder,
-  conformalGrid
-};

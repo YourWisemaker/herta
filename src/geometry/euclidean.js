@@ -3,8 +3,8 @@
  * Provides computational geometry functions and operations
  */
 
-const arithmetic = require('../core/arithmetic');
-const matrix = require('../core/matrix');
+import arithmetic from '../core/arithmetic.js';
+import matrix from '../core/matrix.js';
 
 const geometry = {};
 
@@ -445,4 +445,4 @@ geometry.minimumEnclosingCircle = function (points) {
   };
 };
 
-module.exports = geometry;
+export default geometry;

@@ -3,7 +3,7 @@
  * Provides statistical functions for scientific data analysis
  */
 
-const Decimal = require('decimal.js');
+import Decimal from 'decimal.js';
 
 // Statistics module
 const statistics = {};
@@ -461,4 +461,4 @@ statistics.ml = {
   }
 };
 
-module.exports = statistics;
+export default statistics;

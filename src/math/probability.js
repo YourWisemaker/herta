@@ -3,7 +3,7 @@
  * Provides methods for working with various probability distributions
  */
 
-const utils = require('../utils/utils');
+import utils from '../utils/utils.js'; // Added .js extension
 
 // Probability distributions module
 const probability = {};
@@ -466,4 +466,4 @@ probability.uniform = {
   }
 };
 
-module.exports = probability;
+export default probability;

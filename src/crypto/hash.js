@@ -4,7 +4,7 @@
  */
 
 // Utility function for string to byte array conversion
-function stringToBytes(str) {
+export function stringToBytes(str) {
   const bytes = [];
   for (let i = 0; i < str.length; i++) {
     bytes.push(str.charCodeAt(i));
@@ -13,19 +13,19 @@ function stringToBytes(str) {
 }
 
 // Utility function for byte array to string conversion
-function bytesToString(bytes) {
+export function bytesToString(bytes) {
   return String.fromCharCode(...bytes);
 }
 
 // Utility function for byte array to hex string conversion
-function bytesToHex(bytes) {
+export function bytesToHex(bytes) {
   return Array.from(bytes)
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('');
 }
 
 // Utility function for hex string to byte array conversion
-function hexToBytes(hex) {
+export function hexToBytes(hex) {
   const bytes = [];
   for (let i = 0; i < hex.length; i += 2) {
     bytes.push(parseInt(hex.substr(i, 2), 16));
@@ -36,7 +36,7 @@ function hexToBytes(hex) {
 /**
  * Hash functions
  */
-const hash = {
+export const hash = {
   /**
    * Simple SHA-256 implementation
    * Note: In a production environment, use a well-tested library
@@ -71,7 +71,7 @@ const hash = {
 /**
  * Symmetric encryption functions
  */
-const symmetric = {
+export const symmetric = {
   /**
    * AES encryption (placeholder implementation)
    * @param {String|Array} plaintext - Data to encrypt
@@ -121,7 +121,7 @@ const symmetric = {
 /**
  * Asymmetric encryption functions
  */
-const asymmetric = {
+export const asymmetric = {
   /**
    * Generate RSA key pair (placeholder implementation)
    * @param {Number} bits - Key size in bits
@@ -168,7 +168,7 @@ const asymmetric = {
 /**
  * Digital signature functions
  */
-const signature = {
+export const signature = {
   /**
    * Sign data with RSA (placeholder implementation)
    * @param {String|Array} data - Data to sign
@@ -201,15 +201,9 @@ const signature = {
   }
 };
 
-module.exports = {
-  hash,
-  symmetric,
-  asymmetric,
-  signature,
-  utils: {
-    stringToBytes,
-    bytesToString,
-    bytesToHex,
-    hexToBytes
-  }
+export const utils = {
+  stringToBytes,
+  bytesToString,
+  bytesToHex,
+  hexToBytes
 };
