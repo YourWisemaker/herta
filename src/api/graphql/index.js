@@ -3,8 +3,8 @@
  * Provides GraphQL interface for Herta.js mathematical capabilities
  */
 
-const { gql } = require('apollo-server-express');
-const herta = require('../../index');
+import { gql } from 'apollo-server-express';
+import herta from '../../index.js'; // Added .js extension
 
 // GraphQL Schema Definition
 const typeDefs = gql`
@@ -278,7 +278,7 @@ const resolvers = {
   }
 };
 
-module.exports = {
+export {
   typeDefs,
   resolvers
 };

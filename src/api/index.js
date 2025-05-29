@@ -3,16 +3,16 @@
  * Provides REST and GraphQL interfaces for Herta.js mathematical capabilities
  */
 
-const express = require('express');
-const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
-const { ApolloServer } = require('apollo-server-express');
-const herta = require('../index');
+import express from 'express';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+import { ApolloServer } from 'apollo-server-express';
+import herta from '../index.js'; // Added .js extension
 
 // Import API modules
-const restRouter = require('./rest');
-const { typeDefs, resolvers } = require('./graphql');
+import restRouter from './rest/index.js'; // Added /index.js
+import { typeDefs, resolvers } from './graphql/index.js'; // Added /index.js
 
 /**
  * Create and configure a Herta.js API server
@@ -120,6 +120,6 @@ function createApiServer(options = {}) {
   };
 }
 
-module.exports = {
+export {
   createApiServer
 };

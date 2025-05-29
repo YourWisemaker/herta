@@ -3,7 +3,7 @@
  * Provides capabilities beyond what math.js can offer
  */
 
-const Complex = require('complex.js');
+import Complex from 'complex.js';
 
 // Integration module
 const integration = {};
@@ -366,4 +366,4 @@ integration.inverseFourierTransform = function (expr, freqVar = 'ω', timeVar = 
   return `F^{-1}{${expression}}(${timeVar})`;
 };
 
-module.exports = integration;
+export default integration;

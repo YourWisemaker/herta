@@ -3,9 +3,9 @@
  * Provides REST endpoints for Herta.js mathematical capabilities
  */
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const herta = require('../../index');
+import herta from '../../index.js'; // Added .js extension
 
 // Core mathematics endpoints
 /**
@@ -242,4 +242,4 @@ router.post('/quantum/state', (req, res) => {
 
 // More module endpoints can be added here...
 
-module.exports = router;
+export default router;

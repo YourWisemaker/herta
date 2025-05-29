@@ -15,11 +15,11 @@ module.exports = {
     minimizer: [new TerserPlugin({
       terserOptions: {
         format: {
-          comments: false,
-        },
+          comments: false
+        }
       },
-      extractComments: false,
-    })],
+      extractComments: false
+    })]
   },
   module: {
     rules: [

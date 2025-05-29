@@ -2,7 +2,7 @@
  * Expression evaluation module for herta.js
  */
 
-const Complex = require('complex.js');
+import Complex from 'complex.js';
 
 // Expression module
 const expression = {};
@@ -464,4 +464,4 @@ expression.derivative = function (expr, variable) {
   return `d/d${variable}(${expr})`;
 };
 
-module.exports = expression;
+export default expression;

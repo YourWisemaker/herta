@@ -5,8 +5,8 @@
  * and spacetime curvature.
  */
 
-const matrix = require('../core/matrix');
-const complex = require('../core/complex');
+import matrix from '../core/matrix.js';
+import complex from '../core/complex.js';
 
 const relativisticAstrophysics = {};
 
@@ -464,4 +464,4 @@ relativisticAstrophysics.geodeticPrecession = function (centralMass, semiMajorAx
          * (1 / Math.sqrt(1 - eccentricity * eccentricity));
 };
 
-module.exports = relativisticAstrophysics;
+export default relativisticAstrophysics;

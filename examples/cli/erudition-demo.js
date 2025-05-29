@@ -35,14 +35,14 @@ runEruditionCommand('help');
 // 2. Create a temporary module for demonstration
 console.log('\nCreating a demo module:');
 console.log('---------------------');
-const demoModuleName = 'DemoModule' + Math.floor(Math.random() * 1000);
+const demoModuleName = `DemoModule${Math.floor(Math.random() * 1000)}`;
 runEruditionCommand(`make module ${demoModuleName}`);
 
 // Check if the module was created
-const modulePath = path.join(__dirname, '../../src/advanced', demoModuleName.toLowerCase() + '.js');
+const modulePath = path.join(__dirname, '../../src/advanced', `${demoModuleName.toLowerCase()}.js`);
 if (fs.existsSync(modulePath)) {
   console.log(`\nSuccess! Module created at: ${modulePath}`);
-  
+
   // Display the generated module content
   console.log('\nGenerated module content:');
   console.log('-----------------------');
@@ -58,10 +58,10 @@ console.log('------------------------');
 runEruditionCommand(`doc ${demoModuleName.toLowerCase()}`);
 
 // Check if documentation was generated
-const docPath = path.join(__dirname, '../../docs', demoModuleName.toLowerCase() + '.md');
+const docPath = path.join(__dirname, '../../docs', `${demoModuleName.toLowerCase()}.md`);
 if (fs.existsSync(docPath)) {
   console.log(`\nSuccess! Documentation created at: ${docPath}`);
-  
+
   // Display the generated documentation
   console.log('\nGenerated documentation:');
   console.log('------------------------');
@@ -84,12 +84,12 @@ try {
     fs.unlinkSync(modulePath);
     console.log(`Removed ${modulePath}`);
   }
-  
+
   if (fs.existsSync(docPath)) {
     fs.unlinkSync(docPath);
     console.log(`Removed ${docPath}`);
   }
-  
+
   console.log('\nCleanup completed successfully.');
 } catch (error) {
   console.error('Error during cleanup:', error.message);

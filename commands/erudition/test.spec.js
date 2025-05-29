@@ -8,7 +8,7 @@ describe('Erudition Test Command', () => {
   test('should be a function', () => {
     expect(typeof eruditionTest).toBe('function');
   });
-  
+
   test('should have helper functions', () => {
     // Verify the structure of the function without calling it
     expect(eruditionTest.toString()).toContain('parseOptions');

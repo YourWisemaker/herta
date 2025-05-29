@@ -3,8 +3,8 @@
  * Provides symbolic manipulation, equation solving, and polynomial operations
  */
 
-const Decimal = require('decimal.js');
-const Complex = require('complex.js');
+import Decimal from 'decimal.js';
+import Complex from 'complex.js';
 
 // Algebra module
 const algebra = {};
@@ -252,4 +252,4 @@ algebra.polynomial = function (coefficients) {
   };
 };
 
-module.exports = algebra;
+export default algebra;

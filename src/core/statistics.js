@@ -57,4 +57,4 @@ const statistics = {
   }
 };
 
-module.exports = statistics;
+export default statistics;

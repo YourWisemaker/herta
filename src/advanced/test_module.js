@@ -13,7 +13,7 @@ const testModule = {};
  * @param {type} param - Parameter description
  * @returns {type} - Return value description
  */
-testModule.firstFunction = function(param) {
+testModule.firstFunction = function (param) {
   // Implementation
   return param;
 };
@@ -23,7 +23,7 @@ testModule.firstFunction = function(param) {
  * @param {type} param - Parameter description
  * @returns {type} - Return value description
  */
-testModule.secondFunction = function(param) {
+testModule.secondFunction = function (param) {
   // Implementation
   return param;
 };

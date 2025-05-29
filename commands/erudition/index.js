@@ -3,12 +3,12 @@
  * Main entry point for all erudition-related commands
  */
 
+const chalk = require('chalk'); // We'll need to add this to dependencies
 const make = require('./make');
 const analyze = require('./analyze');
 const doc = require('./doc');
 const test = require('./test');
 const explain = require('./explain');
-const chalk = require('chalk'); // We'll need to add this to dependencies
 
 /**
  * Execute the appropriate erudition subcommand

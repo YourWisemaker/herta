@@ -4,6 +4,7 @@
  */
 
 const herta = require('../../src/index.js');
+
 const { stringAlgorithms } = herta;
 
 console.log('Herta.js String Algorithms Examples');
@@ -13,8 +14,8 @@ console.log('==================================\n');
 console.log('1. String Distance and Similarity Metrics');
 console.log('---------------------------------------');
 
-const string1 = "kitten";
-const string2 = "sitting";
+const string1 = 'kitten';
+const string2 = 'sitting';
 
 // Levenshtein (edit) distance
 const editDistance = stringAlgorithms.levenshteinDistance(string1, string2);
@@ -34,8 +35,8 @@ console.log();
 console.log('2. Pattern Matching Algorithms');
 console.log('----------------------------');
 
-const text = "The quick brown fox jumps over the lazy dog. The fox is quick and brown.";
-const pattern = "fox";
+const text = 'The quick brown fox jumps over the lazy dog. The fox is quick and brown.';
+const pattern = 'fox';
 
 // Naive search
 console.log(`Text: "${text}"`);
@@ -70,8 +71,8 @@ console.log();
 console.log('3. Multi-Pattern Matching with Aho-Corasick');
 console.log('----------------------------------------');
 
-const textForMultiMatch = "The JavaScript language is widely used in web development.";
-const patterns = ["JavaScript", "web", "language", "code", "development"];
+const textForMultiMatch = 'The JavaScript language is widely used in web development.';
+const patterns = ['JavaScript', 'web', 'language', 'code', 'development'];
 
 console.log(`Text: "${textForMultiMatch}"`);
 console.log(`Patterns: ${JSON.stringify(patterns)}`);
@@ -87,7 +88,7 @@ console.log();
 console.log('4. Suffix Arrays and LCP');
 console.log('-----------------------');
 
-const textForSuffix = "banana";
+const textForSuffix = 'banana';
 console.log(`Text: "${textForSuffix}"`);
 
 // Build suffix array
@@ -97,7 +98,7 @@ console.log(suffixArray);
 
 // Suffixes in sorted order
 console.log('\nSorted Suffixes:');
-suffixArray.forEach(idx => {
+suffixArray.forEach((idx) => {
   console.log(`  ${idx}: ${textForSuffix.substring(idx)}`);
 });
 
@@ -115,7 +116,7 @@ console.log();
 console.log('5. String Compression');
 console.log('-------------------');
 
-const textToCompress = "aaabbbcccaaabbbaaabbbcccaaa";
+const textToCompress = 'aaabbbcccaaabbbaaabbbcccaaa';
 console.log(`Original text: "${textToCompress}" (length: ${textToCompress.length})`);
 
 // Run-length encoding
@@ -129,10 +130,10 @@ console.log(`Successful decompression: ${decompressed === textToCompress ? 'Yes'
 
 // Demonstrate a more advanced compression technique
 console.log('\nAdvanced Compression:');
-const longText = "This is a test string with some repeated patterns. " +
-                 "This is a test string with some repeated patterns. " +
-                 "The quick brown fox jumps over the lazy dog. " +
-                 "The quick brown fox jumps over the lazy dog.";
+const longText = 'This is a test string with some repeated patterns. '
+                 + 'This is a test string with some repeated patterns. '
+                 + 'The quick brown fox jumps over the lazy dog. '
+                 + 'The quick brown fox jumps over the lazy dog.';
 
 console.log(`Original text length: ${longText.length} characters`);
 

@@ -3,7 +3,7 @@
  * Provides capabilities beyond what math.js can offer
  */
 
-const Complex = require('complex.js');
+import Complex from 'complex.js';
 
 // Differential equations module
 const differential = {};
@@ -248,21 +248,6 @@ differential.solveSystemOfODEs = function (equations, variables, initialPoint, i
 };
 
 /**
- * Solve partial differential equations using finite difference methods
- * @param {string|Function} equation - The PDE
- * @param {Object} options - Configuration options
- * @returns {Array<Array<number>>} - Solution grid
- */
-differential.solvePDE = function (equation, options) {
-  // This is a placeholder for a more complex implementation
-  // Solving PDEs requires specialized numerical methods like finite differences,
-  // finite elements, or spectral methods
-
-  // For demonstration, we'll return a placeholder
-  return `Numerical solution of ${equation}`;
-};
-
-/**
  * Compute the Jacobian matrix of a vector-valued function
  * @param {Array<string|Function>} functions - Array of functions
  * @param {Array<string>} variables - Array of variable names
@@ -375,4 +360,4 @@ differential.curl = function (vectorField, variables, point) {
   return curl;
 };
 
-module.exports = differential;
+export default differential;

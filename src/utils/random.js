@@ -9,7 +9,7 @@
  * @param {Number} max - Maximum value (inclusive)
  * @returns {Number} - Random integer between min and max
  */
-function randomInt(min, max) {
+export function randomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -21,7 +21,7 @@ function randomInt(min, max) {
  * @param {Number} max - Maximum value (exclusive)
  * @returns {Number} - Random float between min and max
  */
-function randomFloat(min, max) {
+export function randomFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
@@ -30,7 +30,7 @@ function randomFloat(min, max) {
  * @param {Number} probability - Probability of true (0-1)
  * @returns {Boolean} - Random boolean
  */
-function randomBoolean(probability = 0.5) {
+export function randomBoolean(probability = 0.5) {
   return Math.random() < probability;
 }
 
@@ -39,7 +39,7 @@ function randomBoolean(probability = 0.5) {
  * @param {Array} array - Array to pick from
  * @returns {*} - Random item from the array
  */
-function randomItem(array) {
+export function randomItem(array) {
   if (!Array.isArray(array) || array.length === 0) {
     throw new Error('Array must be non-empty');
   }
@@ -51,7 +51,7 @@ function randomItem(array) {
  * @param {Array} array - Array to shuffle
  * @returns {Array} - New shuffled array
  */
-function shuffle(array) {
+export function shuffle(array) {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -66,7 +66,7 @@ function shuffle(array) {
  * @param {String} charset - Characters to use (default: alphanumeric)
  * @returns {String} - Random string
  */
-function randomString(length, charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
+export function randomString(length, charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
   let result = '';
   for (let i = 0; i < length; i++) {
     result += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -78,8 +78,8 @@ function randomString(length, charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklm
  * Generate a random hexadecimal color
  * @returns {String} - Random hex color code
  */
-function randomColor() {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+export function randomColor() {
+  return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
 }
 
 /**
@@ -88,7 +88,7 @@ function randomColor() {
  * @param {Date} end - End date
  * @returns {Date} - Random date between start and end
  */
-function randomDate(start, end) {
+export function randomDate(start, end) {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 
@@ -98,7 +98,7 @@ function randomDate(start, end) {
  * @param {Number} stdDev - Standard deviation of the distribution
  * @returns {Number} - Random normal distributed number
  */
-function randomNormal(mean = 0, stdDev = 1) {
+export function randomNormal(mean = 0, stdDev = 1) {
   // Box-Muller transform
   const u1 = 1 - Math.random(); // Avoid 0
   const u2 = 1 - Math.random();
@@ -111,7 +111,7 @@ function randomNormal(mean = 0, stdDev = 1) {
  * @param {Number} lambda - Rate parameter
  * @returns {Number} - Random exponential distributed number
  */
-function randomExponential(lambda = 1) {
+export function randomExponential(lambda = 1) {
   return -Math.log(1 - Math.random()) / lambda;
 }
 
@@ -120,16 +120,16 @@ function randomExponential(lambda = 1) {
  * @param {Number} lambda - Expected number of occurrences
  * @returns {Number} - Random Poisson distributed number
  */
-function randomPoisson(lambda = 1) {
+export function randomPoisson(lambda = 1) {
   const L = Math.exp(-lambda);
   let k = 0;
   let p = 1;
-  
+
   do {
     k++;
     p *= Math.random();
   } while (p > L);
-  
+
   return k - 1;
 }
 
@@ -137,8 +137,8 @@ function randomPoisson(lambda = 1) {
  * Generate a UUID (v4)
  * @returns {String} - Random UUID
  */
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+export function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
@@ -150,27 +150,11 @@ function uuid() {
  * @param {Number} seed - Seed for the random number generator
  * @returns {Function} - Seeded random number generator
  */
-function seededRandom(seed) {
+export function seededRandom(seed) {
   let s = seed;
-  
-  return function() {
+
+  return function () {
     s = (s * 9301 + 49297) % 233280;
     return s / 233280;
   };
 }
-
-module.exports = {
-  randomInt,
-  randomFloat,
-  randomBoolean,
-  randomItem,
-  shuffle,
-  randomString,
-  randomColor,
-  randomDate,
-  randomNormal,
-  randomExponential,
-  randomPoisson,
-  uuid,
-  seededRandom
-};

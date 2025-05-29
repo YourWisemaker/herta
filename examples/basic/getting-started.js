@@ -22,22 +22,48 @@ console.log('Inverse of A:', herta.matrix.inverse(A));
 console.log();
 
 // Basic calculus
-console.log('Calculus Examples:');
-const f = x => x * x + 2 * x + 1;
-const df = herta.calculus.derivative(f);
-console.log('f(x) = x² + 2x + 1');
-console.log('f\'(2) =', df(2)); // Should be 6
-console.log('∫f(x)dx from 0 to 2 =', herta.calculus.integrate(f, 0, 2));
+console.log('\nCalculus Examples (using symbolic differentiation):');
+const exprString = 'x^2 + 2*x + 1';
+const parsedExpr = herta.symbolic.parse(exprString);
+const derivativeExpr = herta.symbolic.differentiate(parsedExpr, 'x');
+console.log('f(x) =', exprString);
+console.log('f\'(x) =', derivativeExpr.toString());
+console.log('f\'(2) =', herta.symbolic.evaluate(derivativeExpr, { x: 2 })); // Should be 6
+
+// Keep the original integration example for now, assuming herta.calculus.integrate works numerically
+// or is a separate issue to address if it also fails.
+// The original 'f' function is fine for herta.calculus.integrate if it handles JS functions.
+const f_integrate = (x) => x * x + 2 * x + 1; 
+console.log('∫f(x)dx from 0 to 2 (numerical) =', herta.calculus.integrate(f_integrate, 'x', 0, 2));
 console.log();
 
 // Statistical functions
 console.log('Statistical Functions:');
 const data = [12, 15, 18, 22, 25, 30, 35, 40, 45, 50];
 console.log('Data:', data);
-console.log('Mean:', herta.statistics.mean(data));
-console.log('Median:', herta.statistics.median(data));
-console.log('Standard Deviation:', herta.statistics.standardDeviation(data));
-console.log('Correlation:', herta.statistics.correlation([1, 2, 3, 4, 5], [2, 3, 4, 5, 6]));
+
+const stats = herta.statistics;
+let meanFunc = stats.mean;
+let medianFunc = stats.median;
+let stdDevFunc = stats.standardDeviation;
+let corrFunc = stats.correlation;
+
+if (typeof meanFunc !== 'function' && stats.descriptive && typeof stats.descriptive.mean === 'function') {
+    console.log('Accessing stats via herta.statistics.descriptive.*');
+    meanFunc = stats.descriptive.mean;
+    medianFunc = stats.descriptive.median;
+    stdDevFunc = stats.descriptive.standardDeviation;
+    corrFunc = stats.descriptive.correlation;
+} else if (typeof meanFunc === 'function') {
+    console.log('Accessing stats via herta.statistics.*');
+} else {
+    console.error('Could not find statistics functions (mean, median, etc.)');
+}
+
+if (meanFunc) console.log('Mean:', meanFunc(data));
+if (medianFunc) console.log('Median:', medianFunc(data));
+if (stdDevFunc) console.log('Standard Deviation:', stdDevFunc(data));
+if (corrFunc) console.log('Correlation:', corrFunc([1, 2, 3, 4, 5], [2, 3, 4, 5, 6]));
 console.log();
 
 // Complex numbers

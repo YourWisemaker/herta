@@ -1,7 +1,7 @@
 /**
  * Erudition Make Command
  * Scaffolding tool to generate boilerplate for different components
- * 
+ *
  * IMPORTANT: The createProject function COPIES ALL existing files and folders
  * instead of generating new ones, preserving the current project structure.
  */
@@ -21,8 +21,8 @@ function make(args) {
 
   if (!type || !name) {
     console.log(chalk.red('Error: Both type and name are required'));
-    console.log(chalk.yellow(`Usage: herta erudition make <type> <name>`));
-    console.log(chalk.yellow(`Example: herta erudition make module QuantumPhysics`));
+    console.log(chalk.yellow('Usage: herta erudition make <type> <name>'));
+    console.log(chalk.yellow('Example: herta erudition make module QuantumPhysics'));
     return;
   }
 
@@ -74,7 +74,7 @@ function createModule(name) {
   const destDir = path.join(process.cwd(), 'src', 'advanced');
   const fileName = `${toSnakeCase(name)}.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   // Make sure the destination directory exists
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
@@ -88,13 +88,13 @@ function createModule(name) {
 
   const fileContent = generateModuleContent(name);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ Module created successfully!`));
+
+  console.log(chalk.green('✓ Module created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
-  console.log(chalk.yellow(`\nNext steps:`));
-  console.log(`  1. Import your module in the main index.js file:`);
+  console.log(chalk.yellow('\nNext steps:'));
+  console.log('  1. Import your module in the main index.js file:');
   console.log(chalk.dim(`     const ${toCamelCase(name)} = require('./advanced/${toSnakeCase(name)}');`));
-  console.log(`  2. Register it in your exports:`);
+  console.log('  2. Register it in your exports:');
   console.log(chalk.dim(`     module.exports = { ..., ${toCamelCase(name)} };`));
 }
 
@@ -108,7 +108,7 @@ function createController(name) {
   const destDir = path.join(process.cwd(), 'src', 'controllers');
   const fileName = `${toSnakeCase(controllerName)}.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }
@@ -120,8 +120,8 @@ function createController(name) {
 
   const fileContent = generateControllerContent(controllerName);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ Controller created successfully!`));
+
+  console.log(chalk.green('✓ Controller created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
 }
 
@@ -135,7 +135,7 @@ function createService(name) {
   const destDir = path.join(process.cwd(), 'src', 'services');
   const fileName = `${toSnakeCase(serviceName)}.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }
@@ -147,8 +147,8 @@ function createService(name) {
 
   const fileContent = generateServiceContent(serviceName);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ Service created successfully!`));
+
+  console.log(chalk.green('✓ Service created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
 }
 
@@ -160,7 +160,7 @@ function createTest(name) {
   const destDir = path.join(process.cwd(), 'test');
   const fileName = `${toSnakeCase(name)}.spec.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }
@@ -172,8 +172,8 @@ function createTest(name) {
 
   const fileContent = generateTestContent(name);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ Test created successfully!`));
+
+  console.log(chalk.green('✓ Test created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
 }
 
@@ -185,7 +185,7 @@ function createApi(name) {
   const destDir = path.join(process.cwd(), 'src', 'api');
   const fileName = `${toSnakeCase(name)}.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }
@@ -197,8 +197,8 @@ function createApi(name) {
 
   const fileContent = generateApiContent(name);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ API created successfully!`));
+
+  console.log(chalk.green('✓ API created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
 }
 
@@ -212,7 +212,7 @@ function createRestController(name) {
   const destDir = path.join(process.cwd(), 'src', 'controllers');
   const fileName = `${toSnakeCase(controllerName)}.js`;
   const filePath = path.join(destDir, fileName);
-  
+
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }
@@ -224,8 +224,8 @@ function createRestController(name) {
 
   const fileContent = generateRestControllerContent(controllerName);
   fs.writeFileSync(filePath, fileContent);
-  
-  console.log(chalk.green(`✓ REST Controller created successfully!`));
+
+  console.log(chalk.green('✓ REST Controller created successfully!'));
   console.log(chalk.cyan(`  File: ${filePath}`));
 }
 
@@ -236,18 +236,18 @@ function createRestController(name) {
 function createGraphQL(name) {
   const schemaDestDir = path.join(process.cwd(), 'src', 'api', 'graphql', 'schemas');
   const resolverDestDir = path.join(process.cwd(), 'src', 'api', 'graphql', 'resolvers');
-  
+
   const schemaFileName = `${toSnakeCase(name)}.graphql.js`;
   const resolverFileName = `${toSnakeCase(name)}.resolver.js`;
-  
+
   const schemaFilePath = path.join(schemaDestDir, schemaFileName);
   const resolverFilePath = path.join(resolverDestDir, resolverFileName);
-  
+
   // Make sure the destination directories exist
   if (!fs.existsSync(schemaDestDir)) {
     fs.mkdirSync(schemaDestDir, { recursive: true });
   }
-  
+
   if (!fs.existsSync(resolverDestDir)) {
     fs.mkdirSync(resolverDestDir, { recursive: true });
   }
@@ -257,7 +257,7 @@ function createGraphQL(name) {
     console.log(chalk.red(`Error: GraphQL Schema '${schemaFileName}' already exists in ${schemaDestDir}`));
     return;
   }
-  
+
   if (fs.existsSync(resolverFilePath)) {
     console.log(chalk.red(`Error: GraphQL Resolver '${resolverFileName}' already exists in ${resolverDestDir}`));
     return;
@@ -265,11 +265,11 @@ function createGraphQL(name) {
 
   const schemaContent = generateGraphQLSchemaContent(name);
   const resolverContent = generateGraphQLResolverContent(name);
-  
+
   fs.writeFileSync(schemaFilePath, schemaContent);
   fs.writeFileSync(resolverFilePath, resolverContent);
-  
-  console.log(chalk.green(`✓ GraphQL Schema and Resolver created successfully!`));
+
+  console.log(chalk.green('✓ GraphQL Schema and Resolver created successfully!'));
   console.log(chalk.cyan(`  Schema: ${schemaFilePath}`));
   console.log(chalk.cyan(`  Resolver: ${resolverFilePath}`));
 }
@@ -310,26 +310,26 @@ function displayMakeHelp() {
 function createProject(name, targetPath) {
   const kebabName = toKebabCase(name);
   const projectPath = targetPath ? `${targetPath}/${kebabName}` : path.join(process.cwd(), kebabName);
-  
+
   // Find the project root directory (where package.json is located)
   let currentPath = __dirname; // Start from the directory of this script
   while (currentPath !== '/' && !fs.existsSync(path.join(currentPath, 'package.json'))) {
     currentPath = path.dirname(currentPath);
   }
-  
+
   // If we couldn't find package.json, try the current working directory as a fallback
   if (currentPath === '/' && !fs.existsSync(path.join(currentPath, 'package.json'))) {
     currentPath = process.cwd();
     console.log(chalk.yellow(`Could not find package.json in parent directories, using current directory: ${currentPath}`));
   }
-  
+
   if (fs.existsSync(projectPath)) {
     console.log(chalk.red(`Error: Directory ${kebabName} already exists`));
     return;
   }
-  
+
   console.log(chalk.cyan(`Creating project by copying ALL existing files: ${chalk.bold(kebabName)}...`));
-  
+
   // Create project directory
   fs.mkdirSync(projectPath, { recursive: true });
 
@@ -346,21 +346,21 @@ function createProject(name, targetPath) {
     'public',
     'dist'
   ];
-  
+
   // Create each directory
-  dirsToCreate.forEach(dir => {
+  dirsToCreate.forEach((dir) => {
     const targetDir = path.join(projectPath, dir);
     fs.mkdirSync(targetDir, { recursive: true });
     console.log(chalk.green(`Created directory: ${dir}`));
   });
-  
+
   // Copy all directories recursively
   console.log(chalk.cyan('Copying all files and directories...'));
-  
-  dirsToCreate.forEach(dir => {
+
+  dirsToCreate.forEach((dir) => {
     const sourceDir = path.join(currentPath, dir);
     const targetDir = path.join(projectPath, dir);
-    
+
     if (fs.existsSync(sourceDir)) {
       try {
         console.log(chalk.green(`Copying directory: ${dir}`));
@@ -374,7 +374,7 @@ function createProject(name, targetPath) {
       }
     }
   });
-  
+
   // Copy important root files
   const rootFiles = [
     'README.md',
@@ -390,30 +390,30 @@ function createProject(name, targetPath) {
     'jest.config.js',
     'server.js',
     'index.js',
-    'setup.js',        // Ensure setup.js is copied
-    'tsconfig.json',  // For TypeScript projects
-    '.babelrc',       // Babel configuration if present
-    '.prettierrc',    // Code formatting config
-    '.editorconfig'   // Editor configuration
+    'setup.js', // Ensure setup.js is copied
+    'tsconfig.json', // For TypeScript projects
+    '.babelrc', // Babel configuration if present
+    '.prettierrc', // Code formatting config
+    '.editorconfig' // Editor configuration
   ];
-  
+
   // First, display which files we're going to copy
   console.log(chalk.cyan('\nCopying root files...'));
-  
+
   // Critical files that MUST be copied
   const criticalRootFiles = ['server.js', 'index.js', 'setup.js', 'package.json'];
-  
+
   // Copy each file, with special handling for critical files
-  rootFiles.forEach(file => {
+  rootFiles.forEach((file) => {
     const sourceFile = path.join(currentPath, file);
     const targetFile = path.join(projectPath, file);
-    
+
     if (fs.existsSync(sourceFile)) {
       try {
         // Make a direct bit-by-bit copy of the file
         const fileContent = fs.readFileSync(sourceFile);
         fs.writeFileSync(targetFile, fileContent);
-        
+
         if (criticalRootFiles.includes(file)) {
           console.log(chalk.green(`✓ Successfully copied critical file: ${file}`));
         } else {
@@ -421,7 +421,7 @@ function createProject(name, targetPath) {
         }
       } catch (error) {
         console.log(chalk.red(`Error copying ${file}: ${error.message}`));
-        
+
         // For critical files, attempt an additional copy method
         if (criticalRootFiles.includes(file)) {
           try {
@@ -434,25 +434,25 @@ function createProject(name, targetPath) {
         }
       }
     } else if (criticalRootFiles.includes(file)) {
-      //console.log(chalk.red(`Critical file ${file} not found in source directory!`));
+      // console.log(chalk.red(`Critical file ${file} not found in source directory!`));
     }
   });
-  
+
   // Special handling for package.json - make a direct copy first, then update only the name
   const packageJsonSource = path.join(currentPath, 'package.json');
   const packageJsonTarget = path.join(projectPath, 'package.json');
-  
+
   if (fs.existsSync(packageJsonSource)) {
     try {
       // First make a direct copy to preserve ALL contents
       fs.copyFileSync(packageJsonSource, packageJsonTarget);
       console.log(chalk.green('✓ Copied package.json'));
-      
+
       // Then update only the minimal required fields
       const packageJson = JSON.parse(fs.readFileSync(packageJsonTarget, 'utf8'));
       packageJson.name = kebabName;
       packageJson.description = `${name} - Built with Herta.js framework`;
-      
+
       // Write it back with just those changes, preserving EVERYTHING else
       fs.writeFileSync(packageJsonTarget, JSON.stringify(packageJson, null, 2));
       console.log(chalk.green('✓ Updated package.json name while preserving all scripts and other settings'));
@@ -464,7 +464,7 @@ function createProject(name, targetPath) {
     console.log(chalk.red('Error: Could not find package.json in the source directory'));
     return;
   }
-  
+
   // Verify critical files were copied successfully
   const criticalPaths = [
     path.join(projectPath, 'package.json'),
@@ -472,50 +472,50 @@ function createProject(name, targetPath) {
     path.join(projectPath, 'index.js'),
     path.join(projectPath, 'setup.js')
   ];
-  
+
   // Check for important src files (like autodiff)
   const srcFiles = fs.readdirSync(path.join(currentPath, 'src'));
   console.log(chalk.cyan('\nVerifying critical source files...'));
   const missingFiles = [];
-  
-  criticalPaths.forEach(filePath => {
+
+  criticalPaths.forEach((filePath) => {
     if (!fs.existsSync(filePath)) {
       const fileName = path.basename(filePath);
       missingFiles.push(fileName);
-      //console.log(chalk.red(`Warning: ${fileName} was not copied!`));
+      // console.log(chalk.red(`Warning: ${fileName} was not copied!`));
     }
   });
-  
+
   // Specifically check if src files exist in the target
-  srcFiles.forEach(srcFile => {
+  srcFiles.forEach((srcFile) => {
     const sourceFile = path.join(currentPath, 'src', srcFile);
     const targetFile = path.join(projectPath, 'src', srcFile);
-    
+
     // Only check files, not directories
     if (fs.existsSync(sourceFile) && fs.statSync(sourceFile).isFile()) {
       if (!fs.existsSync(targetFile)) {
         missingFiles.push(`src/${srcFile}`);
-        //console.log(chalk.red(`Warning: src/${srcFile} was not copied!`));
+        // console.log(chalk.red(`Warning: src/${srcFile} was not copied!`));
       } else {
         console.log(chalk.green(`✓ Verified src/${srcFile}`));
       }
     }
   });
-  
+
   // If we're missing important files, attempt to copy them manually using multiple methods
   if (missingFiles.length > 0) {
     console.log(chalk.yellow('\nAttempting to manually copy missing files...'));
-    missingFiles.forEach(fileName => {
+    missingFiles.forEach((fileName) => {
       try {
         const dirName = path.dirname(fileName);
         const sourceFile = path.join(currentPath, fileName);
         const targetFile = path.join(projectPath, fileName);
-        
+
         // Ensure the target directory exists
         if (dirName !== '.') {
           fs.mkdirSync(path.join(projectPath, dirName), { recursive: true });
         }
-        
+
         if (fs.existsSync(sourceFile)) {
           // Try multiple copy methods for maximum reliability
           try {
@@ -534,11 +534,11 @@ function createProject(name, targetPath) {
                 execSync(`cp "${sourceFile}" "${targetFile}"`, { stdio: 'pipe' });
                 console.log(chalk.green(`✓ Successfully copied ${fileName} using cp command`));
               } catch (cpError) {
-                throw new Error(`All copy methods failed for ${fileName}`); 
+                throw new Error(`All copy methods failed for ${fileName}`);
               }
             }
           }
-          
+
           // Verify the file was actually copied and has content
           if (fs.existsSync(targetFile) && fs.statSync(targetFile).size > 0) {
             console.log(chalk.green(`✓ Verified ${fileName} was successfully copied`));
@@ -546,17 +546,17 @@ function createProject(name, targetPath) {
             console.log(chalk.red(`Warning: ${fileName} was copied but may be empty or incomplete!`));
           }
         } else {
-          //console.log(chalk.red(`Source file ${fileName} does not exist!`));
+          // console.log(chalk.red(`Source file ${fileName} does not exist!`));
         }
       } catch (error) {
         console.log(chalk.red(`Error copying ${fileName}: ${error.message}`));
       }
     });
   }
-  
+
   console.log(chalk.green('\n✓ Successfully copied all project files and directories'));
-  console.log(chalk.yellow(`\nInstalling dependencies...`));
-  
+  console.log(chalk.yellow('\nInstalling dependencies...'));
+
   try {
     execSync('npm install', { cwd: projectPath, stdio: 'inherit' });
     console.log(chalk.green('✓ Dependencies installed successfully!'));
@@ -564,7 +564,7 @@ function createProject(name, targetPath) {
     console.log(chalk.red(`Error installing dependencies: ${error.message}`));
     console.log(chalk.yellow('You may need to run npm install manually in the project directory.'));
   }
-  
+
   console.log(chalk.green(`\n✓ Project ${chalk.bold(name)} created successfully at ${projectPath}!`));
   console.log(chalk.cyan('\nTo get started:'));
   console.log(chalk.yellow(`  cd ${kebabName}`));
@@ -581,7 +581,7 @@ function createProject(name, targetPath) {
  */
 function toPascalCase(str) {
   return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, letter => letter.toUpperCase())
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter) => letter.toUpperCase())
     .replace(/\s+|-|_/g, '');
 }
 
@@ -592,7 +592,7 @@ function toPascalCase(str) {
  */
 function toCamelCase(str) {
   return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => index === 0 ? letter.toLowerCase() : letter.toUpperCase())
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => (index === 0 ? letter.toLowerCase() : letter.toUpperCase()))
     .replace(/\s+|-|_/g, '');
 }
 
@@ -626,26 +626,26 @@ function toKebabCase(str) {
 function generateModuleContent(name) {
   // Using array join method to avoid syntax highlighting issues with comments in template strings
   return [
-    `/**`,
+    '/**',
     ` * ${name} Module`,
-    ` * Advanced mathematical operations for Herta.js`,
-    ` */`,
-    ``,
-    `// Module implementation`,
+    ' * Advanced mathematical operations for Herta.js',
+    ' */',
+    '',
+    '// Module implementation',
     `const ${toCamelCase(name)} = {`,
-    `  // Add your methods here`,
-    `  `,
-    `  /**`,
-    `   * Example method`,
-    `   * @param {number} x - First parameter`,
-    `   * @param {number} y - Second parameter`,
-    `   * @returns {number} - Result`,
-    `   */`,
-    `  calculate(x, y) {`,
-    `    return x * y;`,
-    `  }`,
-    `};`,
-    ``,
+    '  // Add your methods here',
+    '  ',
+    '  /**',
+    '   * Example method',
+    '   * @param {number} x - First parameter',
+    '   * @param {number} y - Second parameter',
+    '   * @returns {number} - Result',
+    '   */',
+    '  calculate(x, y) {',
+    '    return x * y;',
+    '  }',
+    '};',
+    '',
     `module.exports = ${toCamelCase(name)};`
   ].join('\n');
 }
@@ -653,34 +653,34 @@ function generateModuleContent(name) {
 function generateControllerContent(name) {
   // Using array join method to avoid syntax highlighting issues with comments in template strings
   return [
-    `/**`,
+    '/**',
     ` * ${name}`,
-    ` * Controller for handling application logic`,
-    ` */`,
-    ``,
+    ' * Controller for handling application logic',
+    ' */',
+    '',
     `class ${name} {`,
-    `  /**`,
-    `   * Constructor`,
-    `   */`,
-    `  constructor() {`,
-    `    // Initialize controller`,
-    `  }`,
-    `  `,
-    `  /**`,
-    `   * Example method`,
-    `   * @param {Object} req - Request object`,
-    `   * @param {Object} res - Response object`,
-    `   */`,
-    `  async handleRequest(req, res) {`,
-    `    try {`,
-    `      // Implementation`,
-    `      return { success: true, data: 'Response data' };`,
-    `    } catch (error) {`,
-    `      return { success: false, error: error.message };`,
-    `    }`,
-    `  }`,
-    `}`,
-    ``,
+    '  /**',
+    '   * Constructor',
+    '   */',
+    '  constructor() {',
+    '    // Initialize controller',
+    '  }',
+    '  ',
+    '  /**',
+    '   * Example method',
+    '   * @param {Object} req - Request object',
+    '   * @param {Object} res - Response object',
+    '   */',
+    '  async handleRequest(req, res) {',
+    '    try {',
+    '      // Implementation',
+    '      return { success: true, data: \'Response data\' };',
+    '    } catch (error) {',
+    '      return { success: false, error: error.message };',
+    '    }',
+    '  }',
+    '}',
+    '',
     `module.exports = new ${name}();`
   ].join('\n');
 }
@@ -688,249 +688,249 @@ function generateControllerContent(name) {
 function generateServiceContent(name) {
   // Implementation will be similar to controller content
   return [
-    `/**`,
+    '/**',
     ` * ${name}`,
-    ` * Service for business logic`,
-    ` */`,
-    ``,
+    ' * Service for business logic',
+    ' */',
+    '',
     `class ${name} {`,
-    `  /**`,
-    `   * Constructor`,
-    `   */`,
-    `  constructor() {`,
-    `    // Initialize service`,
-    `  }`,
-    `  `,
-    `  /**`,
-    `   * Example method`,
-    `   * @param {Object} data - Input data`,
-    `   * @returns {Object} - Result`,
-    `   */`,
-    `  async process(data) {`,
-    `    try {`,
-    `      // Implementation`,
-    `      return { success: true, result: 'Processed data' };`,
-    `    } catch (error) {`,
-    `      return { success: false, error: error.message };`,
-    `    }`,
-    `  }`,
-    `}`,
-    ``,
+    '  /**',
+    '   * Constructor',
+    '   */',
+    '  constructor() {',
+    '    // Initialize service',
+    '  }',
+    '  ',
+    '  /**',
+    '   * Example method',
+    '   * @param {Object} data - Input data',
+    '   * @returns {Object} - Result',
+    '   */',
+    '  async process(data) {',
+    '    try {',
+    '      // Implementation',
+    '      return { success: true, result: \'Processed data\' };',
+    '    } catch (error) {',
+    '      return { success: false, error: error.message };',
+    '    }',
+    '  }',
+    '}',
+    '',
     `module.exports = new ${name}();`
   ].join('\n');
 }
 
 function generateTestContent(name) {
   return [
-    `/**`,
+    '/**',
     ` * Test Suite for ${name}`,
-    ` */`,
-    ``,
-    `const assert = require('assert');`,
-    `// Import module to test`,
+    ' */',
+    '',
+    'const assert = require(\'assert\');',
+    '// Import module to test',
     `// const ${toCamelCase(name)} = require('../path/to/${toSnakeCase(name)}');`,
-    ``,
+    '',
     `describe('${name} Tests', () => {`,
-    `  before(() => {`,
-    `    // Setup test environment`,
-    `  });`,
-    ``,
-    `  after(() => {`,
-    `    // Clean up test environment`,
-    `  });`,
-    ``,
-    `  it('should pass a basic test', () => {`,
-    `    // Test implementation`,
-    `    assert.strictEqual(true, true);`,
-    `  });`,
-    ``,
-    `  it('should handle error conditions', () => {`,
-    `    // Test error handling`,
-    `    assert.throws(() => {`,
-    `      throw new Error('Test error');`,
-    `    }, /Test error/);`,
-    `  });`,
-    `});`
+    '  before(() => {',
+    '    // Setup test environment',
+    '  });',
+    '',
+    '  after(() => {',
+    '    // Clean up test environment',
+    '  });',
+    '',
+    '  it(\'should pass a basic test\', () => {',
+    '    // Test implementation',
+    '    assert.strictEqual(true, true);',
+    '  });',
+    '',
+    '  it(\'should handle error conditions\', () => {',
+    '    // Test error handling',
+    '    assert.throws(() => {',
+    '      throw new Error(\'Test error\');',
+    '    }, /Test error/);',
+    '  });',
+    '});'
   ].join('\n');
 }
 
 function generateApiContent(name) {
   return [
-    `/**`,
+    '/**',
     ` * ${name} API`,
-    ` * RESTful API endpoints`,
-    ` */`,
-    ``,
-    `const express = require('express');`,
-    `const router = express.Router();`,
-    ``,
-    `/**`,
-    ` * @swagger`,
+    ' * RESTful API endpoints',
+    ' */',
+    '',
+    'const express = require(\'express\');',
+    'const router = express.Router();',
+    '',
+    '/**',
+    ' * @swagger',
     ` * /api/${toKebabCase(name)}:`,
-    ` *   get:`,
-    ` *     summary: Get data`,
-    ` *     description: Retrieve data`,
-    ` *     responses:`,
-    ` *       200:`,
-    ` *         description: Successful operation`,
-    ` */`,
-    `router.get('/', async (req, res) => {`,
-    `  try {`,
-    `    // Implementation`,
-    `    res.json({ success: true, data: 'Response data' });`,
-    `  } catch (error) {`,
-    `    res.status(500).json({ success: false, error: error.message });`,
-    `  }`,
-    `});`,
-    ``,
-    `/**`,
-    ` * @swagger`,
+    ' *   get:',
+    ' *     summary: Get data',
+    ' *     description: Retrieve data',
+    ' *     responses:',
+    ' *       200:',
+    ' *         description: Successful operation',
+    ' */',
+    'router.get(\'/\', async (req, res) => {',
+    '  try {',
+    '    // Implementation',
+    '    res.json({ success: true, data: \'Response data\' });',
+    '  } catch (error) {',
+    '    res.status(500).json({ success: false, error: error.message });',
+    '  }',
+    '});',
+    '',
+    '/**',
+    ' * @swagger',
     ` * /api/${toKebabCase(name)}:`,
-    ` *   post:`,
-    ` *     summary: Create new data`,
-    ` *     description: Create new data entry`,
-    ` *     responses:`,
-    ` *       200:`,
-    ` *         description: Successful operation`,
-    ` */`,
-    `router.post('/', async (req, res) => {`,
-    `  try {`,
-    `    // Implementation`,
-    `    res.json({ success: true, data: 'Data created successfully' });`,
-    `  } catch (error) {`,
-    `    res.status(500).json({ success: false, error: error.message });`,
-    `  }`,
-    `});`,
-    ``,
-    `module.exports = router;`
+    ' *   post:',
+    ' *     summary: Create new data',
+    ' *     description: Create new data entry',
+    ' *     responses:',
+    ' *       200:',
+    ' *         description: Successful operation',
+    ' */',
+    'router.post(\'/\', async (req, res) => {',
+    '  try {',
+    '    // Implementation',
+    '    res.json({ success: true, data: \'Data created successfully\' });',
+    '  } catch (error) {',
+    '    res.status(500).json({ success: false, error: error.message });',
+    '  }',
+    '});',
+    '',
+    'module.exports = router;'
   ].join('\n');
 }
 
 function generateRestControllerContent(name) {
   return [
-    `/**`,
+    '/**',
     ` * ${name}`,
-    ` * REST controller for API endpoints`,
-    ` */`,
-    ``,
-    `const express = require('express');`,
-    `const router = express.Router();`,
-    ``,
-    `/**`,
-    ` * @swagger`,
+    ' * REST controller for API endpoints',
+    ' */',
+    '',
+    'const express = require(\'express\');',
+    'const router = express.Router();',
+    '',
+    '/**',
+    ' * @swagger',
     ` * /api/${toKebabCase(name.replace('Controller', ''))}:`,
-    ` *   get:`,
-    ` *     summary: Get all items`,
-    ` *     description: Retrieves all items`,
-    ` *     responses:`,
-    ` *       200:`,
-    ` *         description: Successful operation`,
-    ` */`,
-    `router.get('/', async (req, res) => {`,
-    `  try {`,
-    `    // Implementation for GET all`,
-    `    res.json({ success: true, data: [] });`,
-    `  } catch (error) {`,
-    `    res.status(500).json({ success: false, error: error.message });`,
-    `  }`,
-    `});`,
-    ``,
-    `/**`,
-    ` * @swagger`,
+    ' *   get:',
+    ' *     summary: Get all items',
+    ' *     description: Retrieves all items',
+    ' *     responses:',
+    ' *       200:',
+    ' *         description: Successful operation',
+    ' */',
+    'router.get(\'/\', async (req, res) => {',
+    '  try {',
+    '    // Implementation for GET all',
+    '    res.json({ success: true, data: [] });',
+    '  } catch (error) {',
+    '    res.status(500).json({ success: false, error: error.message });',
+    '  }',
+    '});',
+    '',
+    '/**',
+    ' * @swagger',
     ` * /api/${toKebabCase(name.replace('Controller', ''))}/:id:`,
-    ` *   get:`,
-    ` *     summary: Get item by ID`,
-    ` *     description: Retrieves a specific item by ID`,
-    ` *     parameters:`,
-    ` *       - in: path`,
-    ` *         name: id`,
-    ` *         required: true`,
-    ` *         schema:`,
-    ` *           type: string`,
-    ` *     responses:`,
-    ` *       200:`,
-    ` *         description: Successful operation`,
-    ` *       404:`,
-    ` *         description: Item not found`,
-    ` */`,
-    `router.get('/:id', async (req, res) => {`,
-    `  try {`,
-    `    const { id } = req.params;`,
-    `    // Implementation for GET by ID`,
-    `    res.json({ success: true, data: { id } });`,
-    `  } catch (error) {`,
-    `    res.status(500).json({ success: false, error: error.message });`,
-    `  }`,
-    `});`,
-    ``,
-    `module.exports = router;`
+    ' *   get:',
+    ' *     summary: Get item by ID',
+    ' *     description: Retrieves a specific item by ID',
+    ' *     parameters:',
+    ' *       - in: path',
+    ' *         name: id',
+    ' *         required: true',
+    ' *         schema:',
+    ' *           type: string',
+    ' *     responses:',
+    ' *       200:',
+    ' *         description: Successful operation',
+    ' *       404:',
+    ' *         description: Item not found',
+    ' */',
+    'router.get(\'/:id\', async (req, res) => {',
+    '  try {',
+    '    const { id } = req.params;',
+    '    // Implementation for GET by ID',
+    '    res.json({ success: true, data: { id } });',
+    '  } catch (error) {',
+    '    res.status(500).json({ success: false, error: error.message });',
+    '  }',
+    '});',
+    '',
+    'module.exports = router;'
   ].join('\n');
 }
 
 function generateGraphQLSchemaContent(name) {
   return [
-    `/**`,
+    '/**',
     ` * ${name} GraphQL Schema`,
-    ` */`,
-    ``,
-    `const { gql } = require('apollo-server-express');`,
-    ``,
+    ' */',
+    '',
+    'const { gql } = require(\'apollo-server-express\');',
+    '',
     `const ${name}Schema = gql\``,
     `  type ${name} {`,
-    `    id: ID!`,
-    `    name: String!`,
-    `    description: String`,
-    `    createdAt: String!`,
-    `    updatedAt: String!`,
-    `  }`,
-    ``,
-    `  extend type Query {`,
+    '    id: ID!',
+    '    name: String!',
+    '    description: String',
+    '    createdAt: String!',
+    '    updatedAt: String!',
+    '  }',
+    '',
+    '  extend type Query {',
     `    get${name}(id: ID!): ${name}`,
     `    getAll${name}s: [${name}!]!`,
-    `  }`,
-    ``,
-    `  extend type Mutation {`,
+    '  }',
+    '',
+    '  extend type Mutation {',
     `    create${name}(name: String!, description: String): ${name}!`,
     `    update${name}(id: ID!, name: String, description: String): ${name}!`,
     `    delete${name}(id: ID!): Boolean!`,
-    `  }`,
-    `\`;`,
-    ``,
+    '  }',
+    '`;',
+    '',
     `module.exports = ${name}Schema;`
   ].join('\n');
 }
 
 function generateGraphQLResolverContent(name) {
   return [
-    `/**`,
+    '/**',
     ` * ${name} GraphQL Resolvers`,
-    ` */`,
-    ``,
+    ' */',
+    '',
     `const ${name}Resolvers = {`,
-    `  Query: {`,
-    `    /**`,
+    '  Query: {',
+    '    /**',
     `     * Get ${name} by ID`,
-    `     * @param {Object} _ - Parent resolver`,
-    `     * @param {Object} args - Query arguments`,
+    '     * @param {Object} _ - Parent resolver',
+    '     * @param {Object} args - Query arguments',
     `     * @returns {Object} - ${name} object`,
-    `     */`,
+    '     */',
     `    async get${name}(_, { id }) {`,
-    `      try {`,
-    `        // Implementation`,
-    `        return {`,
-    `          id,`,
-    `          name: 'Example',`,
-    `          description: 'Example description',`,
-    `          createdAt: new Date().toISOString(),`,
-    `          updatedAt: new Date().toISOString()`,
-    `        };`,
-    `      } catch (error) {`,
+    '      try {',
+    '        // Implementation',
+    '        return {',
+    '          id,',
+    '          name: \'Example\',',
+    '          description: \'Example description\',',
+    '          createdAt: new Date().toISOString(),',
+    '          updatedAt: new Date().toISOString()',
+    '        };',
+    '      } catch (error) {',
     `        throw new Error(\`Failed to get ${name}: \${error.message}\`);`,
-    `      }`,
-    `    }`,
-    `  }`,
-    `};`,
-    ``,
+    '      }',
+    '    }',
+    '  }',
+    '};',
+    '',
     `module.exports = ${name}Resolvers;`
   ].join('\n');
 }

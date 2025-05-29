@@ -4,7 +4,7 @@
  */
 
 // Require the quantumMechanics module for actual implementations
-const quantumMechanics = require('../advanced/quantumMechanics');
+import quantumMechanics from '../advanced/quantumMechanics.js'; // Added .js extension
 
 /**
  * Test adapter for quantum mechanics module
@@ -314,6 +314,21 @@ function vonNeumannEntropy(state) {
 
 // Export the test adapter functions
 module.exports = {
+  createState,
+  innerProduct,
+  applyGate,
+  applyRotation,
+  tensorProduct,
+  stateToDensity,
+  createDensityMatrix,
+  partialTrace,
+  qft,
+  phaseEstimation,
+  vonNeumannEntropy
+};
+
+// Export each function individually for ES Modules
+export {
   createState,
   innerProduct,
   applyGate,

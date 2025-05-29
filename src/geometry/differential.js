@@ -9,7 +9,7 @@
  * @param {Array<string>} coordinates - The coordinate variables
  * @returns {Array<Array<Array<Function>>>} - Christoffel symbols of the second kind
  */
-function christoffelSymbols(metricTensor, coordinates) {
+export function christoffelSymbols(metricTensor, coordinates) {
   const n = coordinates.length;
   // Calculate inverse metric
   const invMetric = invertMatrix(metricTensor);
@@ -47,7 +47,7 @@ function christoffelSymbols(metricTensor, coordinates) {
  * @param {Array<string>} coordinates - The coordinate variables
  * @returns {Array<Array<Array<Array<Function>>>>} - Riemann tensor R^i_jkl
  */
-function riemannTensor(metricTensor, coordinates) {
+export function riemannTensor(metricTensor, coordinates) {
   const n = coordinates.length;
   const christoffel = christoffelSymbols(metricTensor, coordinates);
 
@@ -96,7 +96,7 @@ function riemannTensor(metricTensor, coordinates) {
  * @param {Array<string>} coordinates - The coordinate variables
  * @returns {Array<Array<Function>>} - Ricci tensor R_ij
  */
-function ricciTensor(metricTensor, coordinates) {
+export function ricciTensor(metricTensor, coordinates) {
   const n = coordinates.length;
   const riemannT = riemannTensor(metricTensor, coordinates);
 
@@ -123,7 +123,7 @@ function ricciTensor(metricTensor, coordinates) {
  * @param {Array<string>} coordinates - The coordinate variables
  * @returns {Function} - Ricci scalar R
  */
-function ricciScalar(metricTensor, coordinates) {
+export function ricciScalar(metricTensor, coordinates) {
   const n = coordinates.length;
   const ricciT = ricciTensor(metricTensor, coordinates);
   const invMetric = invertMatrix(metricTensor);
@@ -154,7 +154,7 @@ function ricciScalar(metricTensor, coordinates) {
  * @param {Function} g - Second fundamental form coefficient g
  * @returns {Function} - Gaussian curvature K
  */
-function gaussianCurvature(E, F, G, e, f, g) {
+export function gaussianCurvature(E, F, G, e, f, g) {
   return function (u, v) {
     const EG_FF = E(u, v) * G(u, v) - F(u, v) * F(u, v);
     const eg_ff = e(u, v) * g(u, v) - f(u, v) * f(u, v);
@@ -172,7 +172,7 @@ function gaussianCurvature(E, F, G, e, f, g) {
  * @param {Function} g - Second fundamental form coefficient g
  * @returns {Function} - Mean curvature H
  */
-function meanCurvature(E, F, G, e, f, g) {
+export function meanCurvature(E, F, G, e, f, g) {
   return function (u, v) {
     const EG_FF = E(u, v) * G(u, v) - F(u, v) * F(u, v);
     const numerator = e(u, v) * G(u, v) - 2 * f(u, v) * F(u, v) + g(u, v) * E(u, v);
@@ -187,7 +187,7 @@ function meanCurvature(E, F, G, e, f, g) {
  * @param {Function} z - z coordinate function of parameters u,v
  * @returns {Object} - Surface object with methods for analysis
  */
-function parametricSurface(x, y, z) {
+export function parametricSurface(x, y, z) {
   // Create surface object
   const surface = {
     position(u, v) {
@@ -320,7 +320,7 @@ function parametricSurface(x, y, z) {
  * @param {number} steps - Number of steps for discretization
  * @returns {Array<Array<number>>} - Geodesic path as array of points
  */
-function geodesic(metricTensor, startPoint, endPoint, steps = 100) {
+export function geodesic(metricTensor, startPoint, endPoint, steps = 100) {
   const dim = startPoint.length;
   const path = [startPoint];
 
@@ -531,7 +531,7 @@ function invertMatrix(matrix) {
  * @param {Array<string>} coordinates - Coordinate variables
  * @returns {Function} - Resulting vector field representing the Lie derivative
  */
-function lieDerivative(vectorField, alongField, coordinates) {
+export function lieDerivative(vectorField, alongField, coordinates) {
   const n = coordinates.length;
 
   return function (point) {
@@ -581,7 +581,7 @@ function lieDerivative(vectorField, alongField, coordinates) {
  * @param {Array<Array<number>>} curve - Curve as array of points
  * @returns {Array<Array<number>>} - Transported vector at each point
  */
-function parallelTransport(metricTensor, initialVector, curve) {
+export function parallelTransport(metricTensor, initialVector, curve) {
   const n = initialVector.length;
   const result = [initialVector];
 
@@ -631,7 +631,7 @@ function parallelTransport(metricTensor, initialVector, curve) {
  * @param {Array<string>} coordinates - Coordinate variables
  * @returns {Array<Array<Array<Function>>>} - Connection forms ω^i_j
  */
-function connectionForms(metricTensor, frame, coordinates) {
+export function connectionForms(metricTensor, frame, coordinates) {
   const n = coordinates.length;
   const christoffel = christoffelSymbols(metricTensor, coordinates);
 
@@ -674,7 +674,7 @@ function connectionForms(metricTensor, frame, coordinates) {
  * @param {Array<number>} initialVector - Initial vector
  * @returns {Array<number>} - Vector after parallel transport around the loop
  */
-function holonomy(metricTensor, loop, initialVector) {
+export function holonomy(metricTensor, loop, initialVector) {
   // Ensure the loop is closed
   if (loop[0] !== loop[loop.length - 1]) {
     loop.push(loop[0]);
@@ -696,7 +696,7 @@ function holonomy(metricTensor, loop, initialVector) {
  * @param {Array<number>} v2 - Second vector spanning the 2-plane
  * @returns {number} - Sectional curvature at the point for the given 2-plane
  */
-function sectionalCurvature(metricTensor, coordinates, point, v1, v2) {
+export function sectionalCurvature(metricTensor, coordinates, point, v1, v2) {
   const n = coordinates.length;
   const riemannT = riemannTensor(metricTensor, coordinates);
 
@@ -741,7 +741,7 @@ function sectionalCurvature(metricTensor, coordinates, point, v1, v2) {
  * @param {Array<string>} coordinates - Coordinate variables
  * @returns {Array<Function>} - Orthonormal frame field
  */
-function createFrameField(metricTensor, coordinates) {
+export function createFrameField(metricTensor, coordinates) {
   const n = coordinates.length;
 
   // Create natural frame from coordinate basis
@@ -764,7 +764,7 @@ function createFrameField(metricTensor, coordinates) {
  * @param {Array<Function>} frame - Input frame field
  * @returns {Array<Function>} - Orthonormal frame field
  */
-function gramSchmidtFrame(metricTensor, frame) {
+export function gramSchmidtFrame(metricTensor, frame) {
   const n = frame.length;
   const orthonormalFrame = [];
 
@@ -825,21 +825,3 @@ function gramSchmidtFrame(metricTensor, frame) {
 
   return orthonormalFrame;
 }
-
-module.exports = {
-  christoffelSymbols,
-  riemannTensor,
-  ricciTensor,
-  ricciScalar,
-  gaussianCurvature,
-  meanCurvature,
-  parametricSurface,
-  geodesic,
-  lieDerivative,
-  parallelTransport,
-  connectionForms,
-  holonomy,
-  sectionalCurvature,
-  createFrameField,
-  gramSchmidtFrame
-};

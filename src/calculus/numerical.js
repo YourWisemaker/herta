@@ -3,7 +3,7 @@
  * Provides numerical algorithms for scientific computing
  */
 
-const Decimal = require('decimal.js');
+import Decimal from 'decimal.js';
 
 // Numerical methods module
 const numerical = {};
@@ -830,4 +830,4 @@ numerical.sde.eulerMaruyama = function (drift, diffusion, x0, t0, T, dt = 0.01, 
   }
 };
 
-module.exports = numerical;
+export default numerical;

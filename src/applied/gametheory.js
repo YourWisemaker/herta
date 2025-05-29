@@ -3,8 +3,8 @@
  * Provides tools for game-theoretic analysis and equilibrium finding
  */
 
-const arithmetic = require('../core/arithmetic');
-const matrix = require('../core/matrix');
+import arithmetic from '../core/arithmetic.js';
+import matrix from '../core/matrix.js';
 
 const gameTheory = {};
 
@@ -679,4 +679,4 @@ gameTheory.replicatorDynamics = function (payoffMatrix, initialPopulation, itera
   };
 };
 
-module.exports = gameTheory;
+export default gameTheory;

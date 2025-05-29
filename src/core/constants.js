@@ -2,7 +2,7 @@
  * Mathematical constants for herta.js
  */
 
-const Decimal = require('decimal.js');
+import Decimal from 'decimal.js';
 
 // Configure decimal precision
 Decimal.set({ precision: 64 });
@@ -155,4 +155,4 @@ constants.rydbergConstant = new Decimal('10973731.568160');
  */
 constants.fineStructureConstant = new Decimal('7.2973525693e-3');
 
-module.exports = constants;
+export default constants;

@@ -3,8 +3,8 @@
  * Provides classical mechanics, dynamics and collision simulations
  */
 
-const matrix = require('../core/matrix');
-const arithmetic = require('../core/arithmetic');
+import matrix from '../core/matrix.js';
+import arithmetic from '../core/arithmetic.js';
 
 const newtonianPhysics = {};
 
@@ -433,4 +433,4 @@ newtonianPhysics.gravitationalPotentialEnergy = function (mass, height, gravity 
   return mass * gravity * height;
 };
 
-module.exports = newtonianPhysics;
+export default newtonianPhysics;

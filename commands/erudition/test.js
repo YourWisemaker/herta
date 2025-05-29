@@ -16,9 +16,9 @@ const { execSync } = require('child_process');
  */
 function test(args) {
   const options = parseOptions(args);
-  
+
   console.log(chalk.cyan('Herta.js Test Runner'));
-  
+
   try {
     if (options.pattern) {
       runSpecificTests(options.pattern, options);
@@ -47,7 +47,7 @@ function parseOptions(args) {
     verbose: false,
     coverage: false
   };
-  
+
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--unit' || args[i] === '-u') {
       options.unit = true;
@@ -61,7 +61,7 @@ function parseOptions(args) {
       options.pattern = args[i];
     }
   }
-  
+
   return options;
 }
 
@@ -72,10 +72,10 @@ function parseOptions(args) {
  */
 function runSpecificTests(pattern, options) {
   console.log(chalk.yellow(`Running tests matching pattern: ${pattern}`));
-  
+
   // Determine test command based on options
   const testCommand = buildTestCommand(pattern, options);
-  
+
   // Run tests
   try {
     const output = execSync(testCommand, { encoding: 'utf8' });
@@ -126,17 +126,17 @@ function buildTestCommand(pattern, options) {
   // This is a simple example - in a real implementation this would be more sophisticated
   // and would use the appropriate test runner (mocha, jest, etc.)
   let command = 'npx mocha';
-  
+
   if (options.coverage) {
-    command = 'npx nyc ' + command;
+    command = `npx nyc ${command}`;
   }
-  
+
   command += ` "${pattern}"`;
-  
+
   if (options.verbose) {
     command += ' --verbose';
   }
-  
+
   return command;
 }
 
@@ -148,7 +148,7 @@ function buildTestCommand(pattern, options) {
 function parseTestResults(output) {
   // This is a simplified parser for demonstration
   // A real implementation would parse actual mocha/jest output
-  
+
   const results = {
     passed: 0,
     failed: 0,
@@ -157,44 +157,42 @@ function parseTestResults(output) {
     coverage: null,
     failedTests: []
   };
-  
+
   // Look for patterns in the output
   const passedMatch = output.match(/(\d+) passing/);
   if (passedMatch) {
     results.passed = parseInt(passedMatch[1], 10);
   }
-  
+
   const failedMatch = output.match(/(\d+) failing/);
   if (failedMatch) {
     results.failed = parseInt(failedMatch[1], 10);
   }
-  
+
   const skippedMatch = output.match(/(\d+) pending/);
   if (skippedMatch) {
     results.skipped = parseInt(skippedMatch[1], 10);
   }
-  
+
   const durationMatch = output.match(/finished in ([\d\.]+)(ms|s)/);
   if (durationMatch) {
     const value = parseFloat(durationMatch[1]);
     const unit = durationMatch[2];
     results.duration = unit === 's' ? value : value / 1000;
   }
-  
+
   // Extract failed test info
   const failureMatches = output.match(/\d\) (.+?):/g);
   if (failureMatches) {
-    results.failedTests = failureMatches.map(match => {
-      return match.replace(/\d\) /, '').replace(/:$/, '');
-    });
+    results.failedTests = failureMatches.map((match) => match.replace(/\d\) /, '').replace(/:$/, ''));
   }
-  
+
   // Extract coverage if present
   const coverageMatch = output.match(/All files[^\n]+?([^\s]+)%/);
   if (coverageMatch) {
     results.coverage = parseFloat(coverageMatch[1]);
   }
-  
+
   return results;
 }
 
@@ -203,45 +201,45 @@ function parseTestResults(output) {
  * @param {Object} results - Test results
  */
 function displayTestSummary(results) {
-  console.log('\n' + chalk.bold('Test Summary'));
+  console.log(`\n${chalk.bold('Test Summary')}`);
   console.log('═════════════\n');
-  
+
   const total = results.passed + results.failed + results.skipped;
-  
+
   console.log(`Total tests: ${chalk.bold(total)}`);
   console.log(`Passed:      ${chalk.green.bold(results.passed)}`);
-  
+
   if (results.failed > 0) {
     console.log(`Failed:      ${chalk.red.bold(results.failed)}`);
   } else {
     console.log(`Failed:      ${chalk.bold(results.failed)}`);
   }
-  
+
   if (results.skipped > 0) {
     console.log(`Skipped:     ${chalk.yellow.bold(results.skipped)}`);
   } else {
     console.log(`Skipped:     ${chalk.bold(results.skipped)}`);
   }
-  
+
   console.log(`Duration:    ${chalk.bold(results.duration.toFixed(2))} seconds`);
-  
+
   if (results.coverage !== null) {
-    const coverageColor = results.coverage >= 80 ? chalk.green : 
-                          results.coverage >= 60 ? chalk.yellow : chalk.red;
-    console.log(`Coverage:    ${coverageColor.bold(results.coverage.toFixed(2) + '%')}`);
+    const coverageColor = results.coverage >= 80 ? chalk.green
+      : results.coverage >= 60 ? chalk.yellow : chalk.red;
+    console.log(`Coverage:    ${coverageColor.bold(`${results.coverage.toFixed(2)}%`)}`);
   }
-  
+
   if (results.failed > 0) {
-    console.log('\n' + chalk.red.bold('Failed Tests:'));
+    console.log(`\n${chalk.red.bold('Failed Tests:')}`);
     results.failedTests.forEach((test, index) => {
       console.log(`  ${index + 1}. ${chalk.red(test)}`);
     });
   }
-  
+
   if (results.failed === 0 && results.skipped === 0) {
-    console.log('\n' + chalk.green.bold('✓ All tests passed!'));
+    console.log(`\n${chalk.green.bold('✓ All tests passed!')}`);
   } else if (results.failed === 0) {
-    console.log('\n' + chalk.green.bold('✓ All executed tests passed!') + chalk.yellow(' (some skipped)'));
+    console.log(`\n${chalk.green.bold('✓ All executed tests passed!')}${chalk.yellow(' (some skipped)')}`);
   }
 }
 

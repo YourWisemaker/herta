@@ -2,7 +2,7 @@
  * Complex numbers module for herta.js
  */
 
-const Complex = require('complex.js');
+import Complex from 'complex.js';
 
 // Complex numbers module
 const complex = {};
@@ -13,7 +13,7 @@ const complex = {};
  * @param {number} [imag=0] - The imaginary part
  * @returns {Complex} - The complex number
  */
-complex.complex = function (real, imag = 0) {
+complex.create = function (real, imag = 0) {
   return new Complex(real, imag);
 };
 
@@ -325,4 +325,4 @@ complex.parse = function (str) {
   throw new Error(`Cannot parse "${str}" as a complex number`);
 };
 
-module.exports = complex;
+export default complex;

@@ -3,9 +3,9 @@
  * Provides advanced algebraic structures, abstract algebra, and computational algebra
  */
 
-const matrix = require('../core/matrix');
-const arithmetic = require('../core/arithmetic');
-const complex = require('../core/complex');
+import matrix from '../core/matrix.js';
+import arithmetic from '../core/arithmetic.js';
+import complex from '../core/complex.js';
 
 const advancedAlgebra = {};
 
@@ -857,4 +857,4 @@ advancedAlgebra.lcm = function (a, b) {
   return Math.abs(a * b) / this.gcd(a, b);
 };
 
-module.exports = advancedAlgebra;
+export default advancedAlgebra;
